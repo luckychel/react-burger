@@ -1,0 +1,28 @@
+.main_content {
+    width: 1280px;
+    justify-content: center;
+    display: flex;
+}
+
+.logo {
+    margin: 0 50px;    
+}
+
+.nav_link {
+    width: 178px;
+    padding: 16px 20px;
+    border-radius: 40px;
+    gap: 8px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+}
+
+.text_active {
+    color: #F2F2F3;
+}
+
+.text_inactive {
+    color: #8585AD;                         
+}
+    

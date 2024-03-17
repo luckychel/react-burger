@@ -1,0 +1,42 @@
+.ingredient_main_content {
+    width: 600px;
+    max-width: 600px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.tabs {
+    display: flex;
+}
+
+.ingredients {
+    width: 600px;
+    height: 664px;
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.details {
+    width: 600px;
+    min-height: 208px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.ingredients::-webkit-scrollbar {
+	width: 8px;
+}
+
+.ingredients::-webkit-scrollbar-track {
+	background: #2F2F37;
+}
+
+.ingredients::-webkit-scrollbar-thumb {
+	background: #8585AD;
+	border: 3px solid #2F2F37;
+	border-radius: 6px;
+}
