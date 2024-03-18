@@ -7,24 +7,24 @@ function AppHeader(props) {
   return (
         <header className={`${styles.main_content} mt-5 mr-5 ml-5`}>
 
-          <div className={styles.nav_link} >
-            <BurgerIcon type="primary"/>
-            <p className={`text text_type_main-small ${styles.text_active}`}>Конструктор</p>
-          </div>
+            <a href="#" className={styles.nav_link}>
+              <BurgerIcon type="primary"/>
+              <span className={`text text_type_main-small ${styles.text_active}`}>Конструктор</span>
+            </a>
 
-          <div className={styles.nav_link}> 
-            <ListIcon type="secondary"/>
-            <p className={`text text_type_main-small ${styles.text_inactive}`}>Лента заказов</p>
-          </div>
+            <a href="#" className={styles.nav_link}>
+              <ListIcon type="secondary"/>
+              <span className={`text text_type_main-small ${styles.text_inactive}`}>Лента заказов</span>
+            </a>
 
-          <div className={styles.logo}>
-            <Logo />  
-          </div>
+            <a href="#" className={styles.logo}>
+              <Logo />  
+            </a>
 
-          <div className={styles.nav_link}>
-            <ProfileIcon type="secondary"/>
-            <p className={`text text_type_main-small ${styles.text_inactive}`}>Личный кабинет</p>
-          </div>
+            <a href="#" className={styles.nav_link}>
+              <ProfileIcon type="secondary"/>
+              <span className={`text text_type_main-small ${styles.text_inactive}`}>Личный кабинет</span>
+            </a>
 
         </header>
       );

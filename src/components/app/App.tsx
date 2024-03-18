@@ -8,11 +8,18 @@ import data from '../../utils/data';
 
 function App() {
 
+  const tabs = [
+    { name: "Булки", type: 'bun' },
+    { name: "Соусы", type: 'sauce' },
+    { name: "Начинки", type: 'main' }
+  ]
+
   return (
+   
     <div className={styles.app}>
       <AppHeader />
       <div className={styles.main_content}>
-        <BurgerIngredients data={data} />
+        <BurgerIngredients tabs={tabs} data={data} />
         <BurgerConstructor data={data} />
       </div>
   

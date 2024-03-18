@@ -6,13 +6,9 @@ import BurgerIngredientItem from '../burger-ingredient-item/BurgerIngredientItem
 
 function BurgerIngredients(props) {
     
+    const tabs = props.tabs;
     const ingredients = props.data;
 
-    const tabs = [
-      { name: "Булки", type: 'bun' },
-      { name: "Соусы", type: 'sauce' },
-      { name: "Начинки", type: 'main' }
-    ];
     const [current, setCurrent] = React.useState(tabs[0].type);
 
     return (
@@ -22,13 +18,13 @@ function BurgerIngredients(props) {
         <p className={`text_type_main-large mt-10 mb-0`}>Соберите бургер</p>
 
         <div className={`${styles.tabs} mt-5`}>
-          { 
-            tabs.map((tab) => (
-              <Tab value={tab.type} key={tab.name} active={current === tab.type} onClick={setCurrent}>
-              {tab.name}
-              </Tab>
-            ))
-          }
+        { 
+          tabs.map((tab) => (
+            <Tab value={tab.type} key={tab.name} active={current === tab.type} onClick={setCurrent}>
+            {tab.name}
+            </Tab>
+          ))
+        }
         </div>
 
         <div className={styles.ingredients}>
@@ -40,12 +36,12 @@ function BurgerIngredients(props) {
                   <div key={tab.name}>
                     <p className="text text_type_main-medium mt-10">{tab.name}</p>
                     <div className={styles.details}>
-                      {
-                        ingredients.filter(item => item.type === tab.type)
-                          .map((item) => 
-                            <BurgerIngredientItem key={item._id} {...item} />
-                          )
-                      }
+                    {
+                      ingredients.filter(item => item.type === tab.type)
+                        .map((item) => 
+                          <BurgerIngredientItem key={item._id} {...item} />
+                        )
+                    }
                     </div>
                   </div>
                 ))
