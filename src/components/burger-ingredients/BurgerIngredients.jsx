@@ -3,13 +3,14 @@ import styles from './BurgerIngredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 
 import BurgerIngredientItem from '../burger-ingredient-item/BurgerIngredientItem';
+import {burgerIngridientsType} from '../../utils/propTypes'
 
 function BurgerIngredients(props) {
     
-    const tabs = props.tabs;
-    const ingredients = props.data;
-
-    const [current, setCurrent] = React.useState(tabs[0].type);
+    const tabs = props?.tabs;
+    const ingredients = props?.data;
+    
+     const [current, setCurrent] = React.useState(tabs[0].type);
 
     return (
 
@@ -27,7 +28,7 @@ function BurgerIngredients(props) {
         }
         </div>
 
-        <div className={styles.ingredients}>
+        <div className={`${styles.ingredients} custom-scroll`}>
         {
           ingredients && (
             <>
@@ -53,5 +54,7 @@ function BurgerIngredients(props) {
     </section>
     )
 }
+
+BurgerIngredients.propTypes = burgerIngridientsType;
 
 export default BurgerIngredients;

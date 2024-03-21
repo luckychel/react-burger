@@ -2,11 +2,11 @@ import React from 'react'
 import styles from './BurgerConstructor.module.css';
 import { ConstructorElement, DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 
-import ingredientType from '../../utils/propTypes'
+import { burgerConstructorType } from '../../utils/propTypes'
 
 function BurgerConstructor(props) {
 
-   const components = props.data;
+   const components = props?.data;
    const bun = components?.filter(x => x.type === 'bun')[0];
 
    return (
@@ -19,7 +19,7 @@ function BurgerConstructor(props) {
                   <ConstructorElement type='top' text={bun.name + ' (верх)'} price={bun.price} thumbnail={bun.image} isLocked={true} />
                </div>
 
-               <div className={styles.components}>
+               <div className={`${styles.components} custom-scroll`}>
                   {
                      components.map((item, index) => 
                         item.type !== 'bun' && 
@@ -59,6 +59,6 @@ function BurgerConstructor(props) {
   )
 }
 
-BurgerConstructor.propTypes = ingredientType;
+BurgerConstructor.propTypes = burgerConstructorType;
 
 export default BurgerConstructor;
