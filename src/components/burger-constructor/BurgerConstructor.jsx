@@ -2,7 +2,7 @@ import React from 'react'
 import styles from './BurgerConstructor.module.css';
 import { ConstructorElement, DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 
-import { burgerConstructorType } from '../../utils/propTypes'
+import { BurgerConstructorType } from '../../utils/propTypes'
 
 function BurgerConstructor(props) {
 
@@ -59,6 +59,6 @@ function BurgerConstructor(props) {
   )
 }
 
-BurgerConstructor.propTypes = burgerConstructorType;
+BurgerConstructor.propTypes = BurgerConstructorType;
 
 export default BurgerConstructor;

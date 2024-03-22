@@ -3,7 +3,6 @@ import AppHeader from '../app-header/AppHeader'
 import BurgerIngredients from '../burger-ingredients/BurgerIngredients'
 import BurgerConstructor from '../burger-constructor/BurgerConstructor'
 import styles from './App.module.css';
-import { debug } from 'console';
 
 //import data from '../../utils/data';
 

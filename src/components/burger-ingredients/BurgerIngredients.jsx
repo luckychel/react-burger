@@ -3,7 +3,8 @@ import styles from './BurgerIngredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 
 import BurgerIngredientItem from '../burger-ingredient-item/BurgerIngredientItem';
-import {burgerIngridientsType} from '../../utils/propTypes'
+
+import { BurgerIngridientsType } from '../../utils/propTypes'
 
 function BurgerIngredients(props) {
     
@@ -22,7 +23,7 @@ function BurgerIngredients(props) {
         { 
           tabs.map((tab) => (
             <Tab value={tab.type} key={tab.name} active={current === tab.type} onClick={setCurrent}>
-            {tab.name}
+              {tab.name}
             </Tab>
           ))
         }
@@ -55,6 +56,6 @@ function BurgerIngredients(props) {
     )
 }
 
-BurgerIngredients.propTypes = burgerIngridientsType;
+BurgerIngredients.propTypes = BurgerIngridientsType;
 
 export default BurgerIngredients;
