@@ -24,6 +24,7 @@
     flex-direction: column;
     overflow-y: auto;
     overflow-x: hidden;
+    scrollbar-width: thin;
 }
 
 .components::-webkit-scrollbar {
@@ -43,4 +44,3 @@
 	border: 3px solid #2F2F37;
 	border-radius: 6px;
 }
-
