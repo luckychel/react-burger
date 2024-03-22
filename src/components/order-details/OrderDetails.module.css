@@ -1,0 +1,22 @@
+.order_details_main_content {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.done {
+    width: 107px;
+    height: 102px;
+    background: radial-gradient(50% 50% at 50% 50%, rgba(128, 26, 179, 0) 0%, rgba(76, 76, 255, 0.125) 100%);
+    border-radius: 50px;
+    left: 40%;
+    position: relative;
+    gap: 53px;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.done_img {
+    margin: auto;
+}

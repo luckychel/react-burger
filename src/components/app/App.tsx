@@ -4,7 +4,7 @@ import BurgerIngredients from '../burger-ingredients/BurgerIngredients'
 import BurgerConstructor from '../burger-constructor/BurgerConstructor'
 import styles from './App.module.css';
 
-//import data from '../../utils/data';
+//import ingredientsData from '../../utils/data';
 
 const api = 'https://norma.nomoreparties.space/api/';
 

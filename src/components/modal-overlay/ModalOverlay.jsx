@@ -30,6 +30,6 @@ function ModalOverlay({onClose}) {
     )
 }
 
-//ModalOverlay.propTypes = ModalOverlayType;
+ModalOverlay.propTypes = ModalOverlayType;
 
 export default ModalOverlay;

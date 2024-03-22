@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import styles from './BurgerIngredientItem.module.css';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components'
 
+import { Ingredient } from '../../utils/propTypes'
+
 import Modal from '../modal/Modal'
 import IngredientDetails from '../ingredient-details/IngredientDetails'
 
@@ -31,12 +33,14 @@ function BurgerIngredientItem(props) {
         { 
             isOpenModal && 
                 <Modal onClose={() => setOpenModal(false)} header='Детали ингредиента'>
-                    <IngredientDetails>{props}</IngredientDetails>
+                    <IngredientDetails {...props}></IngredientDetails>
                 </Modal>
                 
         }
        </>
     )
 }
+
+BurgerIngredientItem.propTypes = Ingredient;
 
 export default BurgerIngredientItem;

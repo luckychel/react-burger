@@ -1,13 +1,22 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styles from './BurgerConstructor.module.css';
 import { ConstructorElement, DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 
 import { BurgerConstructorType } from '../../utils/propTypes'
 
+import Modal from '../modal/Modal'
+import OrderDetails from '../order-details/OrderDetails';
+
 function BurgerConstructor(props) {
 
    const components = props?.data;
    const bun = components?.filter(x => x.type === 'bun')[0];
+
+   const [isOpenOrderDetailsModal, setOrderDetailsOpenModal] = useState(false);
+
+   const handleOrderDetailsClick = () => {
+      setOrderDetailsOpenModal(!isOpenOrderDetailsModal);
+   }
 
    return (
       <section className={`${styles.constructor_main_content} ml-10`}>
@@ -30,8 +39,7 @@ function BurgerConstructor(props) {
                                     text={item.name}
                                     price={item.price}
                                     thumbnail={item.image}
-                                    isLocked={false}
-                                       />
+                                    isLocked={false} />
                            </div>
                         )
                      )
@@ -44,17 +52,21 @@ function BurgerConstructor(props) {
             </>
             )
       }
-      
       <div className={`${styles.total} mt-10`}>
          <span className={`${styles.total_sum} mr-10 text_type_digits-medium`}>
             600 
             <CurrencyIcon type="primary" />
          </span>
-         <Button type="primary" size="large">
+         <Button type="primary" size="large" htmlType='button' onClick={handleOrderDetailsClick}>
             Оформить заказ
          </Button>
       </div>
-
+      { 
+         isOpenOrderDetailsModal && 
+            <Modal onClose={() => setOrderDetailsOpenModal(false)}>
+               <OrderDetails>{props}</OrderDetails>
+            </Modal>
+      }
       </section>
   )
 }
