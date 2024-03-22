@@ -1,12 +1,11 @@
 import React from 'react'
 import { createPortal } from 'react-dom';
 import styles from './Modal.module.css';
-
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 
-import ModalOverlay from '../modal-overlay/ModalOverlay'
-
 import { ModalType } from '../../utils/propTypes'
+
+import ModalOverlay from '../modal-overlay/ModalOverlay'
 
 function Modal ({onClose, header, children})  {
 
