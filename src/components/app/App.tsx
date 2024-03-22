@@ -55,8 +55,8 @@ function App() {
     <div className={styles.app}>
       <AppHeader />
       <div className={styles.main_content}>
-        <BurgerIngredients tabs={tabs} data={ingredientsData} />
-        <BurgerConstructor data={ingredientsData} />
+        <BurgerIngredients tabs={tabs} ingredients={ingredientsData} />
+        <BurgerConstructor ingredients={ingredientsData} />
       </div>
   
     </div>

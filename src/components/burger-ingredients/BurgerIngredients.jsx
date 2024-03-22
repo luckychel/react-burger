@@ -6,10 +6,7 @@ import { BurgerIngridientsType } from '../../utils/propTypes'
 
 import BurgerIngredientItem from '../burger-ingredient-item/BurgerIngredientItem';
 
-function BurgerIngredients(props) {
-    
-    const tabs = props?.tabs;
-    const ingredients = props?.data;
+function BurgerIngredients({tabs, ingredients}) {
     
      const [current, setCurrent] = React.useState(tabs[0].type);
 

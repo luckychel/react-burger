@@ -7,10 +7,9 @@ import { BurgerConstructorType } from '../../utils/propTypes'
 import Modal from '../modal/Modal'
 import OrderDetails from '../order-details/OrderDetails';
 
-function BurgerConstructor(props) {
+function BurgerConstructor({ingredients}) {
 
-   const components = props?.data;
-   const bun = components?.filter(x => x.type === 'bun')[0];
+   const bun = ingredients?.filter(x => x.type === 'bun')[0];
 
    const [isOpenOrderDetailsModal, setOrderDetailsOpenModal] = useState(false);
 
@@ -21,7 +20,7 @@ function BurgerConstructor(props) {
    return (
       <section className={`${styles.constructor_main_content} ml-10`}>
       {
-         components
+         ingredients
          && (
             <>
                <div className="pl-5 mt-25 mb-2">
@@ -30,7 +29,7 @@ function BurgerConstructor(props) {
 
                <div className={`${styles.components} custom-scroll`}>
                   {
-                     components.map((item, index) => 
+                     ingredients.map((item, index) => 
                         item.type !== 'bun' && 
                         (
                            <div key={item._id}>
@@ -64,7 +63,7 @@ function BurgerConstructor(props) {
       { 
          isOpenOrderDetailsModal && 
             <Modal onClose={() => setOrderDetailsOpenModal(false)}>
-               <OrderDetails>{props}</OrderDetails>
+               <OrderDetails />
             </Modal>
       }
       </section>
