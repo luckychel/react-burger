@@ -5,7 +5,7 @@ import { Ingredient } from '../../utils/propTypes'
 function IngredientDetails (props) {
 
     return (
-        <div className={styles.content}>
+        <div className={styles.ingredient_details_main_content}>
             <img src={props.image_large} alt={props.name}></img>
             <div className={styles.ingredient_name}>
                 <p className="text text_type_main-medium">{props.name}</p>

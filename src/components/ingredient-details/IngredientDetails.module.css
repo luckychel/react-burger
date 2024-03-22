@@ -1,9 +1,9 @@
-.content {
+.ingredient_details_main_content {
     display: flex;
     flex-direction: column;
 }
 
-.ingredient_name{
+.ingredient_name {
     text-align: center;
 }
 
