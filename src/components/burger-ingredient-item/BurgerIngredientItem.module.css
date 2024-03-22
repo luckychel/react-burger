@@ -4,6 +4,7 @@
     display: flex;
     flex-direction: column;
     position: relative;
+    cursor: pointer;
 }
 
 .ingredient_item_price {
