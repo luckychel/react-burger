@@ -6,27 +6,17 @@ import styles from './App.module.css';
 
 //import ingredientsData from '../../utils/data';
 
-const api = 'https://norma.nomoreparties.space/api/';
+import { getData } from '../../utils/api';
 
 function App() {
 
   const [ingredientsData, setIngredientsData] = useState();
 
   useEffect(() => {
-    fetch(api + 'ingredients')
-        .then(res => {
-          if (!res.ok) 
-          {
-            return Promise.reject(`Ошибка ${res.status}`);
-          }
-          return res.json();
-        })
-        .then(data => { 
-          setIngredientsData(data.data)
-        })
-        .catch(e => {
-          console.log('Error: ' + e.message);
-        });
+    getData('ingredients')
+      .then(data => { 
+        setIngredientsData(data.data)
+      })
   }, []);
 
   const tabs = [
@@ -34,21 +24,6 @@ function App() {
     { name: "Соусы", type: 'sauce' },
     { name: "Начинки", type: 'main' }
   ]
-
-  /*
-  const [error, setError] = useState(null);
-  const handleClick = () => {
-    try {
-      throw new Error("Simple error");
-    } catch (err) {
-      // Обычно ошибки логируются или обрабатываются дополнительной логикой,
-      // но для наглядности мы просто кладём ошибку в стейт
-      setError(err.message);
-    }
-  };
-
-  <button onClick={handleClick}>Make a mistake</button>
-*/
 
   return (
    

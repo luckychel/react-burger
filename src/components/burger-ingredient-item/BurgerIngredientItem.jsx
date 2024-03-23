@@ -11,13 +11,13 @@ function BurgerIngredientItem(props) {
 
     const [isOpenModal, setOpenModal] = useState(false);
 
-    const handleIngridientClick = () => {
+    const handleIngredientClick = () => {
         setOpenModal(!isOpenModal);
     }
 
     return (
        <>
-        <div className={styles.ingredient_item_main_content} onClick={handleIngridientClick}>
+        <div className={styles.ingredient_item_main_content} onClick={handleIngredientClick}>
             <Counter count={1} size="default" extraClass="m-1" />
             <img src={props.image} alt={props.name} title={props.name}></img>
 
@@ -32,7 +32,7 @@ function BurgerIngredientItem(props) {
         </div>
         { 
             isOpenModal && 
-                <Modal onClose={() => setOpenModal(false)} header='Детали ингредиента'>
+                <Modal onClose={setOpenModal(false)} header='Детали ингредиента'>
                     <IngredientDetails {...props}></IngredientDetails>
                 </Modal>
                 

@@ -41,7 +41,7 @@ function Modal ({onClose, header, children})  {
                   </div>
                   {children}
               </div>
-              <ModalOverlay onClose={() => onClose()}></ModalOverlay>
+              <ModalOverlay onClose={onClose}></ModalOverlay>
             </>
         ),
         document.getElementById("react-modals")

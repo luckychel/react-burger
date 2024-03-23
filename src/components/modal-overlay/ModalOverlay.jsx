@@ -26,7 +26,7 @@ function ModalOverlay({onClose}) {
     }, [onClose])
 
     return (
-        <div className={styles.modal_overlay_main_content}  ref={modalRef}></div>
+        <div className={styles.modal_overlay_main_content} ref={modalRef}></div>
     )
 }
 
