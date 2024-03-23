@@ -1,0 +1,25 @@
+.ingredient_details_main_content {
+    display: flex;
+    flex-direction: column;
+}
+
+.ingredient_name {
+    text-align: center;
+}
+
+.nutrition_values {
+    display: flex;
+    height: 56px;
+    gap: 20px;
+    justify-content: center;
+    padding-bottom: 60px;
+    padding-top: 20px;
+}
+
+.value {
+    height: 56px;
+    gap: 8px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}

@@ -18,25 +18,33 @@
     flex-direction: column;
     overflow-y: auto;
     overflow-x: hidden;
+    scrollbar-width: thin;
 }
 
 .details {
     width: 600px;
-    min-height: 208px;
+    min-height: 210px;
     display: flex;
     flex-wrap: wrap;
+    overflow-y: hidden;
+    overflow-x: hidden;
 }
 
+
 .ingredients::-webkit-scrollbar {
-	width: 8px;
+	width: 10px;
 }
 
 .ingredients::-webkit-scrollbar-track {
 	background: #2F2F37;
 }
 
+.ingredients::-webkit-scrollbar-corner {
+    background: #2F2F37;
+}
+
 .ingredients::-webkit-scrollbar-thumb {
-	background: #8585AD;
-	border: 3px solid #2F2F37;
-	border-radius: 6px;
+    background: #8585AD;;
+    -webkit-border-radius: 1ex;
+    -webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.75);
 }

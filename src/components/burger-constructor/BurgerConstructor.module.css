@@ -24,14 +24,19 @@
     flex-direction: column;
     overflow-y: auto;
     overflow-x: hidden;
+    scrollbar-width: thin;
 }
 
 .components::-webkit-scrollbar {
-	width: 8px;
+	width: 10px;
 }
 
 .components::-webkit-scrollbar-track {
 	background: #2F2F37;
+}
+
+.components::-webkit-scrollbar-corner {
+    background: #2F2F37;
 }
 
 .components::-webkit-scrollbar-thumb {
@@ -39,4 +44,3 @@
 	border: 3px solid #2F2F37;
 	border-radius: 6px;
 }
-

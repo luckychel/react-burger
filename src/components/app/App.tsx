@@ -4,9 +4,20 @@ import BurgerIngredients from '../burger-ingredients/BurgerIngredients'
 import BurgerConstructor from '../burger-constructor/BurgerConstructor'
 import styles from './App.module.css';
 
-import data from '../../utils/data';
+//import ingredientsData from '../../utils/data';
+
+import { getData } from '../../utils/api';
 
 function App() {
+
+  const [ingredientsData, setIngredientsData] = useState();
+
+  useEffect(() => {
+    getData('ingredients')
+      .then(data => { 
+        setIngredientsData(data.data)
+      })
+  }, []);
 
   const tabs = [
     { name: "Булки", type: 'bun' },
@@ -19,8 +30,8 @@ function App() {
     <div className={styles.app}>
       <AppHeader />
       <div className={styles.main_content}>
-        <BurgerIngredients tabs={tabs} data={data} />
-        <BurgerConstructor data={data} />
+        <BurgerIngredients tabs={tabs} ingredients={ingredientsData} />
+        <BurgerConstructor ingredients={ingredientsData} />
       </div>
   
     </div>
