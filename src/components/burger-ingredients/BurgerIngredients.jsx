@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react'
+import React, {useState, useRef, useEffect, useCallback} from 'react'
 import styles from './BurgerIngredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 
@@ -10,9 +10,9 @@ function BurgerIngredients({tabs, ingredients}) {
 
     const [current, setCurrent] = useState(tabs[0].type);
 
-    const bunRef = React.useRef(null);
-    const sauceRef = React.useRef(null);
-    const mainRef = React.useRef(null);
+    const bunRef = useRef(null);
+    const sauceRef = useRef(null);
+    const mainRef = useRef(null);
 
     const tabClickHandler = (clickedTab) => {
 
@@ -43,7 +43,7 @@ function BurgerIngredients({tabs, ingredients}) {
         }
         </div>
 
-        <div className={`${styles.ingredients}`}>
+        <div className={`${styles.ingredients} mt-10`}>
         {
           ingredients && (
             tabs.map((tab) => {
@@ -52,7 +52,7 @@ function BurgerIngredients({tabs, ingredients}) {
 
               return (
                 <div key={tab.type}>
-                  <p key={tab.type} className="text text_type_main-medium mt-10" ref={refer}>{tab.name}</p>
+                  <p key={tab.type} className="text text_type_main-medium" ref={refer}>{tab.name}</p>
                   <div className={styles.details}>
                   {
                     ingredients.filter(item => item.type === tab.type)
