@@ -32,7 +32,7 @@ function BurgerIngredientItem(props) {
         </div>
         { 
             isOpenModal && 
-                <Modal onClose={setOpenModal(false)} header='Детали ингредиента'>
+                <Modal onClose={() => setOpenModal(false)} header='Детали ингредиента'>
                     <IngredientDetails {...props}></IngredientDetails>
                 </Modal>
                 
