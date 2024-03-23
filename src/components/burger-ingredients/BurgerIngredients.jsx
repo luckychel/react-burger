@@ -10,34 +10,22 @@ function BurgerIngredients({tabs, ingredients}) {
 
     const [current, setCurrent] = useState(tabs[0].type);
 
-    const [tabsRefOffSetTop, setTabsRefOffSetTop] = useState(0);
-    const scrollRef = React.useRef(0);
     const bunRef = React.useRef(null);
     const sauceRef = React.useRef(null);
     const mainRef = React.useRef(null);
 
-    useEffect(() => { 
-      setTabsRefOffSetTop(scrollRef.current.offsetTop) 
-    }, [scrollRef])
-
-    const tabClickHandler = useCallback((clickedTab) => {
-       
-      let top = 0;
+    const tabClickHandler = (clickedTab) => {
 
       switch (clickedTab) {
-        case 'bun': top = 0; break;
-        case 'sauce': top = Math.abs(tabsRefOffSetTop - sauceRef.current.offsetTop)-10; break;
-        case 'main': top = Math.abs(tabsRefOffSetTop - mainRef.current.offsetTop)-10; break;
-        default: top = 0;
+        case 'bun': bunRef.current.scrollIntoView({ behavior: "smooth" }); break;
+        case 'sauce': sauceRef.current.scrollIntoView({ behavior: "smooth" }); break;
+        case 'main': mainRef.current.scrollIntoView({ behavior: "smooth" }); break;
+        default: bunRef.current.scrollIntoView({ behavior: "smooth" });
       }
-
-      scrollRef.current.scroll({ top: top, behavior: "smooth" });
-      
-      //sauceRef.current.scrollIntoView({ behavior: "smooth" });
 
       setCurrent(clickedTab);
 
-    }, [tabsRefOffSetTop]);
+    };
 
     return (
 
@@ -55,7 +43,7 @@ function BurgerIngredients({tabs, ingredients}) {
         }
         </div>
 
-        <div className={`${styles.ingredients}`} ref={scrollRef}>
+        <div className={`${styles.ingredients}`}>
         {
           ingredients && (
             tabs.map((tab) => {
