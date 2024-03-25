@@ -9,7 +9,8 @@ import OrderDetails from '../order-details/OrderDetails';
 
 function BurgerConstructor({ingredients}) {
 
-   const bun = ingredients?.filter(x => x.type === 'bun')[0];
+   const bun =  null;//ingredients?.filter(x => x.type === 'bun')[0];
+   ingredients = null;
 
    const [isOpenOrderDetailsModal, setOrderDetailsOpenModal] = useState(false);
 
@@ -19,38 +20,63 @@ function BurgerConstructor({ingredients}) {
 
    return (
       <section className={`${styles.constructor_main_content} ml-10`}>
-      {
-         ingredients
-         && (
-            <>
-               <div className="pl-5 mt-25 mb-2">
-                  <ConstructorElement type='top' text={bun.name + ' (верх)'} price={bun.price} thumbnail={bun.image} isLocked={true} />
-               </div>
+         <div className={`${styles.container} `}>
+            <div className="pl-10 mt-25">
+            {
+               bun == null ?
+               (
+                  <div className={`constructor-element constructor-element_pos_top ${styles.custom_aligment}`}>
+                     <span class="constructor-element__row">
+                        <span class="constructor-element__text">Выбирете булки</span>
+                     </span>
+                  </div>
+               ) : (
+                  <ConstructorElement type='top' text={bun.name + ' (верх)'} price={bun.price} thumbnail={bun.image} isLocked={true}/>
+               )
+            }
+            </div>
 
-               <div className={`${styles.components} pr-2`}>
-                  {
-                     ingredients.map((item, index) => 
-                        item.type !== 'bun' && 
-                        (
-                           <div key={item._id}>
-                              <DragIcon type="primary" />
-                              <ConstructorElement
-                                    text={item.name}
-                                    price={item.price}
-                                    thumbnail={item.image}
-                                    isLocked={false} />
-                           </div>
-                        )
+            <div className={`${styles.components} pl-5 pr-2 pt-2 pb-2`}>
+            {
+               ingredients && ingredients.length > 0 ?
+                  ingredients.map((item, index) => 
+                     item.type !== 'bun' && 
+                     (
+                        <div key={item._id}>
+                           <DragIcon type="primary" />
+                           <ConstructorElement
+                                 text={item.name}
+                                 price={item.price}
+                                 thumbnail={item.image}
+                                 isLocked={false} />
+                        </div>
                      )
-                  }
-               </div>
+                  ) : (
+                     <div className={`constructor-element ${styles.custom_aligment} ${styles.custom_margin_left}`}>
+                        <span class="constructor-element__row">
+                           <span class="constructor-element__text">Выбирете начинку</span>
+                        </span>
+                     </div>
+                  )
+            }
+            </div>
 
-               <div className="pl-5 mt-2">
-                  <ConstructorElement type='bottom' isLocked={true} text={bun.name + ' (низ)'} price={bun.price} thumbnail={bun.image} />
-               </div>
-            </>
-            )
-      }
+            <div className="pl-10">
+            {
+               bun == null ?
+               (
+                  <div className={`constructor-element constructor-element_pos_bottom ${styles.custom_aligment}`}>
+                     <span class="constructor-element__row">
+                        <span class="constructor-element__text">Выбирете булки</span>
+                     </span>
+                  </div>
+               ) : (
+                  <ConstructorElement type='bottom' text={bun.name + ' (низ)'} price={bun.price} thumbnail={bun.image} isLocked={true} />
+               )
+            }
+         </div>
+      </div>
+
       <div className={`${styles.total} mt-10`}>
          <span className={`${styles.total_sum} mr-10 text_type_digits-medium`}>
             600 

@@ -1,7 +1,9 @@
 .constructor_main_content {
-    width: 600px;
-    max-width: 600px;
-    width: 100%;
+    display: flex;
+    flex-direction: column;
+    min-width: 556px;
+}
+.container {
     display: flex;
     flex-direction: column;
 }
@@ -18,13 +20,15 @@
 }
 
 .components {
-    gap: 10px;
-    height: 450px;
-    display: flex; 
+    display: flex;
     flex-direction: column;
-    overflow-y: auto;
+    overflow-y: scroll;
     overflow-x: hidden;
     scrollbar-width: thin;
+    max-height: 440px;
+    min-width: 556px;
+    flex-wrap:unset;
+    gap: 10px;
 }
 
 .components::-webkit-scrollbar {
@@ -43,4 +47,14 @@
 	background: #8585AD;
 	border: 3px solid #2F2F37;
 	border-radius: 6px;
+}
+
+.custom_aligment {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.custom_margin_left {
+    margin-left: 20px;
 }
