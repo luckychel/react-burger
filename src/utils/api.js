@@ -1,7 +1,7 @@
-const api = 'https://norma.nomoreparties.space/api/';
+const baseUrl = 'https://norma.nomoreparties.space/api/';
 
 export const getData = (url) => {
-  return fetch(api + url)
+  return fetch(baseUrl + url)
       .then(res => {
         if (!res.ok) 
         {

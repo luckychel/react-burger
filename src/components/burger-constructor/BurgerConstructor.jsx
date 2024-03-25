@@ -27,7 +27,7 @@ function BurgerConstructor({ingredients}) {
                   <ConstructorElement type='top' text={bun.name + ' (верх)'} price={bun.price} thumbnail={bun.image} isLocked={true} />
                </div>
 
-               <div className={`${styles.components}`}>
+               <div className={`${styles.components} pr-2`}>
                   {
                      ingredients.map((item, index) => 
                         item.type !== 'bun' && 
