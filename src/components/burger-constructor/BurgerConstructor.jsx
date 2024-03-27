@@ -4,13 +4,21 @@ import { ConstructorElement, DragIcon, CurrencyIcon, Button } from '@ya.praktiku
 
 import { BurgerConstructorType } from '../../utils/propTypes'
 
+import '../../utils/randomizers'
+
 import Modal from '../modal/Modal'
 import OrderDetails from '../order-details/OrderDetails';
 
+
 function BurgerConstructor({ingredients}) {
 
-   const bun =  null;//ingredients?.filter(x => x.type === 'bun')[0];
-   ingredients = null;
+   const bun = ingredients?.filter(x => x.type === 'bun').random();
+
+   //console.log(`было ${ingredients?.length}`);
+
+   ingredients = ingredients?.shuffle();
+
+   //console.log(`стало ${ingredients?.length}`);
 
    const [isOpenOrderDetailsModal, setOrderDetailsOpenModal] = useState(false);
 
@@ -26,8 +34,8 @@ function BurgerConstructor({ingredients}) {
                bun == null ?
                (
                   <div className={`constructor-element constructor-element_pos_top ${styles.custom_aligment}`}>
-                     <span class="constructor-element__row">
-                        <span class="constructor-element__text">Выбирете булки</span>
+                     <span className={`constructor-element__row`}>
+                        <span className={`constructor-element__text`}>Выберите булки</span>
                      </span>
                   </div>
                ) : (
@@ -53,8 +61,8 @@ function BurgerConstructor({ingredients}) {
                      )
                   ) : (
                      <div className={`constructor-element ${styles.custom_aligment} ${styles.custom_margin_left}`}>
-                        <span class="constructor-element__row">
-                           <span class="constructor-element__text">Выбирете начинку</span>
+                        <span className={`constructor-element__row`}>
+                           <span className={`constructor-element__text`}>Выберите начинку</span>
                         </span>
                      </div>
                   )
@@ -66,8 +74,8 @@ function BurgerConstructor({ingredients}) {
                bun == null ?
                (
                   <div className={`constructor-element constructor-element_pos_bottom ${styles.custom_aligment}`}>
-                     <span class="constructor-element__row">
-                        <span class="constructor-element__text">Выбирете булки</span>
+                     <span className={`constructor-element__row`}>
+                        <span className={`constructor-element__text`}>Выберите булки</span>
                      </span>
                   </div>
                ) : (

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import styles from './App.module.css';
+
 import AppHeader from '../app-header/AppHeader'
 import BurgerIngredients from '../burger-ingredients/BurgerIngredients'
 import BurgerConstructor from '../burger-constructor/BurgerConstructor'
-import styles from './App.module.css';
-
-//import ingredientsData from '../../utils/data';
+import ErrorBoundary from '../error-boundary/ErrorBoundary';
 
 import { getData } from '../../utils/api';
 
@@ -26,15 +26,15 @@ function App() {
   ]
 
   return (
-   
-    <div className={styles.app}>
-      <AppHeader />
-      <div className={styles.main_content}>
-        <BurgerIngredients tabs={tabs} ingredients={ingredientsData} />
-        <BurgerConstructor ingredients={ingredientsData} />
+    <ErrorBoundary>
+      <div className={styles.app}>
+        <AppHeader />
+        <div className={styles.main_content}>
+          <BurgerIngredients tabs={tabs} ingredients={ingredientsData} />
+          <BurgerConstructor ingredients={ingredientsData} />
+        </div>
       </div>
-  
-    </div>
+    </ErrorBoundary>
   );
 }
 

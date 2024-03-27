@@ -18,7 +18,9 @@ function BurgerIngredientItem(props) {
     return (
        <>
         <div className={styles.ingredient_item_main_content} onClick={handleIngredientClick}>
-            <Counter count={1} size="default" extraClass="m-1" />
+            {
+                1!=1 && (<Counter count={1} size="default" extraClass="m-1" />)
+            }
             <img src={props.image} alt={props.name} title={props.name}></img>
 
             <span className={`${styles.ingredient_item_price} mt-2 mb-1 text text_type_digits-default`}>
