@@ -24,7 +24,7 @@ class ErrorBoundary extends React.Component {
       if (this.state.hasError) {
         // если возникла ошибка, сообщаем об этом пользователю в специальном компоненте:
         return (
-          <section>
+          <section className='p-10'>
             <h1>Что-то пошло не так :(</h1>
             <p>
               В приложении произошла ошибка. Пожалуйста, перезагрузите страницу.

@@ -39,3 +39,8 @@ export const ModalType = {
     ]).isRequired
 }
 
+export const IngredientsType = PropTypes.arrayOf(Ingredient);
+
+export const TotalSumType = {
+    totalSum: PropTypes.number
+}

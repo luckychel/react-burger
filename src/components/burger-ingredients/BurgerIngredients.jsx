@@ -1,12 +1,15 @@
-import React, {useState, useRef, useEffect, useCallback} from 'react'
+import React, {useState, useRef, useCallback, useContext} from 'react'
 import styles from './BurgerIngredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 
 import { BurgerIngridientsType } from '../../utils/propTypes'
-
 import BurgerIngredientItem from '../burger-ingredient-item/BurgerIngredientItem';
 
-function BurgerIngredients({tabs, ingredients}) {
+import { IngredientsContext } from '../../services/appContext'
+
+function BurgerIngredients({tabs}) {
+
+    const ingredients = useContext(IngredientsContext);
 
     const [current, setCurrent] = useState(tabs[0].type);
 
@@ -26,7 +29,7 @@ function BurgerIngredients({tabs, ingredients}) {
 
       setCurrent(clickedTab);
 
-    });
+    }, [tabs]);
 
     const handleOnScroll = () => {
           

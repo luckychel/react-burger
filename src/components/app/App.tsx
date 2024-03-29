@@ -6,11 +6,13 @@ import BurgerIngredients from '../burger-ingredients/BurgerIngredients'
 import BurgerConstructor from '../burger-constructor/BurgerConstructor'
 import ErrorBoundary from '../error-boundary/ErrorBoundary';
 
+import { IngredientsContext } from '../../services/appContext'
+
 import { getData } from '../../utils/api';
 
 function App() {
 
-  const [ingredientsData, setIngredientsData] = useState();
+  const [ingredientsData, setIngredientsData] = useState(null);
 
   useEffect(() => {
     getData('ingredients')
@@ -29,10 +31,12 @@ function App() {
     <ErrorBoundary>
       <div className={styles.app}>
         <AppHeader />
+        <IngredientsContext.Provider value={ingredientsData}>
         <div className={styles.main_content}>
-          <BurgerIngredients tabs={tabs} ingredients={ingredientsData} />
-          <BurgerConstructor ingredients={ingredientsData} />
+            <BurgerIngredients tabs={tabs} />
+            <BurgerConstructor />
         </div>
+        </IngredientsContext.Provider>
       </div>
     </ErrorBoundary>
   );
