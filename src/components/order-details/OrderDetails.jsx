@@ -3,7 +3,7 @@ import styles from './OrderDetails.module.css';
 import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 
 import { IngredientsType } from '../../utils/propTypes'
-import { getOrderNumber } from '../../utils/api';
+import { request } from '../../utils/api';
 
 function OrderDetails ({value}) {
     
@@ -12,12 +12,19 @@ function OrderDetails ({value}) {
     useEffect(() => { 
         if (value) {
             const ids = value.map(function(item) { return item._id; });
-            getOrderNumber('orders', ids)
+            request('orders', { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json;charset=utf-8' }, 
+                    body: JSON.stringify({ 'ingredients': ids})
+                })
                 .then(data => { 
                     if (data && data.order && data.order.number) {
                         setOrderNumber(data.order.number);
                     }
                 })
+                .catch(e => {
+                    console.error('Error: ' + e.message);
+                });
         }
     },[value]);
     

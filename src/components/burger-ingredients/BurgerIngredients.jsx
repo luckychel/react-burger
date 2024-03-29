@@ -2,7 +2,7 @@ import React, {useState, useRef, useCallback, useContext} from 'react'
 import styles from './BurgerIngredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 
-import { BurgerIngridientsType } from '../../utils/propTypes'
+//import { BurgerIngridientsType } from '../../utils/propTypes'
 import BurgerIngredientItem from '../burger-ingredient-item/BurgerIngredientItem';
 
 import { IngredientsContext } from '../../services/appContext'
@@ -98,6 +98,6 @@ function BurgerIngredients({tabs}) {
     )
 }
 
-BurgerIngredients.propTypes = BurgerIngridientsType;
+//BurgerIngredients.propTypes = BurgerIngridientsType;
 
 export default BurgerIngredients;

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext, useReducer } from 'react'
 import styles from './BurgerConstructor.module.css';
 import { ConstructorElement, DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 
-import { BurgerConstructorType } from '../../utils/propTypes'
+//import { BurgerConstructorType } from '../../utils/propTypes'
 
 import '../../utils/randomizers'
 
@@ -83,7 +83,7 @@ function BurgerConstructor(props) {
                   ingredients.map((item, index) => 
                      item.type !== 'bun' && 
                      (
-                        <div key={item._id}>
+                        <div key={item._id} className={styles.total_sum}>
                            <DragIcon type="primary" />
                            <ConstructorElement
                                  text={item.name}
@@ -138,6 +138,6 @@ function BurgerConstructor(props) {
   )
 }
 
-BurgerConstructor.propTypes = BurgerConstructorType;
+//BurgerConstructor.propTypes = BurgerConstructorType;
 
 export default BurgerConstructor;

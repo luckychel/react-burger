@@ -8,17 +8,20 @@ import ErrorBoundary from '../error-boundary/ErrorBoundary';
 
 import { IngredientsContext } from '../../services/appContext'
 
-import { getData } from '../../utils/api';
+import { request } from '../../utils/api';
 
 function App() {
 
   const [ingredientsData, setIngredientsData] = useState(null);
 
   useEffect(() => {
-    getData('ingredients')
+    request('ingredients', {})
       .then(data => { 
         setIngredientsData(data.data)
       })
+      .catch(e => {
+        console.error('Error: ' + e.message);
+      });
   }, []);
 
   const tabs = [
@@ -29,7 +32,7 @@ function App() {
 
   return (
     <ErrorBoundary>
-      <div className={styles.app}>
+      <main className={styles.app}>
         <AppHeader />
         <IngredientsContext.Provider value={ingredientsData}>
         <div className={styles.main_content}>
@@ -37,7 +40,7 @@ function App() {
             <BurgerConstructor />
         </div>
         </IngredientsContext.Provider>
-      </div>
+      </main>
     </ErrorBoundary>
   );
 }
