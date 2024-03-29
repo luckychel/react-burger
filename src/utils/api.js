@@ -10,6 +10,25 @@ export const getData = (url) => {
         return res.json();
       })
       .catch(e => {
-        console.log('Error: ' + e.message);
+        console.error('Error: ' + e.message);
       });
 }
+
+export const getOrderNumber = (url, ids) => {
+    return fetch(baseUrl + url, 
+            { 
+                method: 'POST', 
+                headers: { 'Content-Type': 'application/json;charset=utf-8' }, 
+                body: JSON.stringify({ 'ingredients': ids})
+            })
+            .then(res => {
+                if (!res.ok) 
+                {
+                  return Promise.reject(`Ошибка ${res.status}`);
+                }
+                return res.json();
+            })
+            .catch(e => {
+                console.error('Error: ' + e.message);
+            });
+  };

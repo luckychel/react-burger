@@ -69,7 +69,7 @@ function BurgerIngredients({tabs}) {
         }
         </div>
 
-        <div className={`${styles.ingredients} mt-10`} ref={scrollRef} onScroll={handleOnScroll}>
+        <div className={`${styles.ingredients} mt-10 mb-5`} ref={scrollRef} onScroll={handleOnScroll}>
         {
           ingredients && (
             tabs.map((tab) => {

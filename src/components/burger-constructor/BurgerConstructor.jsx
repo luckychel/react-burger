@@ -53,10 +53,7 @@ function BurgerConstructor(props) {
          newArr.unshift(bunTemp);
          setOrderItems(newArr);
 
-         //console.log(newArr)
-
          const totalSum = newArr.map(i=>i.price).reduce((a,b)=>a+b);
-         console.log(totalSum)
 
          totalSumDispatcher({type: 'set', totalSum});
       }
@@ -134,7 +131,7 @@ function BurgerConstructor(props) {
       { 
          isOpenOrderDetailsModal && 
             <Modal onClose={() => setOrderDetailsOpenModal(false)}>
-               <OrderDetails />
+               <OrderDetails value={orderItems} />
             </Modal>
       }
       </section>
