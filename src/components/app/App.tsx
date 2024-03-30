@@ -1,22 +1,27 @@
 import React, { useState, useEffect } from 'react';
+import styles from './App.module.css';
+
 import AppHeader from '../app-header/AppHeader'
 import BurgerIngredients from '../burger-ingredients/BurgerIngredients'
 import BurgerConstructor from '../burger-constructor/BurgerConstructor'
-import styles from './App.module.css';
+import ErrorBoundary from '../error-boundary/ErrorBoundary';
 
-//import ingredientsData from '../../utils/data';
+import { IngredientsContext } from '../../services/appContext'
 
-import { getData } from '../../utils/api';
+import { request } from '../../utils/api';
 
 function App() {
 
-  const [ingredientsData, setIngredientsData] = useState();
+  const [ingredientsData, setIngredientsData] = useState(null);
 
   useEffect(() => {
-    getData('ingredients')
+    request('ingredients', {})
       .then(data => { 
         setIngredientsData(data.data)
       })
+      .catch(e => {
+        console.error('Error: ' + e.message);
+      });
   }, []);
 
   const tabs = [
@@ -26,15 +31,17 @@ function App() {
   ]
 
   return (
-   
-    <div className={styles.app}>
-      <AppHeader />
-      <div className={styles.main_content}>
-        <BurgerIngredients tabs={tabs} ingredients={ingredientsData} />
-        <BurgerConstructor ingredients={ingredientsData} />
-      </div>
-  
-    </div>
+    <ErrorBoundary>
+        <AppHeader />
+        <main className={styles.app}>
+          <IngredientsContext.Provider value={ingredientsData}>
+            <div className={styles.main_content}>
+                <BurgerIngredients tabs={tabs} />
+                <BurgerConstructor />
+            </div>
+          </IngredientsContext.Provider>
+        </main>
+    </ErrorBoundary>
   );
 }
 

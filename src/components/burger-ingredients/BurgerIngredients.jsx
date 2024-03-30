@@ -1,30 +1,56 @@
-import React, {useState, useRef, useEffect, useCallback} from 'react'
+import React, {useState, useRef, useCallback, useContext} from 'react'
 import styles from './BurgerIngredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 
-import { BurgerIngridientsType } from '../../utils/propTypes'
-
+//import { BurgerIngridientsType } from '../../utils/propTypes'
 import BurgerIngredientItem from '../burger-ingredient-item/BurgerIngredientItem';
 
-function BurgerIngredients({tabs, ingredients}) {
+import { IngredientsContext } from '../../services/appContext'
+
+function BurgerIngredients({tabs}) {
+
+    const ingredients = useContext(IngredientsContext);
 
     const [current, setCurrent] = useState(tabs[0].type);
 
+    const scrollRef = useRef(null);
     const bunRef = useRef(null);
     const sauceRef = useRef(null);
     const mainRef = useRef(null);
 
-    const tabClickHandler = (clickedTab) => {
+    const tabClickHandler = useCallback((clickedTab) => {
 
       switch (clickedTab) {
-        case 'bun': bunRef.current.scrollIntoView({ behavior: "smooth" }); break;
-        case 'sauce': sauceRef.current.scrollIntoView({ behavior: "smooth" }); break;
-        case 'main': mainRef.current.scrollIntoView({ behavior: "smooth" }); break;
+        case tabs[0].type: bunRef.current.scrollIntoView({ behavior: "smooth" }); break;
+        case tabs[1].type: sauceRef.current.scrollIntoView({ behavior: "smooth" }); break;
+        case tabs[2].type: mainRef.current.scrollIntoView({ behavior: "smooth" }); break;
         default: bunRef.current.scrollIntoView({ behavior: "smooth" });
       }
 
       setCurrent(clickedTab);
 
+    }, [tabs]);
+
+    const handleOnScroll = () => {
+          
+      if (scrollRef.current && bunRef.current && sauceRef.current && mainRef.current) {
+        const scrollPosition = scrollRef.current.getBoundingClientRect().top;
+        const bunPosition = bunRef.current.getBoundingClientRect().top;
+        const saucePosition = sauceRef.current.getBoundingClientRect().top;
+        const mainPosition = mainRef.current.getBoundingClientRect().top;
+
+        const bunDiff = Math.abs(scrollPosition - bunPosition);
+        const sauceDiff = Math.abs(scrollPosition - saucePosition);
+        const maindDiff = Math.abs(scrollPosition - mainPosition);
+    
+        if (bunDiff < sauceDiff) {
+          setCurrent(tabs[0].type);
+        } else if (sauceDiff < maindDiff) {
+          setCurrent(tabs[1].type);
+        } else {
+          setCurrent(tabs[2].type);
+        }
+      }
     };
 
     return (
@@ -43,12 +69,12 @@ function BurgerIngredients({tabs, ingredients}) {
         }
         </div>
 
-        <div className={`${styles.ingredients} mt-10`}>
+        <div className={`${styles.ingredients} mt-10 mb-5`} ref={scrollRef} onScroll={handleOnScroll}>
         {
           ingredients && (
             tabs.map((tab) => {
 
-              const refer = tab.type === 'bun' ? bunRef : tab.type === 'sauce' ? sauceRef:  mainRef;
+              const refer = tab.type === tabs[0].type ? bunRef : tab.type === tabs[1].type ? sauceRef:  mainRef;
 
               return (
                 <div key={tab.type}>
@@ -72,9 +98,6 @@ function BurgerIngredients({tabs, ingredients}) {
     )
 }
 
-BurgerIngredients.propTypes = BurgerIngridientsType;
-
-
-
+//BurgerIngredients.propTypes = BurgerIngridientsType;
 
 export default BurgerIngredients;
