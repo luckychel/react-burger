@@ -32,15 +32,15 @@ function App() {
 
   return (
     <ErrorBoundary>
-      <main className={styles.app}>
         <AppHeader />
-        <IngredientsContext.Provider value={ingredientsData}>
-        <div className={styles.main_content}>
-            <BurgerIngredients tabs={tabs} />
-            <BurgerConstructor />
-        </div>
-        </IngredientsContext.Provider>
-      </main>
+        <main className={styles.app}>
+          <IngredientsContext.Provider value={ingredientsData}>
+            <div className={styles.main_content}>
+                <BurgerIngredients tabs={tabs} />
+                <BurgerConstructor />
+            </div>
+          </IngredientsContext.Provider>
+        </main>
     </ErrorBoundary>
   );
 }
