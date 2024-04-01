@@ -7,17 +7,36 @@ import { Ingredient } from '../../utils/propTypes'
 import Modal from '../modal/Modal'
 import IngredientDetails from '../ingredient-details/IngredientDetails'
 
+import { useSelector, useDispatch } from 'react-redux';
+import { OPEN_INGREDIENT, CLOSE_INGREDIENT } from '../../services/actions';
+
+  
 function BurgerIngredientItem(props) {
 
     const [isOpenModal, setOpenModal] = useState(false);
+    
+    const dispatch = useDispatch();
 
-    const handleIngredientClick = () => {
-        setOpenModal(!isOpenModal);
+    const handleIngredientClick = (param) => {
+        if (param) {
+            dispatch({
+                type: OPEN_INGREDIENT,
+                currentIngredient: {...props}
+            })
+        }
+        else {
+            dispatch({
+                type: CLOSE_INGREDIENT
+            })
+        }
+        setOpenModal(param);
     }
-
+    
+    const currentIngredient = useSelector(store => store.burger.currentIngredient);    
+    
     return (
        <>
-        <div className={styles.ingredient_item_main_content} onClick={handleIngredientClick}>
+        <div className={styles.ingredient_item_main_content} onClick={() => handleIngredientClick(true)}>
             {
                 1!=1 && (<Counter count={1} size="default" extraClass="m-1" />)
             }
@@ -34,8 +53,8 @@ function BurgerIngredientItem(props) {
         </div>
         { 
             isOpenModal && 
-                <Modal onClose={() => setOpenModal(false)} header='Детали ингредиента'>
-                    <IngredientDetails {...props}></IngredientDetails>
+                <Modal onClose={() => handleIngredientClick(false)} header='Детали ингредиента'>
+                    <IngredientDetails {...currentIngredient}></IngredientDetails>
                 </Modal>
                 
         }

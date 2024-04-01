@@ -1,15 +1,21 @@
-import React, {useState, useRef, useCallback, useContext} from 'react'
+import React, {useState, useRef, useCallback, useMemo} from 'react'
 import styles from './BurgerIngredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
-
-//import { BurgerIngridientsType } from '../../utils/propTypes'
 import BurgerIngredientItem from '../burger-ingredient-item/BurgerIngredientItem';
 
-import { IngredientsContext } from '../../services/appContext'
+import { useSelector } from 'react-redux';
 
-function BurgerIngredients({tabs}) {
+function BurgerIngredients() {
 
-    const ingredients = useContext(IngredientsContext);
+    const tabs = useMemo(() => {
+      return [
+        { name: "Булки", type: 'bun' },
+        { name: "Соусы", type: 'sauce' },
+        { name: "Начинки", type: 'main' }
+      ]
+    }, []);
+
+    const ingredients = useSelector(store => store.burger.ingredients);
 
     const [current, setCurrent] = useState(tabs[0].type);
 
@@ -19,16 +25,15 @@ function BurgerIngredients({tabs}) {
     const mainRef = useRef(null);
 
     const tabClickHandler = useCallback((clickedTab) => {
-
-      switch (clickedTab) {
-        case tabs[0].type: bunRef.current.scrollIntoView({ behavior: "smooth" }); break;
-        case tabs[1].type: sauceRef.current.scrollIntoView({ behavior: "smooth" }); break;
-        case tabs[2].type: mainRef.current.scrollIntoView({ behavior: "smooth" }); break;
-        default: bunRef.current.scrollIntoView({ behavior: "smooth" });
+      if (bunRef.current && sauceRef.current && mainRef.current) {
+        switch (clickedTab) {
+          case tabs[0].type: bunRef.current.scrollIntoView({ behavior: "smooth" }); break;
+          case tabs[1].type: sauceRef.current.scrollIntoView({ behavior: "smooth" }); break;
+          case tabs[2].type: mainRef.current.scrollIntoView({ behavior: "smooth" }); break;
+          default: bunRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+        setCurrent(clickedTab);
       }
-
-      setCurrent(clickedTab);
-
     }, [tabs]);
 
     const handleOnScroll = () => {
@@ -97,7 +102,5 @@ function BurgerIngredients({tabs}) {
     </section>
     )
 }
-
-//BurgerIngredients.propTypes = BurgerIngridientsType;
 
 export default BurgerIngredients;
