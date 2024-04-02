@@ -12,7 +12,7 @@ import { TotalSumContext  } from '../../services/appContext'
 
 
 import { useSelector, useDispatch } from 'react-redux'
-import { ADD_INGREDIENT_TO_BURGER, REMOVE_INGREDIENT_FROM_BURGER } from '../../services/actions';
+import { ADD_INGREDIENT_TO_BURGER, REMOVE_INGREDIENT_FROM_BURGER, CLEAR_BURGER } from '../../services/actions';
 import { useDrop } from 'react-dnd'
 
 
@@ -34,38 +34,51 @@ function BurgerConstructor(props) {
 
    //Данные ингредиентов
    const ingredientsList = useSelector(store => store.burger.burgerIngredients);
-   
-   //Модальное окно заказа
-   const [isOpenOrderDetailsModal, setOrderDetailsOpenModal] = useState(false);
-   const handleOrderDetailsClick = () => {
-      setOrderDetailsOpenModal(!isOpenOrderDetailsModal);
-   }
 
    //Данные для заказа в конструкторе
    const [ingredients, setIngredients] = useState(null);
+   
+   const [isCreateOrderBtnDisabled, setCreateOrderBtnDisabled] = useState(true);
    const [orderItems, setOrderItems] = useState(null);
    const [totalSum, totalSumDispatcher] = useReducer(reducer, totalSumInitial);
 
    useEffect(() => {
-      if (ingredientsList && ingredientsList.length > 0) {
-
+      if (ingredientsList) {
          const ingredientsTemp = ingredientsList?.filter(x => x.type !== 'bun');
          setIngredients(ingredientsTemp);
 
-         const totalSum = ingredientsList.map(i=>i.price).reduce((a,b)=>a+b);
+         if (ingredientsList.length > 0) {
+            const totalSum = ingredientsList?.map(i=>i.price)?.reduce((a,b)=>a+b);
+            totalSumDispatcher({type: 'set', totalSum});
+         }
+         else {
+            totalSumDispatcher({type: 'set', totalSum: 0});
+         }
 
-         totalSumDispatcher({type: 'set', totalSum});
+         if (ingredientsList?.find(x => x.type !== 'bun') && ingredientsList?.find(x => x.type === 'bun'))
+            setCreateOrderBtnDisabled(false)
+         else
+            setCreateOrderBtnDisabled(true)
+      
       }
    },[ ingredientsList, setOrderItems ]);
+  
+   const dispatch = useDispatch();
 
+   //Модальное окно заказа
+   const [isOpenOrderDetailsModal, setOrderDetailsOpenModal] = useState(false);
+   const handleOrderDetailsClick = () => {
+      setOrderDetailsOpenModal(!isOpenOrderDetailsModal);
+      dispatch({
+         type: CLEAR_BURGER
+      });
+   }
 
   const [isHoverBun, setHover] = useState(false);
   
   const setBuhHover = (val) => {
       setHover(val)
   }
-
-  const dispatch = useDispatch();
 
   const [{ isItemHover }, refItemDrop] = useDrop({
       accept: "item",
@@ -124,7 +137,7 @@ function BurgerConstructor(props) {
                {totalSum} 
                <CurrencyIcon type="primary" />
             </span>
-            <Button type="primary" size="large" htmlType='button' onClick={handleOrderDetailsClick}>
+            <Button type="primary" size="large" htmlType='button' onClick={handleOrderDetailsClick} disabled={isCreateOrderBtnDisabled}>
                Оформить заказ
             </Button>
          </div>

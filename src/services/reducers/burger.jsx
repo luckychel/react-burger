@@ -1,4 +1,4 @@
-import { ADD_INGREDIENT_TO_BURGER, REMOVE_INGREDIENT_FROM_BURGER, INGREDIENTS_REPLACE } from '../actions';
+import { ADD_INGREDIENT_TO_BURGER, REMOVE_INGREDIENT_FROM_BURGER, INGREDIENTS_REPLACE, CLEAR_BURGER } from '../actions';
 import { nanoid } from '@reduxjs/toolkit'
   
   const initialState = {
@@ -36,7 +36,13 @@ export const burgerReducer = (state = initialState, action) => {
           burgerIngredients: replacedIngredients
       }
     }
-
+    case CLEAR_BURGER: {
+        return {
+            ...state,
+            burgerIngredients: [],
+            orderNumber: 0
+        }
+      }
     default: {
       return state;
     }
