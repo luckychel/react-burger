@@ -17,7 +17,7 @@ export const burgerReducer = (state = initialState, action) => {
       }
     }
     case REMOVE_INGREDIENT_FROM_BURGER: {      
-      let findDeleteItemIndex = state.burgerIngredients.map(item => item._id).indexOf(action.id);
+      let findDeleteItemIndex = state.burgerIngredients.map(item => action.ingredientType === "bun" ? item._id : item.uniqkey).indexOf(action.id);
         
       return {
         ...state,

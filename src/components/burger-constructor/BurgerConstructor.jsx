@@ -98,7 +98,11 @@ function BurgerConstructor(props) {
                                  text={item.name}
                                  price={item.price}
                                  thumbnail={item.image}
-                                 isLocked={false} />
+                                 isLocked={false} 
+                                 handleClose={() => dispatch({
+                                                      type: REMOVE_INGREDIENT_FROM_BURGER,
+                                                      id: item.uniqkey
+                                                   })}/>
                         </div>
                      )
                   ) : (

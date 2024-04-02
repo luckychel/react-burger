@@ -23,7 +23,8 @@ function BurgerBun(props) {
               let id = bunItems[0]._id;  
               dispatch({
                 type: REMOVE_INGREDIENT_FROM_BURGER,
-                id: id
+                id: id,
+                ingredientType: 'bun'
               });
             }
             dispatch({
