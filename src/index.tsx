@@ -7,7 +7,7 @@ import reportWebVitals from './reportWebVitals';
 import { compose, createStore, applyMiddleware } from 'redux';
 import { thunk }  from 'redux-thunk';
 import { Provider } from 'react-redux';
-import { rootReducer } from './services/reducers';
+import { rootReducer } from './services/store';
 
 declare global {
   interface Window {

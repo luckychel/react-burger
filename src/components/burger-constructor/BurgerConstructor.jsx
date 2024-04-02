@@ -1,14 +1,20 @@
-import React, { useState, useEffect, useContext, useReducer } from 'react'
+import React, { useState, useEffect, useReducer } from 'react'
 import styles from './BurgerConstructor.module.css';
 import { ConstructorElement, DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components'
-
-//import { BurgerConstructorType } from '../../utils/propTypes'
 
 import '../../utils/randomizers'
 
 import Modal from '../modal/Modal'
 import OrderDetails from '../order-details/OrderDetails';
-import { IngredientsContext, TotalSumContext  } from '../../services/appContext'
+import BurgerBun from '../burger-bun-item/BurgerBun'
+
+import { TotalSumContext  } from '../../services/appContext'
+
+
+import { useSelector, useDispatch } from 'react-redux'
+import { ADD_INGREDIENT_TO_BURGER, REMOVE_INGREDIENT_FROM_BURGER } from '../../services/actions';
+import { useDrop } from 'react-dnd'
+
 
 const totalSumInitial = 0; 
 
@@ -23,11 +29,12 @@ function reducer(state, action) {
   }
 }
 
+
 function BurgerConstructor(props) {
 
    //Данные ингредиентов
-   const ingredientsList = useContext(IngredientsContext);
-
+   const ingredientsList = useSelector(store => store.burger.burgerIngredients);
+   
    //Модальное окно заказа
    const [isOpenOrderDetailsModal, setOrderDetailsOpenModal] = useState(false);
    const handleOrderDetailsClick = () => {
@@ -35,55 +42,57 @@ function BurgerConstructor(props) {
    }
 
    //Данные для заказа в конструкторе
-   const [bun, setBun] = useState(null);
    const [ingredients, setIngredients] = useState(null);
    const [orderItems, setOrderItems] = useState(null);
    const [totalSum, totalSumDispatcher] = useReducer(reducer, totalSumInitial);
 
    useEffect(() => {
-      if (ingredientsList) {
+      if (ingredientsList && ingredientsList.length > 0) {
 
-         const bunTemp = ingredientsList?.filter(x => x.type === 'bun').random();
-         setBun(bunTemp)
-         const ingredientsTemp = ingredientsList?.filter(x => x.type !== 'bun').shuffle();
+         const ingredientsTemp = ingredientsList?.filter(x => x.type !== 'bun');
          setIngredients(ingredientsTemp);
 
-         var newArr = ingredientsTemp.slice();
-         newArr.push(bunTemp);
-         newArr.unshift(bunTemp);
-         setOrderItems(newArr);
-
-         const totalSum = newArr.map(i=>i.price).reduce((a,b)=>a+b);
+         const totalSum = ingredientsList.map(i=>i.price).reduce((a,b)=>a+b);
 
          totalSumDispatcher({type: 'set', totalSum});
       }
-   },[ ingredientsList, setBun, setIngredients, setOrderItems ]);
+   },[ ingredientsList, setOrderItems ]);
+
+
+  const [isHoverBun, setHover] = useState(false);
+  
+  const setBuhHover = (val) => {
+      setHover(val)
+  }
+
+  const dispatch = useDispatch();
+
+  const [{ isItemHover }, refItemDrop] = useDrop({
+      accept: "item",
+      collect: monitor => ({
+         isItemHover: monitor.isOver(),
+      }),
+      drop(item) {
+         dispatch({
+            type: ADD_INGREDIENT_TO_BURGER,
+            draggedIngredient: item
+          });
+      },
+   });
 
    return (
       <section className={`${styles.constructor_main_content} ml-10`}>
-         <div className={`${styles.container} `}>
-            <div className="pl-10 mt-25">
-            {
-               bun != null ?
-               (
-                  <ConstructorElement type='top' text={bun.name + ' (верх)'} price={bun.price} thumbnail={bun.image} isLocked={true}/>
-               ) : (
-                  <div className={`constructor-element constructor-element_pos_top ${styles.custom_aligment}`}>
-                     <span className={`constructor-element__row`}>
-                        <span className={`constructor-element__text`}>Выберите булки</span>
-                     </span>
-                  </div>
-               )
-            }
-            </div>
+         <div className={`${styles.container} pt-25`}>
+            
+            <BurgerBun pos="top" setHover={setBuhHover} isHoverBunParent={isHoverBun} />
 
-            <div className={`${styles.components} pl-5 pr-2 pt-2 pb-2`}>
+            <div className={`${styles.components} pl-5 pr-2 pt-2 pb-2`} ref={refItemDrop}>
             {
                ingredients && ingredients.length > 0 ?
                   ingredients.map((item, index) => 
                      item.type !== 'bun' && 
                      (
-                        <div key={item._id} className={styles.total_sum}>
+                        <div key={item.uniqkey} className={styles.total_sum}>
                            <DragIcon type="primary" />
                            <ConstructorElement
                                  text={item.name}
@@ -93,7 +102,7 @@ function BurgerConstructor(props) {
                         </div>
                      )
                   ) : (
-                     <div className={`constructor-element ${styles.custom_aligment} ${styles.custom_margin_left}`}>
+                     <div className={`constructor-element ${styles.custom_aligment} ${styles.custom_margin_left} ${isItemHover ? styles.isHover : ''}`}>
                         <span className={`constructor-element__row`}>
                            <span className={`constructor-element__text`}>Выберите начинку</span>
                         </span>
@@ -102,20 +111,8 @@ function BurgerConstructor(props) {
             }
             </div>
 
-            <div className="pl-10">
-            {
-               bun != null ?
-               (
-                  <ConstructorElement type='bottom' text={bun.name + ' (низ)'} price={bun.price} thumbnail={bun.image} isLocked={true} />
-               ) : (
-                  <div className={`constructor-element constructor-element_pos_bottom ${styles.custom_aligment}`}>
-                     <span className={`constructor-element__row`}>
-                        <span className={`constructor-element__text`}>Выберите булки</span>
-                     </span>
-                  </div>
-               )
-            }
-         </div>
+            <BurgerBun pos="bottom" setHover={setBuhHover} isHoverBunParent={isHoverBun} />
+            
       </div>
       <TotalSumContext.Provider value={totalSum}>
          <div className={`${styles.total} mt-10`}>
@@ -137,7 +134,5 @@ function BurgerConstructor(props) {
       </section>
   )
 }
-
-//BurgerConstructor.propTypes = BurgerConstructorType;
 
 export default BurgerConstructor;

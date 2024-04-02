@@ -8,6 +8,8 @@ import ErrorBoundary from '../error-boundary/ErrorBoundary';
 
 import { getIngredients } from '../../services/actions';
 import { useDispatch } from 'react-redux';
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 function App() {
 
@@ -22,12 +24,14 @@ function App() {
         <header className={styles.header}>
           <AppHeader />
         </header>
-        <main className={styles.app}>
-            <div className={styles.main_content}>
-                <BurgerIngredients />
-                <BurgerConstructor />
-            </div>
-        </main>
+        <DndProvider backend={HTML5Backend}>
+          <main className={styles.app}>
+              <div className={styles.main_content}>
+                  <BurgerIngredients />
+                  <BurgerConstructor />
+              </div>
+          </main>
+        </DndProvider>
     </ErrorBoundary>
   );
 }

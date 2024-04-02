@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './BurgerIngredientItem.module.css';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components'
 
@@ -8,9 +8,12 @@ import Modal from '../modal/Modal'
 import IngredientDetails from '../ingredient-details/IngredientDetails'
 
 import { useSelector, useDispatch } from 'react-redux';
+
+import { createSelector } from '@reduxjs/toolkit'
 import { OPEN_INGREDIENT, CLOSE_INGREDIENT } from '../../services/actions';
 
-  
+import { useDrag } from 'react-dnd'
+
 function BurgerIngredientItem(props) {
 
     const [isOpenModal, setOpenModal] = useState(false);
@@ -32,13 +35,23 @@ function BurgerIngredientItem(props) {
         setOpenModal(param);
     }
     
-    const currentIngredient = useSelector(store => store.burger.currentIngredient);    
+    const currentIngredient = useSelector(store => store.ingredients.currentIngredient);    
+
+    const count = useSelector(store => store.burger.burgerIngredients).filter(item => item._id === props._id);
+
+    const [, drag] = useDrag({
+        type: props.type === "bun" ? "bun" : "item",
+        item: props,
+        collect: monitor => ({
+            isDrag: monitor.isDragging()
+        })
+    });
     
     return (
        <>
-        <div className={styles.ingredient_item_main_content} onClick={() => handleIngredientClick(true)}>
+        <div className={styles.ingredient_item_main_content} onClick={() => handleIngredientClick(true)}  ref={drag}>
             {
-                1!=1 && (<Counter count={1} size="default" extraClass="m-1" />)
+                count.length > 0 && (<Counter count={count.length} size="default" extraClass="m-1" />)
             }
             <img src={props.image} alt={props.name} title={props.name}></img>
 

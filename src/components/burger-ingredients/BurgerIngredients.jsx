@@ -15,7 +15,7 @@ function BurgerIngredients() {
       ]
     }, []);
 
-    const ingredients = useSelector(store => store.burger.ingredients);
+    const ingredients = useSelector(store => store.ingredients.listIngredients);
 
     const [current, setCurrent] = useState(tabs[0].type);
 
