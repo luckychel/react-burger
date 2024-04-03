@@ -70,13 +70,3 @@
 }
 
 
-.move {
-    cursor: move;
-}
-.isHoverIngredient{
-    border: 2px dashed rgb(255, 255, 255);
-}
-
-.layout{
-    composes: total_sum;
-}

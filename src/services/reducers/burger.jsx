@@ -1,44 +1,65 @@
 import { ADD_INGREDIENT_TO_BURGER, REMOVE_INGREDIENT_FROM_BURGER, INGREDIENTS_REPLACE, CLEAR_BURGER } from '../actions';
 import { nanoid } from '@reduxjs/toolkit'
-  
+import update from 'immutability-helper';
+
   const initialState = {
     itemsRequest: false,
     itemsFailed: false,
-    burgerIngredients: [],
+    bun: null,  //для булки
+    burgerIngredients: [], // для остального
     orderNumber: 0
   };
 
 export const burgerReducer = (state = initialState, action) => {
   switch(action.type) {
     case ADD_INGREDIENT_TO_BURGER: {
-      return {
-        ...state,
-        burgerIngredients: [...state.burgerIngredients,  { ...action.draggedIngredient, uniqkey: nanoid() }]
-      }
+        
+        if (action.ingredientType === 'bun') {
+
+            return {
+                ...state,
+                bun: {
+                    ...action.item, 
+                    uniqkey: nanoid()
+                }
+            }
+        }
+        else {
+            return {
+                ...state,
+                burgerIngredients: 
+                [   
+                    ...state.burgerIngredients,  
+                    {
+                        ...action.item, 
+                        uniqkey: nanoid()
+                    }
+                ]
+            }
+        }
     }
-    case REMOVE_INGREDIENT_FROM_BURGER: {      
-      let findDeleteItemIndex = state.burgerIngredients.map(item => action.ingredientType === "bun" ? item._id : item.uniqkey).indexOf(action.id);
+    case REMOVE_INGREDIENT_FROM_BURGER: {    
         
       return {
         ...state,
-        burgerIngredients: state.burgerIngredients.filter((item,index) => index !== findDeleteItemIndex )
+        burgerIngredients:  state.burgerIngredients.filter((x) => x.uniqkey !== action.item.uniqkey)
       }
     }
     case INGREDIENTS_REPLACE: {
-      
-      const replacedIngredients = [...state.burgerIngredients];
-      const draggedIngredient = replacedIngredients[action.payload.dragIndex];
-      replacedIngredients.splice(action.payload.dragIndex, 1);
-      replacedIngredients.splice(action.payload.hoverIndex, 0, draggedIngredient);
-    
-      return {
-          ...state,
-          burgerIngredients: replacedIngredients
-      }
+        return {
+            ...state,
+            burgerIngredients: [...update(state.burgerIngredients, {
+              $splice: [
+                [action.payload.dragIndex, 1],
+                [action.payload.hoverIndex, 0, state.burgerIngredients[action.payload.dragIndex]]
+              ]
+            })]
+        }
     }
     case CLEAR_BURGER: {
         return {
             ...state,
+            bun: null,
             burgerIngredients: [],
             orderNumber: 0
         }

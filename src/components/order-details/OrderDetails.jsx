@@ -5,13 +5,12 @@ import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-component
 import { IngredientsType } from '../../utils/propTypes'
 import { request } from '../../utils/api';
 
-function OrderDetails ({value}) {
+function OrderDetails ({ids}) {
     
     const [orderNumber, setOrderNumber] = useState(null);
 
     useEffect(() => { 
-        if (value) {
-            const ids = value.map(function(item) { return item._id; });
+        if (ids) {
             request('orders', { 
                     method: 'POST', 
                     headers: { 'Content-Type': 'application/json;charset=utf-8' }, 
@@ -26,7 +25,7 @@ function OrderDetails ({value}) {
                     console.error('Error: ' + e.message);
                 });
         }
-    },[value]);
+    },[ids]);
     
     return (
         <div className={styles.order_details_main_content}>

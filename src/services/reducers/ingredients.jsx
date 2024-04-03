@@ -5,7 +5,8 @@ import { INGREDIENTS_REQUEST, INGREDIENTS_SUCCESS, INGREDIENTS_FAILED, OPEN_INGR
     itemsFailed: false,
     listIngredients: [],
     currentIngredient: {},
-    isDragging: false
+    isDraggingBun: false,
+    isDraggingIng: false
   };
  
   export const ingredientsReducer = (state = initialState, action) => {

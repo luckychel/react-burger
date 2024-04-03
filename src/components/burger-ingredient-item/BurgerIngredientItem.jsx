@@ -8,9 +8,7 @@ import Modal from '../modal/Modal'
 import IngredientDetails from '../ingredient-details/IngredientDetails'
 
 import { useSelector, useDispatch } from 'react-redux';
-
 import { OPEN_INGREDIENT, CLOSE_INGREDIENT, IS_DRAGGING } from '../../services/actions';
-
 import { useDrag  } from 'react-dnd'
 
 function BurgerIngredientItem(props) {
@@ -21,7 +19,14 @@ function BurgerIngredientItem(props) {
 
     const currentIngredient = useSelector(store => store.ingredients.currentIngredient);    
 
-    const count = useSelector(store => store.burger.burgerIngredients).filter(item => item._id === props._id);
+    let countBun = useSelector(store => store.burger.bun);
+    let countIng = useSelector(store => store.burger.burgerIngredients).filter(item => item._id === props._id);
+    let count = 0;
+
+    if (props.type === 'bun')
+        count = countBun && countBun._id == props._id ? 2 : 0;
+    else
+        count = countIng.length;
 
     const dispatch = useDispatch();
 
@@ -67,7 +72,7 @@ function BurgerIngredientItem(props) {
        <>
         <div className={styles.ingredient_item_main_content} onClick={() => handleIngredientClick(true)} ref={drag}>
             {
-                count.length > 0 && (<Counter count={count.length} size="default" extraClass="m-1" />)
+                count > 0 && (<Counter count={count} size="default" extraClass="m-1" />)
             }
             <img src={props.image} alt={props.name} title={props.name}></img>
 

@@ -3,13 +3,12 @@ import styles from './BurgerBun.module.css';
 import { ConstructorElement} from '@ya.praktikum/react-developer-burger-ui-components'
 
 import { useSelector, useDispatch } from 'react-redux'
-import { ADD_INGREDIENT_TO_BURGER, REMOVE_INGREDIENT_FROM_BURGER } from '../../services/actions';
+import { addItem } from '../../services/actions';
 import { useDrop } from 'react-dnd'
 
-function BurgerBun({pos}) {
+function BurgerBun({pos, bun}) {
 
-    const bunItems = useSelector(store => store.burger.burgerIngredients).filter(item => item.type === 'bun');
-    const isDraggingBun = useSelector(store => store.ingredients.isDraggingBun);
+     const isDraggingBun = useSelector(store => store.ingredients.isDraggingBun);
 
     const dispatch = useDispatch();
 
@@ -19,31 +18,18 @@ function BurgerBun({pos}) {
           isBunHover: monitor.isOver(),
        }),
        drop(item) {
-          for(let i = 0; i < 2; i++) {
-            if(bunItems.length > 0) {
-              let id = bunItems[0]._id;  
-              dispatch({
-                type: REMOVE_INGREDIENT_FROM_BURGER,
-                id: id,
-                ingredientType: 'bun'
-              });
-            }
-            dispatch({
-              type: ADD_INGREDIENT_TO_BURGER,
-              draggedIngredient: item
-            });
-          }
+          dispatch(addItem(item, 'bun'));
        },
     });
 
     return (
         <div className={`pl-10`} ref={refBunDrop} >
         {
-            bunItems && bunItems[0] ?
+            bun ?
             (
-                <ConstructorElement type={pos} text={`${bunItems[0].name} ${pos === 'top' ? ' (верх)' : ' (низ)'}`} 
-                    price={bunItems[0].price} 
-                    thumbnail={bunItems[0].image} 
+                <ConstructorElement type={pos} text={`${bun.name} ${pos === 'top' ? ' (верх)' : ' (низ)'}`} 
+                    price={bun.price} 
+                    thumbnail={bun.image} 
                     isLocked={true} 
                     extraClass={isBunHover || isDraggingBun ? styles.isHover : ''} />
             ) : (

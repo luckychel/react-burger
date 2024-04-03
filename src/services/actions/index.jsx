@@ -45,7 +45,28 @@ export const getIngredients = () => {
   }
 }
 
-//сортировка
+//добавление ингредиента
+export const addItem = (item, ingredientType) => {
+  return function(dispatch) {
+    dispatch({
+        type: ADD_INGREDIENT_TO_BURGER,
+        item,
+        ingredientType
+      })
+  }
+}
+
+//удаление ингредиента
+export const deleteItem = (item) => {
+  return function(dispatch) {
+    dispatch({
+        type: REMOVE_INGREDIENT_FROM_BURGER,
+        item
+      })
+  }
+}
+
+//сортировка dnd
 export const replaceItems = (dragIndex, hoverIndex) => {
   return function(dispatch) {
     dispatch({
@@ -55,5 +76,14 @@ export const replaceItems = (dragIndex, hoverIndex) => {
         hoverIndex: hoverIndex
       }
     })
+  }
+}
+
+//очистка бургера
+export const clearBurger = () => {
+  return function(dispatch) {
+    dispatch({
+        type: CLEAR_BURGER,
+      })
   }
 }
