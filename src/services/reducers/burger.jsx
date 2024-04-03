@@ -1,4 +1,5 @@
-import { ADD_INGREDIENT_TO_BURGER, REMOVE_INGREDIENT_FROM_BURGER, INGREDIENTS_REPLACE, CLEAR_BURGER } from '../actions';
+import { ADD_INGREDIENT_TO_BURGER, REMOVE_INGREDIENT_FROM_BURGER, INGREDIENTS_REPLACE, CLEAR_BURGER,
+        ORDER_NUMBER_REQUEST, ORDER_NUMBER_SUCCESS, ORDER_NUMBER_FAILED } from '../actions';
 import { nanoid } from '@reduxjs/toolkit'
 import update from 'immutability-helper';
 
@@ -60,11 +61,33 @@ export const burgerReducer = (state = initialState, action) => {
         return {
             ...state,
             bun: null,
-            burgerIngredients: [],
-            orderNumber: 0
+            burgerIngredients: []
         }
       }
-    
+      
+      case ORDER_NUMBER_REQUEST: {
+        return {
+          ...state,
+          itemsRequest: true,
+          itemsFailed: false
+        }
+      }
+      case ORDER_NUMBER_SUCCESS: {
+        return {
+          ...state,
+          itemsRequest: false,
+          itemsFailed: false,
+          orderNumber: action.orderNumber
+        }
+      }
+      case ORDER_NUMBER_FAILED: {
+        return {
+          ...state,
+          itemsRequest: false,
+          itemsFailed: true,
+          orderNumber: 0
+        }
+      }
     default: {
       return state;
     }

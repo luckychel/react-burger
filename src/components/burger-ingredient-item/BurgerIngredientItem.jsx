@@ -24,7 +24,7 @@ function BurgerIngredientItem(props) {
     let count = 0;
 
     if (props.type === 'bun')
-        count = countBun && countBun._id == props._id ? 2 : 0;
+        count = countBun && countBun._id === props._id ? 2 : 0;
     else
         count = countIng.length;
 

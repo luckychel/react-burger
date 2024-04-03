@@ -13,6 +13,10 @@ export const REMOVE_INGREDIENT_FROM_BURGER = 'REMOVE_INGREDIENT_FROM_BURGER';
 export const CLEAR_BURGER = 'CLEAR_BURGER';
 export const INGREDIENTS_REPLACE = 'INGREDIENTS_REPLACE';
 
+/* Заказ */
+export const ORDER_NUMBER_REQUEST = 'ORDER_NUMBER_REQUEST';
+export const ORDER_NUMBER_SUCCESS = 'ORDER_NUMBER_SUCCESS';
+export const ORDER_NUMBER_FAILED = 'ORDER_NUMBER_FAILED';
 
 /* Actions */
 const baseUrl = 'https://norma.nomoreparties.space/api/';
@@ -85,5 +89,42 @@ export const clearBurger = () => {
     dispatch({
         type: CLEAR_BURGER,
       })
+  }
+}
+
+//создание заказа
+export function getOrderNumber(ids) {
+
+  return function(dispatch) {
+    dispatch({
+      type: ORDER_NUMBER_REQUEST,
+    });
+    fetch(baseUrl + 'orders', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({"ingredients": ids}),
+    })
+    .then(res => {
+      if (!res.ok) {
+        return Promise.reject(`Ошибка ${res.status}`);
+      }
+      return res.json();
+    })
+    .then(data => {
+      if (data && data.order && data.order.number) {
+        dispatch({
+          type: ORDER_NUMBER_SUCCESS,
+          orderNumber: data.order.number
+        })
+      }
+    })
+    .catch((error) => {
+      dispatch({
+        type: ORDER_NUMBER_FAILED
+      })
+      console.error('Error:', error);
+    });
   }
 }
