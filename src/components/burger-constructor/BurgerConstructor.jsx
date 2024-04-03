@@ -73,7 +73,7 @@ function BurgerConstructor(props) {
          type: CLEAR_BURGER
       });
    }
- 
+   
   const [{ isItemHover }, refItemDrop] = useDrop({
       accept: "item",
       collect: monitor => ({
@@ -97,10 +97,11 @@ function BurgerConstructor(props) {
             {
                ingredients && ingredients.length > 0 ?
                   ingredients.map((item, index) => 
-                     item.type !== 'bun' && 
                      (
-                        <div key={item.uniqkey} className={`${styles.total_sum}`}>
-                           <DragIcon type="primary" />
+                        <div key={item.uniqkey} className={`${styles.ingredient}`}>
+                           <div className={styles.move} >
+                              <DragIcon type="primary"/>
+                           </div>
                            <ConstructorElement
                                  text={item.name}
                                  price={item.price}
