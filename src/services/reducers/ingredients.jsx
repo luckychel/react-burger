@@ -1,10 +1,11 @@
-import { INGREDIENTS_REQUEST, INGREDIENTS_SUCCESS, INGREDIENTS_FAILED, OPEN_INGREDIENT, CLOSE_INGREDIENT } from '../actions';
+import { INGREDIENTS_REQUEST, INGREDIENTS_SUCCESS, INGREDIENTS_FAILED, OPEN_INGREDIENT, CLOSE_INGREDIENT, IS_DRAGGING } from '../actions';
   
   const initialState = {
     itemsRequest: false,
     itemsFailed: false,
     listIngredients: [],
-    currentIngredient: {}
+    currentIngredient: {},
+    isDragging: false
   };
  
   export const ingredientsReducer = (state = initialState, action) => {
@@ -42,6 +43,13 @@ import { INGREDIENTS_REQUEST, INGREDIENTS_SUCCESS, INGREDIENTS_FAILED, OPEN_INGR
         return {
           ...state,
           currentIngredient: {}
+        }
+      }
+      case IS_DRAGGING: {
+        return {
+          ...state,
+          isDraggingBun: action.isDraggingBun,
+          isDraggingIng: action.isDraggingIng
         }
       }
       

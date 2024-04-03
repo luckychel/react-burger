@@ -5,12 +5,14 @@ export const INGREDIENTS_FAILED = 'INGREDIENTS_FAILED';
 
 export const OPEN_INGREDIENT = 'OPEN_INGREDIENT';
 export const CLOSE_INGREDIENT = 'CLOSE_INGREDIENT';
+export const IS_DRAGGING = 'IS_DRAGGING'; 
 
 /* Бургер */
 export const ADD_INGREDIENT_TO_BURGER = 'ADD_INGREDIENT_TO_BURGER';
 export const REMOVE_INGREDIENT_FROM_BURGER = 'REMOVE_INGREDIENT_FROM_BURGER';
 export const CLEAR_BURGER = 'CLEAR_BURGER';
 export const INGREDIENTS_REPLACE = 'INGREDIENTS_REPLACE';
+
 
 /* Actions */
 const baseUrl = 'https://norma.nomoreparties.space/api/';

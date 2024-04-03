@@ -43,6 +43,7 @@ export const burgerReducer = (state = initialState, action) => {
             orderNumber: 0
         }
       }
+    
     default: {
       return state;
     }
