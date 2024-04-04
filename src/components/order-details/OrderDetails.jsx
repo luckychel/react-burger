@@ -32,7 +32,7 @@ function OrderDetails ({ids}) {
 }
 
 OrderDetails.propTypes = {
-    ids: PropTypes.arrayOf(PropTypes.string)
+    ids: PropTypes.arrayOf(PropTypes.string).isRequired
 }
 
 export default OrderDetails;

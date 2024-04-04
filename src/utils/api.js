@@ -5,7 +5,7 @@ export const request = (url, options) => {
         .then(checkResponse);
 }
 
-export function checkResponse(res) {
+function checkResponse(res) {
     if (!res.ok) 
     {
         return Promise.reject(`Ошибка ${res.status}`);

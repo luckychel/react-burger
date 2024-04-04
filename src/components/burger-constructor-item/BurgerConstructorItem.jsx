@@ -2,6 +2,9 @@ import React, { useRef } from 'react'
 import styles from './BurgerConstructorItem.module.css';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 
+import PropTypes from 'prop-types';
+import { Ingredient } from '../../utils/propTypes'
+
 import { useDispatch } from 'react-redux'
 import { deleteItem } from '../../services/actions';
 import { useDrag, useDrop } from 'react-dnd'
@@ -76,5 +79,10 @@ function BurgerConstructorItem({ id, item, index, moveCard}) {
       </div>
     )
 }
-
+BurgerConstructorItem.propTypes = {
+  id: PropTypes.string.isRequired,
+  item: Ingredient,
+  index: PropTypes.number.isRequired, 
+  moveCard: PropTypes.func.isRequired
+}
 export default BurgerConstructorItem;

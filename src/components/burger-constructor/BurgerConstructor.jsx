@@ -4,14 +4,14 @@ import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-co
 
 import Modal from '../modal/Modal'
 import OrderDetails from '../order-details/OrderDetails';
-import BurgerBun from '../burger-bun-item/BurgerBun'
+import BurgerBunItem from '../burger-bun-item/BurgerBunItem'
 import BurgerConstructorItem from '../burger-constructor-item/BurgerConstructorItem'
 
 import { useSelector, useDispatch } from 'react-redux'
 import { addItem, replaceItems, clearBurger } from '../../services/actions';
 import { useDrop } from 'react-dnd'
 
-function BurgerConstructor(props) {
+function BurgerConstructor() {
 
    //Данные ингредиентов
    const bun = useSelector(store => store.burger.bun);
@@ -82,7 +82,7 @@ function BurgerConstructor(props) {
       <section className={`${styles.constructor_main_content} ml-10`}>
          <div className={`${styles.container} pt-25`}>
             
-            <BurgerBun pos="top" bun={bun} />
+         <BurgerBunItem pos="top" bun={bun} />
 
             <div className={`${styles.components} pl-5 pr-2 pt-2 pb-2 ${isDraggingIng && ingredients && ingredients.length > 0 ? styles.isHover : ''}`} ref={refItemDrop}>
             {
@@ -101,7 +101,7 @@ function BurgerConstructor(props) {
             }
             </div>
 
-            <BurgerBun pos="bottom" bun={bun} />
+            <BurgerBunItem pos="bottom" bun={bun} />
             
       </div>
     

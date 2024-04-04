@@ -1,6 +1,5 @@
 import { ADD_INGREDIENT_TO_BURGER, REMOVE_INGREDIENT_FROM_BURGER, INGREDIENTS_REPLACE, CLEAR_BURGER,
         ORDER_NUMBER_REQUEST, ORDER_NUMBER_SUCCESS, ORDER_NUMBER_FAILED } from '../actions';
-import { nanoid } from '@reduxjs/toolkit'
 import update from 'immutability-helper';
 
   const initialState = {
@@ -14,14 +13,12 @@ import update from 'immutability-helper';
 export const burgerReducer = (state = initialState, action) => {
   switch(action.type) {
     case ADD_INGREDIENT_TO_BURGER: {
-        
-        if (action.ingredientType === 'bun') {
+        if (action.payload.ingredientType === 'bun') {
 
             return {
                 ...state,
                 bun: {
-                    ...action.item, 
-                    uniqkey: nanoid()
+                    ...action.payload.bun
                 }
             }
         }
@@ -32,8 +29,7 @@ export const burgerReducer = (state = initialState, action) => {
                 [   
                     ...state.burgerIngredients,  
                     {
-                        ...action.item, 
-                        uniqkey: nanoid()
+                        ...action.payload.burgerIngredients
                     }
                 ]
             }

@@ -1,3 +1,6 @@
+import { request } from '../../utils/api';
+import { nanoid } from '@reduxjs/toolkit'
+
 /* Ингредиенты */
 export const INGREDIENTS_REQUEST = 'INGREDIENTS_REQUEST';
 export const INGREDIENTS_SUCCESS = 'INGREDIENTS_SUCCESS';
@@ -19,7 +22,6 @@ export const ORDER_NUMBER_SUCCESS = 'ORDER_NUMBER_SUCCESS';
 export const ORDER_NUMBER_FAILED = 'ORDER_NUMBER_FAILED';
 
 /* Actions */
-const baseUrl = 'https://norma.nomoreparties.space/api/';
 
 //Получение данных ингредиентов
 export const getIngredients = () => {
@@ -27,92 +29,78 @@ export const getIngredients = () => {
     dispatch({
       type: INGREDIENTS_REQUEST,
     })
-    fetch(baseUrl + 'ingredients')
-    .then(res => {
-      if (!res.ok) {
-        return Promise.reject(`Ошибка ${res.status}`);
-      }
-      return res.json();
-    })
-    .then(data => {
+    request('ingredients', {})
+    .then(data => { 
       dispatch({
         type: INGREDIENTS_SUCCESS,
         data: data.data
       })
     })
-    .catch(err => {
+    .catch(e => {
       dispatch({
         type: INGREDIENTS_FAILED
       });
-      console.log(`Ошибка: ${err.message}`);
+      console.error('Error: ' + e.message);
     });
   }
 }
 
 //добавление ингредиента
 export const addItem = (item, ingredientType) => {
-  return function(dispatch) {
-    dispatch({
-        type: ADD_INGREDIENT_TO_BURGER,
-        item,
-        ingredientType
-      })
+  return {
+    type: ADD_INGREDIENT_TO_BURGER,
+    payload: { 
+      ingredientType: ingredientType,
+      bun: {
+          ...item, 
+          uniqkey: nanoid()
+      },
+      burgerIngredients: {
+        ...item,
+        uniqkey: nanoid()
+      }
+    }
   }
 }
 
 //удаление ингредиента
 export const deleteItem = (item) => {
-  return function(dispatch) {
-    dispatch({
-        type: REMOVE_INGREDIENT_FROM_BURGER,
-        item
-      })
-  }
+  return {
+      type: REMOVE_INGREDIENT_FROM_BURGER,
+      item
+    }
 }
 
 //сортировка dnd
 export const replaceItems = (dragIndex, hoverIndex) => {
-  return function(dispatch) {
-    dispatch({
-      type: INGREDIENTS_REPLACE,
-      payload: {
-        dragIndex: dragIndex,
-        hoverIndex: hoverIndex
-      }
-    })
+  return {
+    type: INGREDIENTS_REPLACE,
+    payload: {
+      dragIndex: dragIndex,
+      hoverIndex: hoverIndex
+    }
   }
 }
 
 //очистка бургера
 export const clearBurger = () => {
-  return function(dispatch) {
-    dispatch({
-        type: CLEAR_BURGER,
-      })
+  return {
+    type: CLEAR_BURGER,
   }
 }
 
 //создание заказа
 export function getOrderNumber(ids) {
-
   return function(dispatch) {
     dispatch({
       type: ORDER_NUMBER_REQUEST,
     });
-    fetch(baseUrl + 'orders', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({"ingredients": ids}),
+    request('orders', { 
+      method: 'POST', 
+      headers: { 'Content-Type': 'application/json;charset=utf-8' }, 
+      body: JSON.stringify({ 'ingredients': ids})
     })
-    .then(res => {
-      if (!res.ok) {
-        return Promise.reject(`Ошибка ${res.status}`);
-      }
-      return res.json();
-    })
-    .then(data => {
+    .then(data => { 
       if (data && data.order && data.order.number) {
         dispatch({
           type: ORDER_NUMBER_SUCCESS,
@@ -120,11 +108,11 @@ export function getOrderNumber(ids) {
         })
       }
     })
-    .catch((error) => {
+    .catch(e => {
       dispatch({
         type: ORDER_NUMBER_FAILED
       })
-      console.error('Error:', error);
+      console.error('Error: ' + e.message);
     });
   }
 }

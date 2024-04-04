@@ -12,6 +12,7 @@ export const Ingredient = PropTypes.shape({
     image: PropTypes.string,
     image_mobile: PropTypes.string,
     image_large: PropTypes.string
+    //uniqkey: PropTypes.string
 }).isRequired
 
 export const BurgerConstructorType = {
