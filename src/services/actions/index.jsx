@@ -51,12 +51,8 @@ export const addItem = (item, ingredientType) => {
     type: ADD_INGREDIENT_TO_BURGER,
     payload: { 
       ingredientType: ingredientType,
-      bun: {
-          ...item, 
-          uniqkey: nanoid()
-      },
-      burgerIngredients: {
-        ...item,
+      item: {
+        ...item, 
         uniqkey: nanoid()
       }
     }

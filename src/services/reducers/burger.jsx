@@ -14,7 +14,6 @@ export const burgerReducer = (state = initialState, action) => {
   switch(action.type) {
     case ADD_INGREDIENT_TO_BURGER: {
         if (action.payload.ingredientType === 'bun') {
-
             return {
                 ...state,
                 bun: {
