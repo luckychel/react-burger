@@ -17,7 +17,7 @@ export const burgerReducer = (state = initialState, action) => {
             return {
                 ...state,
                 bun: {
-                    ...action.payload.bun
+                    ...action.payload.item
                 }
             }
         }
@@ -28,7 +28,7 @@ export const burgerReducer = (state = initialState, action) => {
                 [   
                     ...state.burgerIngredients,  
                     {
-                        ...action.payload.burgerIngredients
+                        ...action.payload.item
                     }
                 ]
             }
