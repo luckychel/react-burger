@@ -19,10 +19,15 @@
     align-items: center;
 }
 
+.ingredient {
+    composes: total_sum;
+}
+
+
 .components {
     display: flex;
     flex-direction: column;
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
     scrollbar-width: thin;
     max-height: 440px;
@@ -59,3 +64,9 @@
 .custom_margin_left {
     margin-left: 15px;
 }
+
+.isHover {
+  border: 2px dashed #4C4CFF;
+}
+
+

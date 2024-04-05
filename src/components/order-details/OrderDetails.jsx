@@ -1,33 +1,21 @@
-import React, {useState, useEffect} from 'react'
+import React, { useEffect} from 'react'
 import styles from './OrderDetails.module.css';
 import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-components'
+import PropTypes from 'prop-types';
 
-import { IngredientsType } from '../../utils/propTypes'
-import { request } from '../../utils/api';
+import { getOrderNumber } from '../../services/actions';
+import { useSelector, useDispatch } from 'react-redux';
 
-function OrderDetails ({value}) {
+function OrderDetails ({ids}) {
     
-    const [orderNumber, setOrderNumber] = useState(null);
+    const orderNumber = useSelector(store => store.burger.orderNumber);
 
-    useEffect(() => { 
-        if (value) {
-            const ids = value.map(function(item) { return item._id; });
-            request('orders', { 
-                    method: 'POST', 
-                    headers: { 'Content-Type': 'application/json;charset=utf-8' }, 
-                    body: JSON.stringify({ 'ingredients': ids})
-                })
-                .then(data => { 
-                    if (data && data.order && data.order.number) {
-                        setOrderNumber(data.order.number);
-                    }
-                })
-                .catch(e => {
-                    console.error('Error: ' + e.message);
-                });
-        }
-    },[value]);
-    
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+      dispatch(getOrderNumber(ids));
+    }, [ids, dispatch]);
+
     return (
         <div className={styles.order_details_main_content}>
              <p className="text text_type_digits-large">{orderNumber}</p>
@@ -43,6 +31,8 @@ function OrderDetails ({value}) {
     )
 }
 
-OrderDetails.propTypes = IngredientsType;
+OrderDetails.propTypes = {
+    ids: PropTypes.arrayOf(PropTypes.string).isRequired
+}
 
 export default OrderDetails;

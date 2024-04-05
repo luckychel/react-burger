@@ -1,0 +1,12 @@
+
+.custom_aligment {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 530px;
+}
+
+.isHover {
+  border: 2px dashed #5330ec;
+}
+
