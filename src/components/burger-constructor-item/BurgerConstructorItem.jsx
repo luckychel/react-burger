@@ -9,13 +9,13 @@ import { useDispatch } from 'react-redux'
 import { deleteItem } from '../../services/actions';
 import { useDrag, useDrop } from 'react-dnd'
 
-function BurgerConstructorItem({ id, item, index, moveCard}) {
+function BurgerConstructorItem({ item, id, index, moveCard}) {
   
   const dispatch = useDispatch();
 
   const ref = useRef(null);
 
-  const [{ handlerId, isHover }, drop] = useDrop({
+  const [{ handlerId }, drop] = useDrop({
     accept: 'ingredient',
     collect(monitor) {
       return {
@@ -51,17 +51,30 @@ function BurgerConstructorItem({ id, item, index, moveCard}) {
     },
   })
 
-  const [{ isDragging }, drag] = useDrag({
+  const [{ isDragging, draggingItem }, drag] = useDrag({
     type: 'ingredient',
     item: () => {
-      return { id, index }
+        return { id, index }
     },
-    collect: (monitor) => ({
-      isDragging: monitor.isDragging(),
-    }),
+    collect: (monitor) => {
+      return {
+        draggingItem: monitor.getItem(),
+        isDragging: monitor.isDragging(),
+      }
+    },
+    end: (item, monitor) => {
+      //console.log('end = ' + item.id)
+    }
   })
-  
+/*
+  useMemo(()=>{
+    if (draggingItem && isDragging) {
+      console.log('useEffect = ' + draggingItem.id)
+    }
+  },[draggingItem, isDragging])
+*/
   const opacity = isDragging ? 0 : 1
+
   drag(drop(ref))
 
     return (
@@ -74,7 +87,7 @@ function BurgerConstructorItem({ id, item, index, moveCard}) {
               price={item.price}
               thumbnail={item.image}
               isLocked={false} 
-              extraClass={isHover ? styles.isHoverIngredient : ''} 
+              extraClass={draggingItem && draggingItem.id === item.uniqkey ? styles.isHoverIngredient : ''} 
               handleClose={() => dispatch(deleteItem(item))}/>
       </div>
     )
