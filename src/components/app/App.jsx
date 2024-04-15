@@ -1,15 +1,18 @@
 import React, { useEffect } from 'react';
 import styles from './App.module.css';
 
+
 import AppHeader from '../app-header/AppHeader'
-import BurgerIngredients from '../burger-ingredients/BurgerIngredients'
-import BurgerConstructor from '../burger-constructor/BurgerConstructor'
+
 import ErrorBoundary from '../error-boundary/ErrorBoundary';
 
 import { getIngredients } from '../../services/actions';
 import { useDispatch } from 'react-redux';
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
+
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import Main from '../../pages/main'
+import Login from '../../pages/login'
+import NotFound404 from '../../pages/not-found'
 
 function App() {
 
@@ -19,19 +22,16 @@ function App() {
     dispatch(getIngredients());
   }, [dispatch]);
 
+  const location = useLocation();
+
   return (
     <ErrorBoundary>
-        <header className={styles.header}>
-          <AppHeader />
-        </header>
-        <DndProvider backend={HTML5Backend}>
-          <main className={styles.app}>
-              <div className={styles.main_content}>
-                  <BurgerIngredients />
-                  <BurgerConstructor />
-              </div>
-          </main>
-        </DndProvider>
+        <AppHeader />
+        <Routes location={location.state?.background || location}>
+            <Route path="/" element={<Main />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="*" element={<NotFound404/>}/>
+          </Routes>
     </ErrorBoundary>
   );
 }
