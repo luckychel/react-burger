@@ -111,7 +111,7 @@ function BurgerConstructor() {
             <CurrencyIcon type="primary" />
          </span>
          <Button type="primary" size="large" htmlType='button' onClick={handleOrderDetailsClick} disabled={isCreateOrderBtnDisabled}>
-            Оформить заказ
+            Оформить заказ 1
          </Button>
       </div>
     
