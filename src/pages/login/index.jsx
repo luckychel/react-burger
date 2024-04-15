@@ -17,28 +17,27 @@ function Login() {
       });
     }
 
-    const onSubmitFormLogin = (e) => {
+    const onSubmit = (e) => {
         e.preventDefault();
     }
 
   return (
-    <div className={styles.main_content}>
+    <div className={styles.login_main_content}>
       <h1 className={`${styles.title} text_type_main-medium mb-6`}>Вход</h1>
-      <form className={`${styles.form} mb-20`} onSubmit={onSubmitFormLogin}>
+      <form className={`${styles.form} mb-20`} onSubmit={onSubmit}>
         <EmailInput placeholder={'E-mail'} value={formData.email} name={'email'} onChange={onChangeFormData} />
         <PasswordInput placeholder={'Пароль'} value={formData.password} name={'password'} onChange={onChangeFormData} />
         <Button type="primary" size="medium">Войти</Button>
       </form>
-      <div className={`${styles.other_links} mb-4`}>
+      <div className={`${styles.other_content} mb-4`}>
         <span className="text_type_main-default">Вы — новый пользователь?</span>
         <Link to="/register" className={`${styles.link} ml-2 text_type_main-default`}>Зарегистироваться</Link>
       </div>
-      <div className={styles.other_links}>
+      <div className={styles.other_content}>
         <span className="text_type_main-default">Забыли пароль?</span>
         <Link to="/forgot-password" className={`${styles.link} ml-2 text_type_main-default`}>Восстановить пароль</Link>
       </div>
     </div>
-
   );
 }
 export default Login;

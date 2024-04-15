@@ -11,7 +11,7 @@ function ProfileMenu() {
     return (
         <div className={styles.profile_main_content}>
             <div className={styles.menu}>
-                <NavLink to='' className={({ isActive }) => isActive ? styles.text_active : styles.text_inactive}>
+                <NavLink to='' end className={({ isActive }) => isActive ? styles.text_active : styles.text_inactive}>
                     <p className="text text text_type_main-default pb-5">Профиль</p>
                 </NavLink>
                 <NavLink to='orders' className={({ isActive }) => isActive ? styles.text_active : styles.text_inactive}>

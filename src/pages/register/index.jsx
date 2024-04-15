@@ -1,8 +1,9 @@
 import React, {useState} from 'react'
 import { EmailInput, PasswordInput, Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
-import styles from './Profile.module.css';
+import styles from './register.module.css';
+import { Link } from 'react-router-dom';
 
-function Profile() {
+function Register() {
 
     const [formData, setFormData] = useState({
         username: '',
@@ -20,25 +21,24 @@ function Profile() {
     const onSubmit = (e) => {
         e.preventDefault();
     }
-    
-    const cancelEdit = (e) => {
-        e.preventDefault();
-    }
 
     return (
-        <div className={styles.outlet_main_content}>
+        <div className={styles.register_main_content}>
+          <h1 className={`${styles.title} text_type_main-medium mb-6`}>Регистрация</h1>
           <form className={styles.form} onSubmit={onSubmit}>
             <Input type='text' placeholder={'Имя'} onChange={onChangeFormData} value={formData.username} name='username' extraClass="mb-6" />
             <EmailInput placeholder="Логин" onChange={onChangeFormData} value={formData.email} name='email' extraClass="mb-6"  />
             <PasswordInput placeholder="Пароль" onChange={onChangeFormData} value={formData.password} name='password' extraClass="mb-6" />
 
-            <div className={styles.other_content}>
-                <Button htmlType="button" type="secondary" extraClass="mb-20" size="medium" onClick={cancelEdit}>Отмена</Button>
-                <Button htmlType="submit" type="primary" extraClass="mb-20" size="medium">Сохранить</Button>
-            </div>
+            <Button htmlType="submit" type="primary" extraClass="mb-20" size="medium">Зарегистироваться</Button>
+            
           </form>
+          <div className={styles.other_content}>
+            <span className="text_type_main-default">Уже зарегистированы?</span>
+            <Link to="/login" className={`${styles.link} ml-2 text_type_main-default`}>Войти</Link>
+          </div>
         </div>
     )
 }
 
-export default Profile;
+export default Register;
