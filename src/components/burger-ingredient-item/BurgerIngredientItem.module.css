@@ -19,3 +19,8 @@
     height: 48px;
     text-align: center;
 }
+  
+.link {
+    text-decoration: none;
+    color: #F2F2F3;
+}

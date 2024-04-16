@@ -6,7 +6,7 @@ import ErrorBoundary from '../error-boundary/ErrorBoundary';
 import { getIngredients } from '../../services/actions';
 import { useDispatch } from 'react-redux';
 
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import Main from '../../pages/main'
 import NotFound404 from '../../pages/not-found'
 
@@ -19,6 +19,8 @@ import Login from '../../pages/login'
 import ForgotPassword from '../../pages/forgot-password';
 import Register from '../../pages/register';
 import ResetPassword from '../../pages/reset-password';
+import IngredientDetails from '../ingredient-details/IngredientDetails';
+import Modal from '../modal/Modal';
 
 function App() {
 
@@ -29,11 +31,19 @@ function App() {
   }, [dispatch]);
 
   const location = useLocation();
+  const navigate = useNavigate();
+  const background = location.state && location.state.background;
+
+
+  const handleModalClose = () => {
+    // Возвращаемся к предыдущему пути при закрытии модалки
+    navigate(-1);
+  };
 
   return (
     <ErrorBoundary>
         <AppHeader />
-        <Routes location={location.state?.background || location}>
+        <Routes location={background || location}>
             <Route path="/" element={<Main />} />
             <Route path="*" element={<NotFound404/>}/>
 
@@ -50,7 +60,22 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
+
+            <Route path='/ingredients/:ingredientId' element={<IngredientDetails header="Детали ингредиента" />} />
           </Routes>
+
+          {background && (
+            <Routes>
+                <Route
+                  path='/ingredients/:ingredientId'
+                  element={
+                    <Modal onClose={handleModalClose} header="Детали ингредиента">
+                      <IngredientDetails />
+                    </Modal>
+                  }
+                />
+            </Routes>
+          )}
     </ErrorBoundary>
   );
 }
