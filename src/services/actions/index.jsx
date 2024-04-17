@@ -24,8 +24,9 @@ export const ORDER_NUMBER_FAILED = 'ORDER_NUMBER_FAILED';
 /* Пользователь */
 
 export const IS_REQUESTING = 'IS_REQUESTING';
+export const IS_SUCCESS = 'IS_SUCCESS';
 export const IS_FAILED = 'IS_FAILED';
-export const IS_SUCCESSFUL = 'IS_SUCCESSFUL';
+
 
 export const SET_AUTH_CHECKED = 'USER_REQUEST';
 export const SET_USER = 'SET_USER';
@@ -142,6 +143,7 @@ export function getToken() {
       if (result.success) {
         localStorage.setItem('accessToken', result.accessToken);
         localStorage.setItem('refreshToken', result.refreshToken);
+        dispatch({ type: IS_SUCCESS });
       } else {
         dispatch({ type: IS_FAILED });
       }
