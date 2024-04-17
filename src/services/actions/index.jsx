@@ -21,6 +21,18 @@ export const ORDER_NUMBER_REQUEST = 'ORDER_NUMBER_REQUEST';
 export const ORDER_NUMBER_SUCCESS = 'ORDER_NUMBER_SUCCESS';
 export const ORDER_NUMBER_FAILED = 'ORDER_NUMBER_FAILED';
 
+/* Пользователь */
+
+export const IS_REQUESTING = 'IS_REQUESTING';
+export const IS_FAILED = 'IS_FAILED';
+export const IS_SUCCESSFUL = 'IS_SUCCESSFUL';
+
+export const SET_AUTH_CHECKED = 'USER_REQUEST';
+export const SET_USER = 'SET_USER';
+export const USER_REQUEST = 'USER_REQUEST';
+export const USER_REQUEST_SUCCESS = 'USER_REQUEST_SUCCESS';
+export const USER_REQUEST_FAILED = 'USER_REQUEST_FAILED';
+
 /* Actions */
 
 //Получение данных ингредиентов
@@ -112,3 +124,83 @@ export function getOrderNumber(ids) {
     });
   }
 }
+
+export function getToken() {
+  return function(dispatch) {
+    dispatch({ type: IS_REQUESTING });
+    debugger
+    return request('auth/token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        token: localStorage.getItem('refreshToken')
+      })
+    })
+    .then(result => {
+      if (result.success) {
+        localStorage.setItem('accessToken', result.accessToken);
+        localStorage.setItem('refreshToken', result.refreshToken);
+      } else {
+        dispatch({ type: IS_FAILED });
+      }
+    })
+    .catch(err => {
+      dispatch({ type: IS_FAILED });
+    })
+  }
+}
+
+export function checkUserAuth() {
+  return function(dispatch) {
+    
+    const accesstoken = localStorage.getItem('accessToken') || null;
+    const refreshtoken = localStorage.getItem('refreshToken') || null;
+
+    if (!accesstoken && refreshtoken) {
+      dispatch(getToken());
+    }
+    //debugger
+    
+      dispatch({
+        type: USER_REQUEST,
+      });
+      request('auth/user', {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+          "Authorization": accesstoken
+        }
+      })
+      .then(result => { 
+        debugger
+        if (result && result.success) {
+          dispatch({
+            type: USER_REQUEST_SUCCESS,
+            user: result.user
+          })
+        }
+        else {
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
+        }
+
+      })
+      .catch(e => {
+        dispatch({
+          type: USER_REQUEST_FAILED
+        })
+        console.error('Error: ' + e.message);
+      })
+      .finally(() => {
+        dispatch({
+          type: SET_AUTH_CHECKED,
+          isAuthChecked: true
+        });
+      });
+
+    
+  }
+}
+
