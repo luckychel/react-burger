@@ -14,8 +14,10 @@ import { useDrop } from 'react-dnd'
 function BurgerConstructor() {
 
    //Данные ингредиентов
-   const bun = useSelector(store => store.burger.bun);
-   const ingredients = useSelector(store => store.burger.burgerIngredients);
+   const {bun, ingredients} = useSelector(store => ({ 
+      bun: store.burger.bun, 
+      ingredients: store.burger.burgerIngredients
+   }));
 
    //Данные для заказа в конструкторе
    const isDraggingIng = useSelector(store => store.ingredients.isDraggingIng);
@@ -111,7 +113,7 @@ function BurgerConstructor() {
             <CurrencyIcon type="primary" />
          </span>
          <Button type="primary" size="large" htmlType='button' onClick={handleOrderDetailsClick} disabled={isCreateOrderBtnDisabled}>
-            Оформить заказ 1
+            Оформить заказ
          </Button>
       </div>
     

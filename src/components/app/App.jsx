@@ -44,8 +44,6 @@ function App() {
     navigate(-1);
   };
 
-
-
   return (
     <ErrorBoundary>
         <AppHeader />
