@@ -2,13 +2,16 @@ import React, { useCallback } from 'react'
 import styles from './AppHeader.module.css';
 import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Link, NavLink, /* useLocation */ } from 'react-router-dom';
+import { useSelector } from 'react-redux'
 
 function AppHeader(props) {
 
   // const location = useLocation();
   // console.log(location.pathname);
   // console.log(location.state?.from?.pathname);
-  
+
+  const { user } = useSelector(store => store.user);
+
   const smartLink = useCallback((to, title) => {
     return (
       <NavLink to={to} className={`${styles.nav_link}`}>
@@ -18,12 +21,12 @@ function AppHeader(props) {
           { to ==='/orderfeed' && <ListIcon type={`${isActive ? 'primary' : 'secondary'}`} /> }
           { to ==='/profile' && <ProfileIcon type={`${isActive ? 'primary' : 'secondary'}`} /> }
           {/*to ==='/profile' && location.pathname ==='/login' && location.state?.from?.pathname === '/profile' && <ProfileIcon type='primary' />*/}
-          <span className={`text text_type_main-small ${isActive ? styles.text_active : styles.text_inactive}`}>{title}</span>
+          <span className={`text text_type_main-small ${isActive ? styles.text_active : styles.text_inactive}`}>{to ==='/profile' ? user ? user.name : title : title}</span>
         </>
       )}
       </NavLink>
     )
-  }, [])
+  }, [user])
 
   return (
         <header className={`${styles.main_content} mt-5 mr-5 ml-5`}>

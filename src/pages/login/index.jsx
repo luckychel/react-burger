@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useLocation } from 'react-router-dom';
 import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './login.module.css';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { register } from '../../services/actions';
+import { login } from '../../services/actions';
 import { PreLoader } from '../../components/pre-loader/PreLoader';
 import { ErrorRequestHandler } from '../../components/ErrorRequestHadler'
 
@@ -12,9 +12,9 @@ import { ErrorRequestHandler } from '../../components/ErrorRequestHadler'
 function Login() {
 
     const [formData, setFormData] = useState({
-        email: '',
-        password: ''
-      });
+      email: 'luckychel@yandex.ru',
+      password: '123456',
+    });
 
     const onChangeFormData = (e) => {
        setFormData({
@@ -23,19 +23,42 @@ function Login() {
       });
     }
 
-    const onSubmit = (e) => {
-        e.preventDefault();
-    }
+    const dispatch = useDispatch();
 
     const [errorMessage, setErrorMessage] = useState('');
+
+    const onSubmit = (e) => {
+        e.preventDefault();
+        dispatch(login(formData))
+          .catch(err => {
+            setErrorMessage(err?.message)
+          });
+    }
+
+    const { state } = useLocation();
+
+    const {isRequest, user} = useSelector(store => store.user);
+
+    if (isRequest) {
+      return <PreLoader />
+    }
+
+    if (user) {
+        return (
+         (state?.from?.pathname === "/") ?
+          <Navigate to={"/"}/>
+          : 
+          <Navigate to={"/profile"}/>
+        );
+    }
 
   return (
     <div className={styles.login_main_content}>
       <h1 className={`${styles.title} text_type_main-medium mb-6`}>Вход</h1>
       <form className={`${styles.form} mb-20`} onSubmit={onSubmit}>
         <EmailInput placeholder={'E-mail'} value={formData.email} name={'email'} onChange={onChangeFormData} />
-        <PasswordInput placeholder={'Пароль'} value={formData.password} name={'password'} onChange={onChangeFormData} />
-        <Button type="primary" size="medium">Войти</Button>
+        <PasswordInput placeholder={'Пароль'} value={formData.password || ''} name={'password'} onChange={onChangeFormData} />
+        <Button htmlType="submit" type="primary" size="medium">Войти</Button>
       </form>
 
       <ErrorRequestHandler errorMessage={errorMessage}/>

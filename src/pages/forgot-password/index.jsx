@@ -25,7 +25,7 @@ function ForgotPassword() {
       <h1 className={`${styles.title} text_type_main-medium mb-6`}>Восстановление пароля</h1>
       <form className={`${styles.form} mb-20`} onSubmit={onSubmit}>
         <EmailInput onChange={onChangeFormData} value={formData.email} name={'email'} placeholder='E-mail' extraClass="mb-6" />
-        <Button type="primary" size="medium">Восстановить</Button>
+        <Button htmlType='submit' type="primary" size="medium">Восстановить</Button>
       </form>
       <div className={styles.other_links}>
         <span className="text_type_main-default">Вспомнили пароль?</span>

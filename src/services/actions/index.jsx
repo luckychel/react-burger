@@ -1,4 +1,4 @@
-import { request } from '../../utils/api';
+import { request, fetchWithRefresh } from '../../utils/api';
 import { nanoid } from '@reduxjs/toolkit'
 
 /* Ингредиенты */
@@ -162,8 +162,8 @@ export function checkUserAuth() {
     const accesstoken = localStorage.getItem('accessToken') || null;
 
     if (accesstoken) {
-      
-      request('auth/user', {
+      dispatch({ type: IS_REQUESTING });
+      fetchWithRefresh('auth/user', {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -171,16 +171,14 @@ export function checkUserAuth() {
         }
       })
       .then(result => { 
-        debugger
         if (result && result.success) {
           dispatch({
-            type: USER_REQUEST_SUCCESS,
+            type: SET_USER,
             user: result.user
           })
         }
         else {
-          localStorage.removeItem("accessToken");
-          localStorage.removeItem("refreshToken");
+          throw new Error("Ошибка метода checkUserAuth");
         }
       })
       .catch(e => {
@@ -204,7 +202,6 @@ export function checkUserAuth() {
         });
       //}, 5000);
     }
-
   }
 }
 
@@ -223,18 +220,94 @@ export function register(formData) {
     .then(result => {
 
       if (result && result.success) {
-        
+
         localStorage.setItem("refreshToken", result.refreshToken);
         localStorage.setItem("accessToken", result.accessToken);
+
         dispatch({
           type: SET_USER,
           user: result.user
         });
 
-        dispatch({ type: IS_SUCCESS });
-
       } else {
         throw new Error("Ошибка метода register");
+      }
+    })
+    .catch(err => {
+      dispatch({ type: IS_FAILED});
+      throw err;
+    });
+
+  }
+}
+
+export function login(formData) {
+  return function(dispatch) {
+ 
+    dispatch({ type: IS_REQUESTING });
+
+    return request('auth/login', {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    })
+    .then(result => {
+
+      if (result && result.success) {
+        
+        localStorage.setItem("refreshToken", result.refreshToken);
+        localStorage.setItem("accessToken", result.accessToken);
+       
+        dispatch({
+          type: SET_USER,
+          user: result.user
+        });
+       
+        dispatch({ type: IS_SUCCESS});
+     
+      } else {
+        throw new Error("Ошибка метода login");
+      }
+    })
+    .catch(err => {
+      dispatch({ type: IS_FAILED});
+      throw err;
+    });
+
+  }
+}
+
+
+export function logout() {
+  return function(dispatch) {
+ 
+    dispatch({ type: IS_REQUESTING });
+
+    return fetchWithRefresh('auth/logout', {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ token: localStorage.getItem("refreshToken") })
+    })
+    .then(result => {
+
+      if (result && result.success) {
+        
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+       
+        dispatch({
+          type: SET_USER,
+          user: null
+        });
+       
+        dispatch({ type: IS_SUCCESS});
+     
+      } else {
+        throw new Error("Ошибка метода logout");
       }
     })
     .catch(err => {

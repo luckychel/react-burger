@@ -14,10 +14,8 @@ import { useDrop } from 'react-dnd'
 function BurgerConstructor() {
 
    //Данные ингредиентов
-   const {bun, ingredients} = useSelector(store => ({ 
-      bun: store.burger.bun, 
-      ingredients: store.burger.burgerIngredients
-   }));
+   const bun  = useSelector(store => store.burger.bun); 
+   const ingredients  = useSelector(store => store.burger.burgerIngredients); 
 
    //Данные для заказа в конструкторе
    const isDraggingIng = useSelector(store => store.ingredients.isDraggingIng);

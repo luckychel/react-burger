@@ -46,7 +46,7 @@ function Register() {
           <form className={styles.form} onSubmit={onSubmit}>
             <Input type='text' placeholder={'Имя'} onChange={onChangeFormData} value={formData.name} name='name' extraClass="mb-6" />
             <EmailInput placeholder="Логин" onChange={onChangeFormData} value={formData.email} name='email' extraClass="mb-6"  />
-            <PasswordInput placeholder="Пароль" onChange={onChangeFormData} value={formData.password} name='password' extraClass="mb-6" />
+            <PasswordInput placeholder="Пароль" onChange={onChangeFormData} value={formData.password || ''} name='password' extraClass="mb-6" />
 
             <Button htmlType="submit" type="primary" extraClass="mb-20" size="medium">Зарегистироваться</Button>
             

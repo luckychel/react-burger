@@ -16,14 +16,18 @@ import { SET_AUTH_CHECKED, SET_USER, IS_REQUESTING, IS_SUCCESS, IS_FAILED } from
         console.log('SET_AUTH_CHECKED')
         return {
           ...state,
-          isAuthChecked: action.isAuthChecked
+          isAuthChecked: action.isAuthChecked,
+          isRequest: false,
+          isFailed: false
         }
       }
       case SET_USER: {
         console.log('SET_USER')
         return {
           ...state,
-          user: action.user
+          user: action.user,
+          isRequest: false,
+          isFailed: false
         }
       }
       case IS_REQUESTING: {

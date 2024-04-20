@@ -4,13 +4,13 @@ const checkResponse = (res) => {
     return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 };
 
-export const request = (url, options) => {
-    return fetch(baseUrl + url, options)
+export const request = async (url, options) => {
+    return await fetch(baseUrl + url, options)
         .then(checkResponse);
 }
 
 export const refreshToken = () => {
-    return fetch(`${baseUrl}/auth/token`, {
+    return fetch(`${baseUrl}auth/token`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
@@ -23,8 +23,9 @@ export const refreshToken = () => {
   
 export const fetchWithRefresh = async (url, options) => {
     try {
-      const res = await fetch(url, options);
-      return await checkResponse(res);
+      const res = await request(url, options);
+      return res;
+      //throw new Error("jwt expired");
     } catch (err) {
       if (err.message === "jwt expired") {
         const refreshData = await refreshToken(); //обновляем токен
@@ -33,9 +34,9 @@ export const fetchWithRefresh = async (url, options) => {
         }
         localStorage.setItem("refreshToken", refreshData.refreshToken);
         localStorage.setItem("accessToken", refreshData.accessToken);
-        options.headers.authorization = refreshData.accessToken;
-        const res = await fetch(url, options); //повторяем запрос
-        return await checkResponse(res);
+        options.headers.Authorization = refreshData.accessToken;
+        const res = await request(url, options); //повторяем запрос
+        return res;
       } else {
         return Promise.reject(err);
       }
