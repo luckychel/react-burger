@@ -22,7 +22,7 @@ function ProfileMenu() {
         });
     }
 
-       const {isRequest} = useSelector(store => store.user);
+    const {isRequest} = useSelector(store => store.user);
 
     if (isRequest) {
       return <PreLoader />

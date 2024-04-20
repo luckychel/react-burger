@@ -27,12 +27,8 @@ export const IS_REQUESTING = 'IS_REQUESTING';
 export const IS_SUCCESS = 'IS_SUCCESS';
 export const IS_FAILED = 'IS_FAILED';
 
-
 export const SET_AUTH_CHECKED = 'USER_REQUEST';
 export const SET_USER = 'SET_USER';
-export const USER_REQUEST = 'USER_REQUEST';
-export const USER_REQUEST_SUCCESS = 'USER_REQUEST_SUCCESS';
-export const USER_REQUEST_FAILED = 'USER_REQUEST_FAILED';
 
 /* Actions */
 
@@ -184,7 +180,7 @@ export function checkUserAuth() {
       })
       .catch(e => {
         dispatch({
-          type: USER_REQUEST_FAILED
+          type: IS_FAILED
         })
         console.error('Error: ' + e.message);
       })
@@ -327,7 +323,7 @@ export function changeUser(formData) {
  
     dispatch({ type: IS_REQUESTING });
 
-    return request('auth/user', {
+    return fetchWithRefresh('auth/user', {
       method: "PATCH",
       headers: {
         'Content-Type': 'application/json',
@@ -345,6 +341,63 @@ export function changeUser(formData) {
 
       } else {
         throw new Error("Ошибка метода changeUser");
+      }
+    })
+    .catch(err => {
+      dispatch({ type: IS_FAILED});
+      throw err;
+    });
+
+  }
+}
+
+//забыл пароль
+export function forgotPassword(formData) {
+  return function(dispatch) {
+ 
+    dispatch({ type: IS_REQUESTING });
+
+    return request('password-reset', {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    })
+    .then(result => {
+      if (result && result.success) {
+        dispatch({type: IS_SUCCESS});
+        return result;
+      } else {
+        throw new Error("Ошибка метода forgotPassword");
+      }
+    })
+    .catch(err => {
+      dispatch({ type: IS_FAILED});
+      throw err;
+    });
+  }
+}
+
+//сбросить пароль
+export function resetPassword(formData) {
+  return function(dispatch) {
+ 
+    dispatch({ type: IS_REQUESTING });
+
+    return request('password-reset/reset', {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    })
+    .then(result => {
+      if (result && result.success) {
+        dispatch({type: IS_SUCCESS});
+        return result;
+      } else {
+        throw new Error("Ошибка метода resetPassword");
       }
     })
     .catch(err => {
