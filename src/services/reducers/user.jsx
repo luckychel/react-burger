@@ -1,8 +1,12 @@
-import { SET_AUTH_CHECKED, SET_USER, USER_REQUEST, USER_REQUEST_SUCCESS, USER_REQUEST_FAILED } from '../actions';
+import { SET_AUTH_CHECKED, SET_USER, IS_REQUESTING, IS_SUCCESS, IS_FAILED } from '../actions';
   
   const initialState = {
+
     user: null,
-    isAuthChecked: false
+    isAuthChecked: false,
+    isRequest: false,
+    isFailed: false,
+    errorText: ''
   };
  
   export const userReducer = (state = initialState, action) => {
@@ -22,24 +26,28 @@ import { SET_AUTH_CHECKED, SET_USER, USER_REQUEST, USER_REQUEST_SUCCESS, USER_RE
           user: action.user
         }
       }
-      case USER_REQUEST: {
-        console.log('USER_REQUEST')
+      case IS_REQUESTING: {
+        console.log('IS_REQUESTING')
         return {
           ...state,
+          isRequest: true,
+          isFailed: false
         }
       }
-      case USER_REQUEST_SUCCESS: {
-        console.log('USER_REQUEST_SUCCESS')
+      case IS_SUCCESS: {
+        console.log('IS_SUCCESS')
         return {
           ...state,
-          user: action.user
+          isRequest: false,
+          isFailed: false
         }
       }
-      case USER_REQUEST_FAILED: {
-        console.log('USER_REQUEST_FAILED')
+      case IS_FAILED: {
+        console.log('IS_FAILED')
         return {
           ...state,
-          user: null
+          isRequest: false,
+          isFailed: true
         }
       }
       

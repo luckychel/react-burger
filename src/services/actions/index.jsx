@@ -126,52 +126,47 @@ export function getOrderNumber(ids) {
   }
 }
 
-export function getToken() {
+export function refreshTokens() {
   return function(dispatch) {
-    dispatch({ type: IS_REQUESTING });
-    debugger
-    return request('auth/token', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        token: localStorage.getItem('refreshToken')
+    const refreshtoken = localStorage.getItem('refreshToken') || null;
+
+    if (refreshtoken) {
+      request('auth/token', { 
+        method: 'POST', 
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: refreshtoken })
       })
-    })
-    .then(result => {
-      if (result.success) {
-        localStorage.setItem('accessToken', result.accessToken);
-        localStorage.setItem('refreshToken', result.refreshToken);
-        dispatch({ type: IS_SUCCESS });
-      } else {
+      .then(result => {
+        if (result.success) {
+          localStorage.setItem('accessToken', result.accessToken);
+          localStorage.setItem('refreshToken', result.refreshToken);
+        } else {
+          throw new Error("Ошибка refreshTokens");
+        }
+      })
+      .catch(err => {
         dispatch({ type: IS_FAILED });
-      }
-    })
-    .catch(err => {
+      })
+    }
+    else
+    {
       dispatch({ type: IS_FAILED });
-    })
+    }
   }
 }
+
 
 export function checkUserAuth() {
   return function(dispatch) {
     
     const accesstoken = localStorage.getItem('accessToken') || null;
-    const refreshtoken = localStorage.getItem('refreshToken') || null;
 
-    if (!accesstoken && refreshtoken) {
-      dispatch(getToken());
-    }
-    //debugger
-    
-      dispatch({
-        type: USER_REQUEST,
-      });
+    if (accesstoken) {
+      
       request('auth/user', {
         method: "GET",
         headers: {
-          "Content-Type": "application/json;charset=utf-8",
+          "Content-Type": "application/json",
           "Authorization": accesstoken
         }
       })
@@ -187,7 +182,6 @@ export function checkUserAuth() {
           localStorage.removeItem("accessToken");
           localStorage.removeItem("refreshToken");
         }
-
       })
       .catch(e => {
         dispatch({
@@ -201,8 +195,52 @@ export function checkUserAuth() {
           isAuthChecked: true
         });
       });
+    }
+    else {
+      //setTimeout(function() {
+        dispatch({
+          type: SET_AUTH_CHECKED,
+          isAuthChecked: true
+        });
+      //}, 5000);
+    }
 
-    
   }
 }
 
+export function register(formData) {
+  return function(dispatch) {
+ 
+    dispatch({ type: IS_REQUESTING });
+
+    return request('auth/register', {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    })
+    .then(result => {
+
+      if (result && result.success) {
+        
+        localStorage.setItem("refreshToken", result.refreshToken);
+        localStorage.setItem("accessToken", result.accessToken);
+        dispatch({
+          type: SET_USER,
+          user: result.user
+        });
+
+        dispatch({ type: IS_SUCCESS });
+
+      } else {
+        throw new Error("Ошибка метода register");
+      }
+    })
+    .catch(err => {
+      dispatch({ type: IS_FAILED});
+      throw err;
+    });
+
+  }
+}

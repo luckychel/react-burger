@@ -82,7 +82,7 @@ function BurgerConstructor() {
 
    return (
       <section className={`${styles.constructor_main_content} ml-10`}>
-         <div className={`${styles.container} pt-25`}>
+         <div className={`${styles.container} pt-24`}>
             
          <BurgerBunItem pos="top" bun={bun} />
 

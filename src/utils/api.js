@@ -42,12 +42,4 @@ export const fetchWithRefresh = async (url, options) => {
     }
 };
 
-  
-//function checkResponse(res) {
-//    if (!res.ok) 
-//    {
-//        return Promise.reject(`Ошибка ${res.status}`);
-//    }
-//    return res.json();
-//}
 

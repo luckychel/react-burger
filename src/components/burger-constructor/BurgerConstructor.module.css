@@ -30,7 +30,7 @@
     overflow-y: auto;
     overflow-x: hidden;
     scrollbar-width: thin;
-    max-height: 440px;
+    max-height: 420px;
     min-width: 550px;
     flex-wrap:unset;
     gap: 8px;

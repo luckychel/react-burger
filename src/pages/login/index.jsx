@@ -3,6 +3,12 @@ import { Link } from 'react-router-dom';
 import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './login.module.css';
 
+import { useSelector, useDispatch } from 'react-redux';
+import { register } from '../../services/actions';
+import { PreLoader } from '../../components/pre-loader/PreLoader';
+import { ErrorRequestHandler } from '../../components/ErrorRequestHadler'
+
+
 function Login() {
 
     const [formData, setFormData] = useState({
@@ -21,6 +27,8 @@ function Login() {
         e.preventDefault();
     }
 
+    const [errorMessage, setErrorMessage] = useState('');
+
   return (
     <div className={styles.login_main_content}>
       <h1 className={`${styles.title} text_type_main-medium mb-6`}>Вход</h1>
@@ -29,6 +37,9 @@ function Login() {
         <PasswordInput placeholder={'Пароль'} value={formData.password} name={'password'} onChange={onChangeFormData} />
         <Button type="primary" size="medium">Войти</Button>
       </form>
+
+      <ErrorRequestHandler errorMessage={errorMessage}/>
+
       <div className={`${styles.other_content} mb-4`}>
         <span className="text_type_main-default">Вы — новый пользователь?</span>
         <Link to="/register" className={`${styles.link} ml-2 text_type_main-default`}>Зарегистироваться</Link>

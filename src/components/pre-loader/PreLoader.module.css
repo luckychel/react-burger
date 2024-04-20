@@ -1,0 +1,13 @@
+.loader_main_content {
+    display: flex;
+    flex-direction: column;
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .loader_main_content p {
+    text-align: center;
+  }
