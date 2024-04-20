@@ -126,6 +126,7 @@ export function getOrderNumber(ids) {
   }
 }
 
+//рефреш токенов
 export function refreshTokens() {
   return function(dispatch) {
     const refreshtoken = localStorage.getItem('refreshToken') || null;
@@ -155,7 +156,7 @@ export function refreshTokens() {
   }
 }
 
-
+//проверка пользователя с accesstoken (при наличии)
 export function checkUserAuth() {
   return function(dispatch) {
     
@@ -205,6 +206,7 @@ export function checkUserAuth() {
   }
 }
 
+//регистрация
 export function register(formData) {
   return function(dispatch) {
  
@@ -241,6 +243,7 @@ export function register(formData) {
   }
 }
 
+//логин
 export function login(formData) {
   return function(dispatch) {
  
@@ -279,7 +282,7 @@ export function login(formData) {
   }
 }
 
-
+//логаут
 export function logout() {
   return function(dispatch) {
  
@@ -308,6 +311,40 @@ export function logout() {
      
       } else {
         throw new Error("Ошибка метода logout");
+      }
+    })
+    .catch(err => {
+      dispatch({ type: IS_FAILED});
+      throw err;
+    });
+
+  }
+}
+
+//изменение пользователя
+export function changeUser(formData) {
+  return function(dispatch) {
+ 
+    dispatch({ type: IS_REQUESTING });
+
+    return request('auth/user', {
+      method: "PATCH",
+      headers: {
+        'Content-Type': 'application/json',
+        "Authorization": localStorage.getItem('accessToken') || null
+      },
+      body: JSON.stringify(formData)
+    })
+    .then(result => {
+
+      if (result && result.success) {
+        dispatch({
+          type: SET_USER,
+          user: result.user
+        });
+
+      } else {
+        throw new Error("Ошибка метода changeUser");
       }
     })
     .catch(err => {

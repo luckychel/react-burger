@@ -13,12 +13,6 @@ function ProfileMenu() {
 
     const dispatch = useDispatch();
 
-    const {isRequest} = useSelector(store => store.user);
-
-    if (isRequest) {
-      return <PreLoader />
-    }
-
     const logOut = (e) => {
         e.preventDefault();
 
@@ -26,6 +20,12 @@ function ProfileMenu() {
         .catch(err => {
           setErrorMessage(err?.message)
         });
+    }
+
+       const {isRequest} = useSelector(store => store.user);
+
+    if (isRequest) {
+      return <PreLoader />
     }
 
     return (

@@ -1,7 +1,6 @@
 import { SET_AUTH_CHECKED, SET_USER, IS_REQUESTING, IS_SUCCESS, IS_FAILED } from '../actions';
   
   const initialState = {
-
     user: null,
     isAuthChecked: false,
     isRequest: false,
