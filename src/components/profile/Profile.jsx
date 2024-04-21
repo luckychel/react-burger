@@ -36,8 +36,9 @@ function Profile() {
 
         dispatch(changeUser(formData))
         .catch(err => {
+          //debugger
           setErrorMessage(err?.message);
-          //console.log(err?.message)
+          console.log(err?.message)
         });
     }
     

@@ -20,8 +20,7 @@ function OrderDetails ({ids}) {
     return (
         <div className={styles.order_details_main_content}>
 
-            {
-              orderNumber > 0 && (
+            { orderNumber > 0 && 
                 <>
                     <p className="text text_type_digits-large">{orderNumber}</p>
                     <p className='text text_type_main-medium pt-4 pb-10'>идентификатор заказа</p>
@@ -31,14 +30,14 @@ function OrderDetails ({ids}) {
                         </div>
                     </div>
                 </>
-            )}
-             { itemsRequest && (
+            }
+             { itemsRequest &&
                 <>
                     <PreLoader style={{ height: '255px' }} />
                     <p className='text text_type_main-default pt-30'>Ваш заказ начали готовить</p>
                     <p className='text text_type_main-default text_color_inactive pt-2 pb-30'>Дождитесь готовности на орбитальной станции</p>
                  </>
-             )}
+             }
            
         </div>
     )

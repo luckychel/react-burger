@@ -326,30 +326,35 @@ export function changeUser(formData) {
  
     dispatch({ type: IS_REQUESTING });
 
-    return fetchWithRefresh('auth/user', {
-      method: "PATCH",
-      headers: {
-        'Content-Type': 'application/json',
-        "Authorization": localStorage.getItem('accessToken') || null
-      },
-      body: JSON.stringify(formData)
-    })
-    .then(result => {
+   /*  return new Promise((resolve, reject) => {
+      dispatch({ type: IS_SUCCESS});
+      reject({message: "my error"});
+    }); */
 
-      if (result && result.success) {
-        dispatch({
-          type: SET_USER,
-          user: result.user
-        });
+   return fetchWithRefresh('auth/user', {
+     method: "PATCH",
+     headers: {
+       'Content-Type': 'application/json',
+       "Authorization": localStorage.getItem('accessToken') || null
+     },
+     body: JSON.stringify(formData)
+   })
+   .then(result => {
 
-      } else {
-        throw new Error("Ошибка метода changeUser");
-      }
-    })
-    .catch(err => {
-      dispatch({ type: IS_FAILED});
-      throw err;
-    });
+     if (result && result.success) {
+       dispatch({
+         type: SET_USER,
+         user: result.user
+       });
+
+     } else {
+       throw new Error("Ошибка метода changeUser");
+     }
+   })
+   .catch(err => {
+     dispatch({ type: IS_FAILED});
+     throw err;
+   });
 
   }
 }
