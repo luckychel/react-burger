@@ -11,6 +11,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import { addItem, replaceItems, clearBurger } from '../../services/actions';
 import { useDrop } from 'react-dnd'
 
+import { useNavigate, useLocation} from 'react-router-dom';
+
 function BurgerConstructor() {
 
    //Данные ингредиентов
@@ -48,8 +50,17 @@ function BurgerConstructor() {
    //Модальное окно заказа
    const [isOpenOrderDetailsModal, setOrderDetailsOpenModal] = useState(false);
 
+   const {user} = useSelector(store => store.user);
+   const navigate = useNavigate();
+   const location = useLocation();
+
    //отправляем заказ
    const handleOrderDetailsClick = () => {
+       if (!user) {
+         navigate('/login', { state: {from: location}});
+         return
+       }
+
       let ids = [];
       if (bun) 
          ids.push(bun._id)

@@ -12,7 +12,7 @@ import { SET_AUTH_CHECKED, SET_USER, IS_REQUESTING, IS_SUCCESS, IS_FAILED } from
     switch(action.type) {
       
       case SET_AUTH_CHECKED: {
-        console.log('SET_AUTH_CHECKED')
+        //console.log('SET_AUTH_CHECKED')
         return {
           ...state,
           isAuthChecked: action.isAuthChecked,
@@ -21,7 +21,7 @@ import { SET_AUTH_CHECKED, SET_USER, IS_REQUESTING, IS_SUCCESS, IS_FAILED } from
         }
       }
       case SET_USER: {
-        console.log('SET_USER')
+        //console.log('SET_USER')
         return {
           ...state,
           user: action.user,
@@ -30,7 +30,7 @@ import { SET_AUTH_CHECKED, SET_USER, IS_REQUESTING, IS_SUCCESS, IS_FAILED } from
         }
       }
       case IS_REQUESTING: {
-        console.log('IS_REQUESTING')
+        //console.log('IS_REQUESTING')
         return {
           ...state,
           isRequest: true,
@@ -38,7 +38,7 @@ import { SET_AUTH_CHECKED, SET_USER, IS_REQUESTING, IS_SUCCESS, IS_FAILED } from
         }
       }
       case IS_SUCCESS: {
-        console.log('IS_SUCCESS')
+        //console.log('IS_SUCCESS')
         return {
           ...state,
           isRequest: false,
@@ -46,7 +46,7 @@ import { SET_AUTH_CHECKED, SET_USER, IS_REQUESTING, IS_SUCCESS, IS_FAILED } from
         }
       }
       case IS_FAILED: {
-        console.log('IS_FAILED')
+        //console.log('IS_FAILED')
         return {
           ...state,
           isRequest: false,

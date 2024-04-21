@@ -100,9 +100,12 @@ export function getOrderNumber(ids) {
     dispatch({
       type: ORDER_NUMBER_REQUEST,
     });
-    request('orders', { 
+    return fetchWithRefresh('orders', { 
       method: 'POST', 
-      headers: { 'Content-Type': 'application/json;charset=utf-8' }, 
+      headers: { 
+        'Content-Type': 'application/json;charset=utf-8' ,
+        "Authorization": localStorage.getItem('accessToken') || null
+      }, 
       body: JSON.stringify({ 'ingredients': ids})
     })
     .then(data => { 

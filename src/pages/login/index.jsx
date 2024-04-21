@@ -12,8 +12,8 @@ import { ErrorRequestHandler } from '../../components/ErrorRequestHadler'
 function Login() {
 
     const [formData, setFormData] = useState({
-      email: 'luckychel@yandex.ru',
-      password: '123456',
+      email: '',
+      password: '',
     });
 
     const onChangeFormData = (e) => {

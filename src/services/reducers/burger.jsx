@@ -69,7 +69,8 @@ export const burgerReducer = (state = initialState, action) => {
         return {
           ...state,
           itemsRequest: true,
-          itemsFailed: false
+          itemsFailed: false,
+          orderNumber: null
         }
       }
       case ORDER_NUMBER_SUCCESS: {

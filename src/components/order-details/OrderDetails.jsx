@@ -5,10 +5,11 @@ import PropTypes from 'prop-types';
 
 import { getOrderNumber } from '../../services/actions';
 import { useSelector, useDispatch } from 'react-redux';
+import { PreLoader } from '../pre-loader/PreLoader';
 
 function OrderDetails ({ids}) {
     
-    const orderNumber = useSelector(store => store.burger.orderNumber);
+    const { orderNumber, itemsRequest} = useSelector(store => store.burger);
 
     const dispatch = useDispatch();
 
@@ -18,15 +19,27 @@ function OrderDetails ({ids}) {
 
     return (
         <div className={styles.order_details_main_content}>
-             <p className="text text_type_digits-large">{orderNumber}</p>
-             <p className='text text_type_main-medium pt-4 pb-15'>идентификатор заказа</p>
-             <div className={styles.done}>
-                <div className={styles.done_img}>
-                    <CheckMarkIcon type="primary" />
-                </div>
-             </div>
-             <p className='text text_type_main-default pt-15'>Ваш заказ начали готовить</p>
-             <p className='text text_type_main-default text_color_inactive pt-2 pb-30'>Дождитесь готовности на орбитальной станции</p>
+
+            {
+              orderNumber > 0 && (
+                <>
+                    <p className="text text_type_digits-large">{orderNumber}</p>
+                    <p className='text text_type_main-medium pt-4 pb-10'>идентификатор заказа</p>
+                    <div className={`${styles.done} mb-10`}>
+                        <div className={styles.done_img}>
+                            <CheckMarkIcon type="primary" />
+                        </div>
+                    </div>
+                </>
+            )}
+             { itemsRequest && (
+                <>
+                    <PreLoader style={{ height: '255px' }} />
+                    <p className='text text_type_main-default pt-30'>Ваш заказ начали готовить</p>
+                    <p className='text text_type_main-default text_color_inactive pt-2 pb-30'>Дождитесь готовности на орбитальной станции</p>
+                 </>
+             )}
+           
         </div>
     )
 }
