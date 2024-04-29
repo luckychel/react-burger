@@ -11,11 +11,13 @@ import { useSelector, useDispatch } from 'react-redux'
 import { addItem, replaceItems, clearBurger } from '../../services/actions';
 import { useDrop } from 'react-dnd'
 
+import { useNavigate, useLocation} from 'react-router-dom';
+
 function BurgerConstructor() {
 
    //Данные ингредиентов
-   const bun = useSelector(store => store.burger.bun);
-   const ingredients = useSelector(store => store.burger.burgerIngredients);
+   const bun  = useSelector(store => store.burger.bun); 
+   const ingredients  = useSelector(store => store.burger.burgerIngredients); 
 
    //Данные для заказа в конструкторе
    const isDraggingIng = useSelector(store => store.ingredients.isDraggingIng);
@@ -48,8 +50,17 @@ function BurgerConstructor() {
    //Модальное окно заказа
    const [isOpenOrderDetailsModal, setOrderDetailsOpenModal] = useState(false);
 
+   const {user} = useSelector(store => store.user);
+   const navigate = useNavigate();
+   const location = useLocation();
+
    //отправляем заказ
    const handleOrderDetailsClick = () => {
+       if (!user) {
+         navigate('/login', { state: {from: location}});
+         return
+       }
+
       let ids = [];
       if (bun) 
          ids.push(bun._id)
@@ -80,7 +91,7 @@ function BurgerConstructor() {
 
    return (
       <section className={`${styles.constructor_main_content} ml-10`}>
-         <div className={`${styles.container} pt-25`}>
+         <div className={`${styles.container} pt-24`}>
             
          <BurgerBunItem pos="top" bun={bun} />
 

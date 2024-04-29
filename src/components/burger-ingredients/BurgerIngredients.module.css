@@ -12,7 +12,7 @@
 
 .ingredients {
     width: 600px;
-    height: 620px;
+    height: 600px;
     gap: 10px;
     display: flex;
     flex-direction: column;
