@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import AppHeader from '../app-header/AppHeader'
 
 import ErrorBoundary from '../error-boundary/ErrorBoundary';
@@ -24,14 +24,14 @@ import Modal from '../modal/Modal';
 
 import { OnlyAuth, OnlyUnAuth } from '../protected-route/ProtectedRoute';
 
-
-function App() {
+const App: FC = () => {
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getIngredients());
-
+    // @ts-ignore 
+    dispatch(getIngredients()); 
+    // @ts-ignore
     dispatch(checkUserAuth());
   }, [dispatch]);
 

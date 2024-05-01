@@ -1,14 +1,15 @@
-import React, { useCallback } from 'react'
+import { FC, useCallback } from 'react'
 import styles from './AppHeader.module.css';
 import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Link, NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux'
 
-function AppHeader(props) {
+export const AppHeader: FC = () => {
 
+  // @ts-ignore
   const { user } = useSelector(store => store.user);
 
-  const smartLink = useCallback((to, title) => {
+  const smartLink = useCallback((to: string, title: string) => {
     return (
       <NavLink to={to} className={`${styles.nav_link}`}>
       {({ isActive }) => (

@@ -1,10 +1,15 @@
-import PropTypes from 'prop-types';
+import { FC, ReactElement } from 'react';
 import { useLocation, Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { PreLoader } from '../pre-loader/PreLoader';
 
-const ProtectedRoute = ({ onlyUnAuth = false, element }) => {
+interface IProtectedProps {
+  element: ReactElement;
+}
 
+const ProtectedRoute: FC<{ onlyUnAuth?: boolean } & IProtectedProps> = ({ onlyUnAuth = false, element }) => {
+
+  // @ts-ignore
   const { user, isAuthChecked } = useSelector(store => store.user);
   const location = useLocation()
 
@@ -23,10 +28,6 @@ const ProtectedRoute = ({ onlyUnAuth = false, element }) => {
   return element;
 }
 
-ProtectedRoute.propTypes = {
-    onlyUnAuth: PropTypes.bool,
-    element: PropTypes.element,
-  }
-  
+
 export const OnlyAuth = ProtectedRoute;
-export const OnlyUnAuth = ({element}) => <ProtectedRoute onlyUnAuth={true} element={element} />
+export const OnlyUnAuth: FC<IProtectedProps> = ({element}) => <ProtectedRoute onlyUnAuth={true} element={element} />

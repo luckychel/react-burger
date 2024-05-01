@@ -1,7 +1,12 @@
+import { FC } from 'react';
 import imgloader from '../../images/loader.gif';
 import styles from './PreLoader.module.css'
 
-export function PreLoader({ style }) {
+interface IPreLoaderProps {
+    style?: any;
+} 
+
+export const PreLoader: FC<IPreLoaderProps> = ({ style }) => {
     return (
         <div className={styles.loader_main_content} style={style}>
             <p className="text text_type_main-default pb-4">Подождите...</p>

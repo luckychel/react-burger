@@ -195,12 +195,10 @@ export function checkUserAuth() {
       });
     }
     else {
-      //setTimeout(function() {
-        dispatch({
-          type: SET_AUTH_CHECKED,
-          isAuthChecked: true
-        });
-      //}, 5000);
+      dispatch({
+        type: SET_AUTH_CHECKED,
+        isAuthChecked: true
+      });
     }
   }
 }

@@ -1,15 +1,14 @@
-import React, { } from 'react'
+import { FC } from 'react'
 import styles from './BurgerBunItem.module.css';
 import { ConstructorElement} from '@ya.praktikum/react-developer-burger-ui-components'
-
-import PropTypes from 'prop-types';
 
 import { useSelector, useDispatch } from 'react-redux'
 import { addItem } from '../../services/actions';
 import { useDrop } from 'react-dnd'
 
-function BurgerBunItem({pos, bun}) {
+const BurgerBunItem: FC<{pos: 'top' | 'bottom'; bun: any;}> = ({pos, bun}) => {
  
+    // @ts-ignore
     const isDraggingBun = useSelector(store => store.ingredients.isDraggingBun);
 
     const dispatch = useDispatch();
@@ -44,10 +43,6 @@ function BurgerBunItem({pos, bun}) {
         }
         </div>
     )
-}
-
-BurgerBunItem.propTypes = {
-    pos: PropTypes.string
 }
 
 export default BurgerBunItem;
