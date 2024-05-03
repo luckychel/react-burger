@@ -6,10 +6,11 @@ import { useSelector, useDispatch } from 'react-redux'
 import { addItem } from '../../services/actions';
 import { useDrop } from 'react-dnd'
 
-const BurgerBunItem: FC<{pos: 'top' | 'bottom'; bun: any;}> = ({pos, bun}) => {
- 
-    // @ts-ignore
-    const isDraggingBun = useSelector(store => store.ingredients.isDraggingBun);
+import { IIngredientItem } from '../../utils/types';
+
+const BurgerBunItem: FC<{pos: 'top' | 'bottom'; bun: IIngredientItem;}> = ({pos, bun}) => {
+
+    const isDraggingBun = useSelector((store: any) => store.ingredients.isDraggingBun);
 
     const dispatch = useDispatch();
 

@@ -1,29 +1,26 @@
-import React, { useRef } from 'react'
+import { FC, useState, useRef } from 'react'
 import styles from './BurgerConstructorItem.module.css';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 
-import PropTypes from 'prop-types';
-import { Ingredient } from '../../utils/propTypes'
-
 import { useDispatch } from 'react-redux'
 import { deleteItem } from '../../services/actions';
-import { useDrag, useDrop } from 'react-dnd'
+import { DropTargetMonitor, useDrag, useDrop } from 'react-dnd'
 
-function BurgerConstructorItem({ item, id, index, moveCard}) {
-  
+import { IIngredientItem, TMoveCard, IDragObject } from '../../utils/types';
+
+const BurgerConstructorItem: FC<{ id?: string, ingredient: IIngredientItem; index: number, moveCard: TMoveCard}> = ({ ingredient, id, index, moveCard}) => {
+
+  const [handlerId, setHandlerId] = useState<string | null>(null);
+
+  const ref = useRef<HTMLDivElement | null>(null);
   const dispatch = useDispatch();
 
-  const ref = useRef(null);
-
-  const [{ handlerId }, drop] = useDrop({
+  const [, drop] = useDrop<IDragObject, unknown>({
     accept: 'ingredient',
     collect(monitor) {
-      return {
-        handlerId: monitor.getHandlerId(),
-        isHover: monitor.isOver(),
-      }
+       setHandlerId(monitor.getHandlerId() as string);
     },
-    hover(item, monitor) {
+    hover(item: IDragObject, monitor: DropTargetMonitor) {
       if (!ref.current) {
         return
       }
@@ -38,7 +35,7 @@ function BurgerConstructorItem({ item, id, index, moveCard}) {
 
       const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
       const clientOffset = monitor.getClientOffset()
-      const hoverClientY = clientOffset.y - hoverBoundingRect.top
+      const hoverClientY = clientOffset!.y - hoverBoundingRect.top
 
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
         return
@@ -66,13 +63,7 @@ function BurgerConstructorItem({ item, id, index, moveCard}) {
       //console.log('end = ' + item.id)
     }
   })
-/*
-  useMemo(()=>{
-    if (draggingItem && isDragging) {
-      console.log('useEffect = ' + draggingItem.id)
-    }
-  },[draggingItem, isDragging])
-*/
+
   const opacity = isDragging ? 0 : 1
 
   drag(drop(ref))
@@ -83,19 +74,14 @@ function BurgerConstructorItem({ item, id, index, moveCard}) {
           <DragIcon type="primary"/>
         </div>
         <ConstructorElement
-              text={item.name}
-              price={item.price}
-              thumbnail={item.image}
+              text={ingredient.name}
+              price={ingredient.price}
+              thumbnail={ingredient.image}
               isLocked={false} 
-              extraClass={draggingItem && draggingItem.id === item.uniqkey ? styles.isHoverIngredient : ''} 
-              handleClose={() => dispatch(deleteItem(item))}/>
+              extraClass={draggingItem && draggingItem.id === ingredient.uniqkey ? styles.isHoverIngredient : ''} 
+              handleClose={() => dispatch(deleteItem(ingredient))}/>
       </div>
     )
 }
-BurgerConstructorItem.propTypes = {
-  id: PropTypes.string.isRequired,
-  item: Ingredient,
-  index: PropTypes.number.isRequired, 
-  moveCard: PropTypes.func.isRequired
-}
+
 export default BurgerConstructorItem;

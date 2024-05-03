@@ -12,18 +12,19 @@ import { addItem, replaceItems, clearBurger } from '../../services/actions';
 import { useDrop } from 'react-dnd'
 
 import { useNavigate, useLocation} from 'react-router-dom';
+import { IIngredientItem } from '../../utils/types';
 
 function BurgerConstructor() {
 
    //Данные ингредиентов
-   const bun  = useSelector(store => store.burger.bun); 
-   const ingredients  = useSelector(store => store.burger.burgerIngredients); 
+   const bun: IIngredientItem = useSelector((store: any) => store.burger.bun); 
+   const ingredients: [IIngredientItem] = useSelector((store: any) => store.burger.burgerIngredients); 
 
    //Данные для заказа в конструкторе
-   const isDraggingIng = useSelector(store => store.ingredients.isDraggingIng);
+   const isDraggingIng: boolean = useSelector((store: any) => store.ingredients.isDraggingIng);
 
    const [isCreateOrderBtnDisabled, setCreateOrderBtnDisabled] = useState(true);
-   const [orderItems, setOrderItems] = useState(null);
+   const [orderItems, setOrderItems] = useState<string[]>([]);
    const [totalSum, setTotalSum] = useState(0);
 
    useMemo(() => {
@@ -31,7 +32,7 @@ function BurgerConstructor() {
       if (ingredients || bun) {
          let totalSumTemp = 0;
          if (ingredients && ingredients.length > 0) {
-            totalSumTemp = ingredients?.map(i=>i.price)?.reduce((a,b)=>a+b);
+            totalSumTemp = ingredients?.map((i: any) => i.price)?.reduce((a: number, b: number) => a + b);
          }
          if (bun) {
             totalSumTemp += bun.price * 2;
@@ -50,6 +51,7 @@ function BurgerConstructor() {
    //Модальное окно заказа
    const [isOpenOrderDetailsModal, setOrderDetailsOpenModal] = useState(false);
 
+   //@ts-ignore
    const {user} = useSelector(store => store.user);
    const navigate = useNavigate();
    const location = useLocation();
@@ -61,7 +63,7 @@ function BurgerConstructor() {
          return
        }
 
-      let ids = [];
+      let ids: string[] = [];
       if (bun) 
          ids.push(bun._id)
       if (ingredients) 
@@ -85,7 +87,7 @@ function BurgerConstructor() {
       },
    });
 
-   const moveCard = useCallback((dragIndex, hoverIndex) => {
+   const moveCard = useCallback((dragIndex: number, hoverIndex: number) => {
       dispatch(replaceItems(dragIndex,hoverIndex))
     }, [dispatch])
 
@@ -100,7 +102,7 @@ function BurgerConstructor() {
                ingredients && ingredients.length > 0 ?
                   ingredients.map((item, index) => 
                      (
-                        <BurgerConstructorItem key={item.uniqkey} id={item.uniqkey} item={item} index={index} moveCard={moveCard} />
+                        <BurgerConstructorItem key={item.uniqkey} id={item.uniqkey} ingredient={item} index={index} moveCard={moveCard} />
                      )
                   ) : (
                      <div className={`constructor-element ${styles.custom_aligment} ${styles.custom_margin_left} ${isItemHover || isDraggingIng ? styles.isHover : ''}`}>

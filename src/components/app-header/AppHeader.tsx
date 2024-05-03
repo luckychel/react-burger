@@ -4,10 +4,9 @@ import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-dev
 import { Link, NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux'
 
-export const AppHeader: FC = () => {
+const AppHeader: FC = () => {
 
-  // @ts-ignore
-  const { user } = useSelector(store => store.user);
+  const { user } = useSelector((store: any) => store.user);
 
   const smartLink = useCallback((to: string, title: string) => {
     return (
@@ -38,4 +37,4 @@ export const AppHeader: FC = () => {
       );
     }
 
-  export default AppHeader;
+export default AppHeader;
