@@ -1,8 +1,6 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, FC } from 'react'
 import styles from './BurgerIngredientItem.module.css';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components'
-
-import { Ingredient } from '../../utils/propTypes'
 
 import { useSelector, useDispatch } from 'react-redux';
 import { IS_DRAGGING } from '../../services/actions';
@@ -10,13 +8,15 @@ import { useDrag  } from 'react-dnd'
 
 import { Link, useLocation } from 'react-router-dom';
 
-function BurgerIngredientItem(props) {
+import { IIngredientItem } from '../../utils/types';
+
+const BurgerIngredientItem: FC<IIngredientItem> = ({...props}) => {
 
     const [isDraggingBun, setDraggingBun] = useState(false);
     const [isDraggingIng, setDraggingIng] = useState(false);
 
-    let countBun = useSelector(store => store.burger.bun);
-    let countIng = useSelector(store => store.burger.burgerIngredients).filter(item => item._id === props._id);
+    let countBun: IIngredientItem = useSelector((store: any) => store.burger.bun); 
+    let countIng: [IIngredientItem] = useSelector((store: any) => store.burger.burgerIngredients).filter((item: IIngredientItem) => item._id === props._id);
     let count = 0;
 
     if (props.type === 'bun')
@@ -34,7 +34,7 @@ function BurgerIngredientItem(props) {
          });
     }, [isDraggingBun, isDraggingIng, dispatch])
 
-    const beginDrugging = useCallback((type, val) => {
+    const beginDrugging = useCallback((type: string, val: boolean) => {
           if (type === "bun")
             setDraggingBun(val)
           else
@@ -71,7 +71,5 @@ function BurgerIngredientItem(props) {
        </Link>
     )
 }
-
-BurgerIngredientItem.propTypes = Ingredient;
 
 export default BurgerIngredientItem;

@@ -1,11 +1,12 @@
-import React, {useState, useRef, useCallback, useMemo} from 'react'
+import {useState, useRef, useCallback, useMemo, FC} from 'react'
 import styles from './BurgerIngredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import BurgerIngredientItem from '../burger-ingredient-item/BurgerIngredientItem';
 
 import { useSelector } from 'react-redux';
+import { IIngredientItem } from '../../utils/types';
 
-function BurgerIngredients() {
+const BurgerIngredients: FC = () => {
 
     const tabs = useMemo(() => {
       return [
@@ -15,16 +16,16 @@ function BurgerIngredients() {
       ]
     }, []);
 
-    const ingredients = useSelector(store => store.ingredients.listIngredients);
+    const ingredients = useSelector((store: any) => store.ingredients.listIngredients);
 
     const [current, setCurrent] = useState(tabs[0].type);
 
-    const scrollRef = useRef(null);
-    const bunRef = useRef(null);
-    const sauceRef = useRef(null);
-    const mainRef = useRef(null);
+    const scrollRef = useRef<HTMLDivElement | null>(null);
+    const bunRef = useRef<HTMLDivElement | null>(null);
+    const sauceRef = useRef<HTMLDivElement | null>(null);
+    const mainRef = useRef<HTMLDivElement | null>(null);
 
-    const tabClickHandler = useCallback((clickedTab) => {
+    const tabClickHandler = useCallback((clickedTab: string) => {
       if (bunRef.current && sauceRef.current && mainRef.current) {
         switch (clickedTab) {
           case tabs[0].type: bunRef.current.scrollIntoView({ behavior: "smooth" }); break;
@@ -36,8 +37,7 @@ function BurgerIngredients() {
       }
     }, [tabs]);
 
-    const handleOnScroll = () => {
-          
+    const handleOnScroll = useCallback(() => {
       if (scrollRef.current && bunRef.current && sauceRef.current && mainRef.current) {
         const scrollPosition = scrollRef.current.getBoundingClientRect().top;
         const bunPosition = bunRef.current.getBoundingClientRect().top;
@@ -56,7 +56,7 @@ function BurgerIngredients() {
           setCurrent(tabs[2].type);
         }
       }
-    };
+    }, [tabs]);
 
     return (
 
@@ -86,8 +86,8 @@ function BurgerIngredients() {
                   <p key={tab.type} className="text text_type_main-medium" ref={refer}>{tab.name}</p>
                   <div className={styles.details}>
                   {
-                    ingredients.filter(item => item.type === tab.type)
-                      .map((item) => 
+                    ingredients.filter((item: IIngredientItem) => item.type === tab.type)
+                      .map((item: IIngredientItem) => 
                         <BurgerIngredientItem key={item._id} {...item} />
                       )
                   }

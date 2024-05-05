@@ -1,19 +1,30 @@
-import React from 'react';
+import { Component, ErrorInfo, ReactNode } from "react";
 
-class ErrorBoundary extends React.Component {
-    constructor(props) {
-      super(props);
-      this.state = { hasError: false, error: null, errorInfo: null };
-    }
-  
+interface Props {
+  children?: ReactNode;
+}
+
+interface State {
+  hasError: boolean;
+  error: Error | null;
+  errorInfo: ErrorInfo | null;
+}
+
+class ErrorBoundary extends Component<Props, State> {
+
+    public state: State = {
+      hasError: false,
+      error: null, 
+      errorInfo: null 
+    };
+
     // с помощью этого метода меняем стейт компонента при возникновении ошибки:
-    static getDerivedStateFromError(error) {
+    public static getDerivedStateFromError(_: Error) {
       return { hasError: true };
-    }
+    } 
   
     // с помощью этого метода логируем информацию об ошибке:
-    componentDidCatch(error, errorInfo) {
-      //console.log("Возникла ошибка!", error, errorInfo);
+    componentDidCatch(error: Error, errorInfo: ErrorInfo) {
       this.setState({
         error: error,
         errorInfo: errorInfo
@@ -21,7 +32,7 @@ class ErrorBoundary extends React.Component {
     }
   
     render() {
-      if (this.state.hasError) {
+      if (this.state?.hasError) {
         // если возникла ошибка, сообщаем об этом пользователю в специальном компоненте:
         return (
           <section className='p-10'>
@@ -29,12 +40,17 @@ class ErrorBoundary extends React.Component {
             <p>
               В приложении произошла ошибка. Пожалуйста, перезагрузите страницу.
             </p>
+            <>
+            {(this.state.error instanceof Error ? 
+              
+                <details style={{ whiteSpace: 'pre-wrap' }}>
+                  {this.state.error && this.state.error?.toString()}
+                  <br />
+                  {this.state.errorInfo?.componentStack}
+                </details>
 
-            <details style={{ whiteSpace: 'pre-wrap' }}>
-              {this.state.error && this.state.error?.toString()}
-              <br />
-              {this.state.errorInfo?.componentStack}
-            </details>
+            : (<></>))}
+            </>
           </section>
         );
       }

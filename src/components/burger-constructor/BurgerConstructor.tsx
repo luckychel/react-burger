@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback, useMemo, FC } from 'react'
 import styles from './BurgerConstructor.module.css';
 import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 
@@ -14,7 +14,7 @@ import { useDrop } from 'react-dnd'
 import { useNavigate, useLocation} from 'react-router-dom';
 import { IIngredientItem } from '../../utils/types';
 
-function BurgerConstructor() {
+const BurgerConstructor: FC = () => {
 
    //Данные ингредиентов
    const bun: IIngredientItem = useSelector((store: any) => store.burger.bun); 

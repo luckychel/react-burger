@@ -21,3 +21,4 @@ export type TMoveCard = (dragIndex: number, dropIndex: number ) => void;
 
 export interface IDragObject { index: number }
   
+export interface IIngredientDetails { header?: string; } 

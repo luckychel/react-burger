@@ -1,12 +1,13 @@
+import { FC } from 'react'
 import styles from './IngredientDetails.module.css';
-import PropTypes from 'prop-types';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { IIngredientItem, IIngredientDetails } from '../../utils/types';
 
-function IngredientDetails (props) {
+const IngredientDetails: FC<IIngredientDetails> = ({...props}) => {
     
-    const { ingredientId } = useParams();
-    const ingredient = useSelector(store => store.ingredients.listIngredients).filter(x => x._id === ingredientId)[0];
+    const { ingredientId } = useParams<string>();
+    const ingredient: IIngredientItem = useSelector((store: any) => store.ingredients.listIngredients).filter((item: IIngredientItem) => item._id === ingredientId)[0];
 
     return (
         <>
@@ -16,7 +17,7 @@ function IngredientDetails (props) {
                     {props.header}
                 </h3>
               )
-            }
+            } 
 
             { ingredient && 
               (
@@ -49,7 +50,5 @@ function IngredientDetails (props) {
         </>
     )
 }
-
-IngredientDetails.propTypes = { header: PropTypes.string }
 
 export default IngredientDetails;
