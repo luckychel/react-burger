@@ -22,3 +22,14 @@ export type TMoveCard = (dragIndex: number, dropIndex: number ) => void;
 export interface IDragObject { index: number }
   
 export interface IIngredientDetails { header?: string; } 
+
+export interface IModalProps {
+    header?: string;
+    onClose: (() => void) | undefined;
+}
+
+export type TUser = {
+    name: string;
+    email: string; 
+    password: string 
+  } 

@@ -1,4 +1,4 @@
-import { FC, useCallback } from 'react'
+import { useCallback, FC } from 'react'
 import styles from './AppHeader.module.css';
 import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Link, NavLink } from 'react-router-dom';

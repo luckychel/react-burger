@@ -1,4 +1,4 @@
-import {useState, useRef, useCallback, useMemo, FC} from 'react'
+import { useState, useRef, useCallback, useMemo, FC } from 'react'
 import styles from './BurgerIngredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import BurgerIngredientItem from '../burger-ingredient-item/BurgerIngredientItem';

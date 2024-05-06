@@ -1,6 +1,8 @@
+import { FC } from 'react'
 import styles from './OrderFeed.module.css';
 
-function OrderFeed() {
+const OrderFeed: FC = () => {
+
     return (
         <div className={styles.order_feed_main_content}>
             <p className="text_type_main-default mt-0">

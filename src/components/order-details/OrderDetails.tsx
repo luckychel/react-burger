@@ -1,19 +1,19 @@
-import React, { useEffect} from 'react'
+import { useEffect, FC } from 'react'
 import styles from './OrderDetails.module.css';
 import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-components'
-import PropTypes from 'prop-types';
 
 import { getOrderNumber } from '../../services/actions';
 import { useSelector, useDispatch } from 'react-redux';
 import { PreLoader } from '../pre-loader/PreLoader';
 
-function OrderDetails ({ids}) {
-    
-    const { orderNumber, itemsRequest} = useSelector(store => store.burger);
+const OrderDetails: FC<{ ids: string[] }> = ({ ids}) => {
+
+    const { orderNumber, itemsRequest} = useSelector((store: any) => store.burger);
 
     const dispatch = useDispatch();
 
     useEffect(() => {
+      //@ts-ignore
       dispatch(getOrderNumber(ids));
     }, [ids, dispatch]);
 
@@ -41,10 +41,6 @@ function OrderDetails ({ids}) {
            
         </div>
     )
-}
-
-OrderDetails.propTypes = {
-    ids: PropTypes.arrayOf(PropTypes.string).isRequired
 }
 
 export default OrderDetails;

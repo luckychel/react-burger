@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { useEffect, FC } from 'react';
 import AppHeader from '../app-header/AppHeader'
 
 import ErrorBoundary from '../error-boundary/ErrorBoundary';

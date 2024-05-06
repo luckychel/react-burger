@@ -1,28 +1,29 @@
-import React, {useState} from 'react'
+import {useState, FC, MouseEvent } from 'react'
 import { NavLink, Outlet } from 'react-router-dom';
 import styles from './Profile.module.css';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../../services/actions';
-import { PreLoader } from '../../components/pre-loader/PreLoader';
-import { ErrorRequestHandler } from '../../components/ErrorRequestHadler'
+import { PreLoader } from '../pre-loader/PreLoader';
+import { ErrorRequestHandler } from '../ErrorRequestHadler'
 
-function ProfileMenu() {
+const ProfileMenu: FC = () => {
 
     const [errorMessage, setErrorMessage] = useState('');
 
     const dispatch = useDispatch();
 
-    const logOut = (e) => {
-        e.preventDefault();
-
+    const logOut = (event: MouseEvent<HTMLAnchorElement>) => {
+        event.preventDefault();
+        
+        //@ts-ignore
         dispatch(logout())
-        .catch(err => {
+        .catch((err: Error) => {
           setErrorMessage(err?.message)
         });
     }
 
-    const {isRequest} = useSelector(store => store.user);
+    const {isRequest} = useSelector((store: any) => store.user);
 
     if (isRequest) {
       return <PreLoader />
@@ -37,7 +38,7 @@ function ProfileMenu() {
                 <NavLink to='orders' className={({ isActive }) => isActive ? styles.text_active : styles.text_inactive}>
                     <p className="text text_type_main-default pb-5">История заказов</p>
                 </NavLink>
-                <NavLink className={styles.text_inactive} onClick={(e) => {logOut(e);}}>
+                <NavLink to='' className={styles.text_inactive} onClick={(e) => {logOut(e);}}>
                     <p className="text text_type_main-default" >Выход</p>
                 </NavLink>
 

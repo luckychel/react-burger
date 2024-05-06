@@ -1,4 +1,4 @@
-import { FC, useState, useRef } from 'react'
+import { useState, useRef, FC } from 'react'
 import styles from './BurgerConstructorItem.module.css';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 
