@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import {useState, FC, FormEvent, ChangeEvent} from 'react';
 import { Link, Navigate, useLocation } from 'react-router-dom';
 import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './login.module.css';
@@ -6,20 +6,20 @@ import styles from './login.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { login } from '../../services/actions';
 import { PreLoader } from '../../components/pre-loader/PreLoader';
+
 import { ErrorRequestHandler } from '../../components/ErrorRequestHadler'
 
-
-function Login() {
+const Login: FC = () => {
 
     const [formData, setFormData] = useState({
       email: '',
       password: '',
     });
 
-    const onChangeFormData = (e) => {
+    const onChangeFormData = (event: ChangeEvent<HTMLInputElement>) => {
        setFormData({
         ...formData,
-        [e.target.name]: e.target.value
+        [event.target.name]: event.target.value
       });
     }
 
@@ -27,17 +27,19 @@ function Login() {
 
     const [errorMessage, setErrorMessage] = useState('');
 
-    const onSubmit = (e) => {
-        e.preventDefault();
-        dispatch(login(formData))
-          .catch(err => {
-            setErrorMessage(err?.message)
-          });
+    const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+
+      //@ts-ignore
+      dispatch(login(formData))
+        .catch((err: Error) => {
+          setErrorMessage(err?.message)
+        });
     }
 
     const { state } = useLocation();
 
-    const {isRequest, user} = useSelector(store => store.user);
+    const {isRequest, user} = useSelector((store: any) => store.user);
 
     if (isRequest) {
       return <PreLoader />

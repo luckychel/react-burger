@@ -1,3 +1,11 @@
+import { store } from '../index';
+// import { Action, ActionCreator } from 'redux';
+// import { ThunkAction } from 'redux-thunk';
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
+//export type AppThunk<TReturn = void> = ActionCreator<ThunkAction<TReturn, Action, RootState, TApplicationActions>>;
+
 export interface IIngredientItem {
     _id: string,
     type: string,
@@ -29,7 +37,15 @@ export interface IModalProps {
 }
 
 export type TUser = {
-    name: string;
-    email: string; 
-    password: string 
-  } 
+    name?: string;
+    email?: string ; 
+    password?: string;
+    token?: string;
+}
+
+export interface IResponse<T> {
+    success: boolean;
+    message?: string;
+    name?: string;
+    data?: T;
+}

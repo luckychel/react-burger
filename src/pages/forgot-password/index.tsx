@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import {useState, FC, FormEvent, ChangeEvent} from 'react';
 import { Button, EmailInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './forgot-password.module.css';
 
@@ -8,15 +8,18 @@ import { forgotPassword } from '../../services/actions';
 import { PreLoader } from '../../components/pre-loader/PreLoader';
 import { ErrorRequestHandler } from '../../components/ErrorRequestHadler'
 
-function ForgotPassword() {
+import { IResponse } from '../../utils/types';
+
+const ForgotPassword: FC = () => {
+
   const [formData, setFormData] = useState({
     email: ''
   });
 
-  const onChangeFormData = (e) => {
+  const onChangeFormData = (event: ChangeEvent<HTMLInputElement>) => {
       setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [event.target.name]: event.target.value
     });
   }
 
@@ -26,19 +29,22 @@ function ForgotPassword() {
 
   const [errorMessage, setErrorMessage] = useState('');
 
-  const onSubmit = (e) => {
+  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    
+    //@ts-ignore
     dispatch(forgotPassword(formData))
-    .then(result => {
-      if (result && result.success) {
-        navigate('/reset-password', { state: {from: location}});
-      }
-    })
-    .catch(err => {
-      setErrorMessage(err?.message)
-    });
+      .then((result: IResponse<null>) => {
+        if (result && result.success) {
+          navigate('/reset-password', { state: {from: location}});
+        }
+      })
+      .catch((err: Error) => {
+        setErrorMessage(err.message)
+      });
   }
 
-  const {isRequest} = useSelector(store => store.user);
+  const {isRequest} = useSelector((store: any) => store.user);
 
   if (isRequest) {
     return <PreLoader />

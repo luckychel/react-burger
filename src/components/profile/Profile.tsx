@@ -60,9 +60,9 @@ const Profile: FC = () => {
     return (
         <div className={styles.outlet_main_content}>
           <form className={styles.form} onSubmit={onSubmit}>
-            <Input type='text' placeholder={'Имя'} onChange={onChangeFormData} value={formData.name} name='name' extraClass="mb-6" onPointerEnterCapture onPointerLeaveCapture />
-            <EmailInput placeholder="Логин" onChange={onChangeFormData} value={formData.email} name='email' extraClass="mb-6"  />
-            <PasswordInput placeholder="Пароль" onChange={onChangeFormData} value={formData.password } name='password' extraClass="mb-6" />
+            <Input type='text' placeholder={'Имя'} onChange={onChangeFormData} value={formData.name || ''} name='name' extraClass="mb-6" onPointerEnterCapture onPointerLeaveCapture />
+            <EmailInput placeholder="Логин" onChange={onChangeFormData} value={formData.email || ''} name='email' extraClass="mb-6"  />
+            <PasswordInput placeholder="Пароль" onChange={onChangeFormData} value={formData.password  || ''} name='password' extraClass="mb-6" />
 
             <div className={styles.other_content}>
                 <Button htmlType="button" type="secondary" extraClass="mb-20" size="medium" onClick={cancelEdit} disabled={!isEditing}>Отмена</Button>

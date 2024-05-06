@@ -1,5 +1,4 @@
-
-import React, {useState} from 'react';
+import {useState, FC, FormEvent, ChangeEvent} from 'react';
 import styles from './reset-password.module.css';
 import { PasswordInput, Input, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 
@@ -9,17 +8,19 @@ import { resetPassword } from '../../services/actions';
 import { PreLoader } from '../../components/pre-loader/PreLoader';
 import { ErrorRequestHandler } from '../../components/ErrorRequestHadler'
 
-function ResetPassword() {
+import { TUser, IResponse } from '../../utils/types';
 
-    const [formData, setFormData] = useState({
+const ResetPassword: FC = () => {
+
+    const [formData, setFormData] = useState<TUser>({
         password: '',
         token: '',
-      });
+       });
 
-    const onChangeFormData = (e) => {
+      const onChangeFormData = (event: ChangeEvent<HTMLInputElement>) => {
        setFormData({
         ...formData,
-        [e.target.name]: e.target.value
+        [event.target.name]: event.target.value
       });
     }
 
@@ -28,21 +29,22 @@ function ResetPassword() {
   
     const [errorMessage, setErrorMessage] = useState('');
 
-    const onSubmit = (e) => {
-        e.preventDefault();
+    const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
         
+        //@ts-ignore
         dispatch(resetPassword(formData))
-        .then(result => {
+        .then((result: IResponse<null>) => {
             if (result && result.success) {
                navigate('/login');
             }
         })
-        .catch(err => {
+        .catch((err: Error) => {
             setErrorMessage(err?.message)
         });
     }
 
-    const {isRequest} = useSelector(store => store.user);
+    const {isRequest} = useSelector((store: any) => store.user);
 
     const location = useLocation();
 
@@ -60,8 +62,8 @@ function ResetPassword() {
         <div className={styles.reset_main_content}>
         <h1 className={`${styles.title} text_type_main-medium mb-6`}>Восстановление пароля</h1>
         <form className={`${styles.form} mb-20`} onSubmit={onSubmit}>
-            <PasswordInput placeholder={'Пароль'} value={formData.password} name={'password'} onChange={onChangeFormData} extraClass="mb-6"/>
-            <Input type='text' placeholder={'Введите код из письма'} value={formData.token} onChange={onChangeFormData} name='token' extraClass="mb-6" />
+            <PasswordInput placeholder={'Пароль'} value={formData.password || ''} name={'password'} onChange={onChangeFormData} extraClass="mb-6"/>
+            <Input type='text' placeholder={'Введите код из письма'} value={formData.token || ''} onChange={onChangeFormData} name='token' extraClass="mb-6" onPointerEnterCapture onPointerLeaveCapture  />
             <Button htmlType='submit' type="primary" size="medium">Сохранить</Button>
         </form>
 
