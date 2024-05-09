@@ -2,21 +2,21 @@ import { useState, useCallback, useEffect, FC } from 'react'
 import styles from './BurgerIngredientItem.module.css';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components'
 
-import { useSelector, useDispatch } from 'react-redux';
 import { dragging } from '../../services/actions';
 import { useDrag  } from 'react-dnd'
 
 import { Link, useLocation } from 'react-router-dom';
 
 import { IIngredientItem } from '../../utils/types';
+import { useAppSelector, useAppDispatch } from '../../services/hooks';
 
 const BurgerIngredientItem: FC<IIngredientItem> = ({...props}) => {
 
     const [isDraggingBun, setDraggingBun] = useState(false);
     const [isDraggingIng, setDraggingIng] = useState(false);
 
-    let countBun: IIngredientItem = useSelector((store: any) => store.burger.bun); 
-    let countIng: [IIngredientItem] = useSelector((store: any) => store.burger.burgerIngredients).filter((item: IIngredientItem) => item._id === props._id);
+    let countBun = useAppSelector(store => store.burger.bun); 
+    let countIng = useAppSelector(store => store.burger.burgerIngredients).filter(item => item && item._id === props._id);
     let count = 0;
 
     if (props.type === 'bun')
@@ -24,7 +24,7 @@ const BurgerIngredientItem: FC<IIngredientItem> = ({...props}) => {
     else
         count = countIng.length;
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     useEffect(()=>{
         dispatch(dragging(isDraggingBun, isDraggingIng));

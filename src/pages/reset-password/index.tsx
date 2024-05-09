@@ -3,12 +3,12 @@ import styles from './reset-password.module.css';
 import { PasswordInput, Input, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
 import { resetPassword } from '../../services/actions';
 import { PreLoader } from '../../components/pre-loader/PreLoader';
 import { ErrorRequestHandler } from '../../components/ErrorRequestHadler'
 
 import { TUser, IResponse } from '../../utils/types';
+import { useAppSelector, useAppDispatch } from '../../services/hooks';
 
 const ResetPassword: FC = () => {
 
@@ -24,15 +24,14 @@ const ResetPassword: FC = () => {
       });
     }
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
   
     const [errorMessage, setErrorMessage] = useState('');
 
     const onSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        
-        //@ts-ignore
+
         dispatch(resetPassword(formData))
         .then((result: IResponse<null>) => {
             if (result && result.success) {
@@ -44,7 +43,7 @@ const ResetPassword: FC = () => {
         });
     }
 
-    const {isRequest} = useSelector((store: any) => store.user);
+    const {isRequest} = useAppSelector(store => store.user);
 
     const location = useLocation();
 

@@ -3,17 +3,17 @@ import styles from './OrderDetails.module.css';
 import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 
 import { getOrderNumber } from '../../services/actions';
-import { useSelector, useDispatch } from 'react-redux';
 import { PreLoader } from '../pre-loader/PreLoader';
+
+import { useAppSelector, useAppDispatch } from '../../services/hooks';
 
 const OrderDetails: FC<{ ids: string[] }> = ({ ids}) => {
 
-    const { orderNumber, itemsRequest} = useSelector((store: any) => store.burger);
+    const { orderNumber, itemsRequest} = useAppSelector(store => store.burger);
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
-      //@ts-ignore
       dispatch(getOrderNumber(ids));
     }, [ids, dispatch]);
 

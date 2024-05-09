@@ -1,26 +1,27 @@
 import {useState, FC, ChangeEvent, FormEvent, SyntheticEvent } from 'react'
 import { EmailInput, PasswordInput, Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
 import styles from './Profile.module.css';
-import { useSelector, useDispatch } from 'react-redux'
+
 import { changeUser } from '../../services/actions';
 import { PreLoader } from '../pre-loader/PreLoader';
 import { ErrorRequestHandler } from '../ErrorRequestHadler'
 
 import { TUser } from '../../utils/types';
+import { useAppSelector, useAppDispatch } from '../../services/hooks';
 
 const Profile: FC = () => {
 
-   const { isRequest, user } = useSelector((store: any) => store.user);
-   const [initialFormData] = useState<TUser>(user);
+   const { isRequest, user } = useAppSelector(store => store.user);
+   const [initialFormData] = useState<TUser | null>(user);
    const [isEditing, setIsEditing] = useState(false);
 
-   const [formData, setFormData] = useState<TUser>({
-    name: user.name,
-    email: user.email,
+   const [formData, setFormData] = useState<TUser | null>({
+    name: user?.name,
+    email: user?.email,
     password: ''
   });
 
-   const dispatch = useDispatch();
+   const dispatch = useAppDispatch();
 
    const onChangeFormData = (event: ChangeEvent<HTMLInputElement>) => {
        setIsEditing(true);
@@ -36,12 +37,9 @@ const Profile: FC = () => {
     const onSubmit = (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
 
-       //@ts-ignore
-        dispatch(changeUser(formData))
+        dispatch(changeUser({...formData}))
         .catch((err: Error) => {
-          //debugger
           setErrorMessage(err.message);
-          //console.log(err.message)
         });
     }
     
@@ -60,9 +58,9 @@ const Profile: FC = () => {
     return (
         <div className={styles.outlet_main_content}>
           <form className={styles.form} onSubmit={onSubmit}>
-            <Input type='text' placeholder={'Имя'} onChange={onChangeFormData} value={formData.name || ''} name='name' extraClass="mb-6" onPointerEnterCapture onPointerLeaveCapture />
-            <EmailInput placeholder="Логин" onChange={onChangeFormData} value={formData.email || ''} name='email' extraClass="mb-6"  />
-            <PasswordInput placeholder="Пароль" onChange={onChangeFormData} value={formData.password  || ''} name='password' extraClass="mb-6" />
+            <Input type='text' placeholder={'Имя'} onChange={onChangeFormData} value={formData?.name || ''} name='name' extraClass="mb-6" onPointerEnterCapture onPointerLeaveCapture />
+            <EmailInput placeholder="Логин" onChange={onChangeFormData} value={formData?.email || ''} name='email' extraClass="mb-6"  />
+            <PasswordInput placeholder="Пароль" onChange={onChangeFormData} value={formData?.password  || ''} name='password' extraClass="mb-6" />
 
             <div className={styles.other_content}>
                 <Button htmlType="button" type="secondary" extraClass="mb-20" size="medium" onClick={cancelEdit} disabled={!isEditing}>Отмена</Button>

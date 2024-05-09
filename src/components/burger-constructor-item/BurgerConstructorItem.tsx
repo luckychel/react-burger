@@ -2,18 +2,18 @@ import { useState, useRef, FC } from 'react'
 import styles from './BurgerConstructorItem.module.css';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 
-import { useDispatch } from 'react-redux'
 import { deleteItem } from '../../services/actions';
 import { DropTargetMonitor, useDrag, useDrop } from 'react-dnd'
 
 import { TIngredientItem, TMoveCard, IDragObject } from '../../utils/types';
+import { useAppDispatch } from '../../services/hooks';
 
 const BurgerConstructorItem: FC<{ id?: string, ingredient: TIngredientItem; index: number, moveCard: TMoveCard}> = ({ ingredient, id, index, moveCard}) => {
 
   const [handlerId, setHandlerId] = useState<string | null>(null);
 
   const ref = useRef<HTMLDivElement | null>(null);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const [, drop] = useDrop<IDragObject, unknown>({
     accept: 'ingredient',

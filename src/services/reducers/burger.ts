@@ -8,7 +8,7 @@ type TBurgerState = Readonly<{
   itemsFailed: boolean;
   bun: TIngredientItem | null;
   burgerIngredients: Array<TIngredientItem | null>;
-  orderNumber: string;
+  orderNumber: number;
 }>;
 
 const initialState: TBurgerState = {
@@ -16,7 +16,7 @@ const initialState: TBurgerState = {
   itemsFailed: false,
   bun: null,  //для булки
   burgerIngredients: [], // для остального
-  orderNumber: ""
+  orderNumber: 0
 };
 
 type TBurgerAction =
@@ -25,7 +25,7 @@ type TBurgerAction =
   | { type: typeof INGREDIENTS_REPLACE; payload: { dragIndex: number, hoverIndex: number} }
   | { type: typeof CLEAR_BURGER }
   | { type: typeof ORDER_NUMBER_REQUEST }
-  | { type: typeof ORDER_NUMBER_SUCCESS; payload: { orderNumber: string } }
+  | { type: typeof ORDER_NUMBER_SUCCESS; payload: { orderNumber: number } }
   | { type: typeof ORDER_NUMBER_FAILED };
 
 
@@ -83,7 +83,7 @@ export const burgerReducer = (state = initialState, action: TBurgerAction) => {
           ...state,
           itemsRequest: true,
           itemsFailed: false,
-          orderNumber: null
+          orderNumber: 0
         }
       }
       case ORDER_NUMBER_SUCCESS: {
@@ -99,7 +99,7 @@ export const burgerReducer = (state = initialState, action: TBurgerAction) => {
           ...state,
           itemsRequest: false,
           itemsFailed: true,
-          orderNumber: ""
+          orderNumber: 0
         }
       }
     default: {

@@ -2,28 +2,28 @@ import {useState, FC, MouseEvent } from 'react'
 import { NavLink, Outlet } from 'react-router-dom';
 import styles from './Profile.module.css';
 
-import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../../services/actions';
 import { PreLoader } from '../pre-loader/PreLoader';
 import { ErrorRequestHandler } from '../ErrorRequestHadler'
+
+import { useAppSelector, useAppDispatch } from '../../services/hooks';
 
 const ProfileMenu: FC = () => {
 
     const [errorMessage, setErrorMessage] = useState('');
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const logOut = (event: MouseEvent<HTMLAnchorElement>) => {
         event.preventDefault();
-        
-        //@ts-ignore
+
         dispatch(logout())
         .catch((err: Error) => {
           setErrorMessage(err?.message)
         });
     }
 
-    const {isRequest} = useSelector((store: any) => store.user);
+    const {isRequest} = useAppSelector(store => store.user);
 
     if (isRequest) {
       return <PreLoader />

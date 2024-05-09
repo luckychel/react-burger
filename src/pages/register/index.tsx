@@ -3,12 +3,12 @@ import { EmailInput, PasswordInput, Button, Input } from '@ya.praktikum/react-de
 import styles from './register.module.css';
 import { Link } from 'react-router-dom';
 
-import { useSelector, useDispatch } from 'react-redux';
 import { register } from '../../services/actions';
 import { PreLoader } from '../../components/pre-loader/PreLoader';
 import { ErrorRequestHandler } from '../../components/ErrorRequestHadler'
 
 import { TUser } from '../../utils/types';
+import { useAppSelector, useAppDispatch } from '../../services/hooks';
 
 const Register: FC = () => {
 
@@ -24,20 +24,19 @@ const Register: FC = () => {
         [event.target.name]: event.target.value
       });
     }
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const [errorMessage, setErrorMessage] = useState('');
 
     const onSubmit = (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
 
-      //@ts-ignore
       dispatch(register(formData))
         .catch((err: Error) => {
           setErrorMessage(err?.message)
         });
     }
-    const {isRequest} = useSelector((store: any) => store.user);
+    const {isRequest} = useAppSelector(store => store.user);
 
     if (isRequest) {
       return <PreLoader />

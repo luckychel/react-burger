@@ -14,7 +14,6 @@ import { useNavigate, useLocation} from 'react-router-dom';
 import { TIngredientItem } from '../../utils/types';
 import { useAppSelector, useAppDispatch } from '../../services/hooks';
 
-
 const BurgerConstructor: FC = () => {
 
    //Данные ингредиентов

@@ -3,11 +3,11 @@ import { Link, Navigate, useLocation } from 'react-router-dom';
 import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './login.module.css';
 
-import { useSelector, useDispatch } from 'react-redux';
 import { login } from '../../services/actions';
 import { PreLoader } from '../../components/pre-loader/PreLoader';
 
 import { ErrorRequestHandler } from '../../components/ErrorRequestHadler'
+import { useAppSelector, useAppDispatch } from '../../services/hooks';
 
 const Login: FC = () => {
 
@@ -23,14 +23,13 @@ const Login: FC = () => {
       });
     }
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const [errorMessage, setErrorMessage] = useState('');
 
     const onSubmit = (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
 
-      //@ts-ignore
       dispatch(login(formData))
         .catch((err: Error) => {
           setErrorMessage(err?.message)
@@ -39,7 +38,7 @@ const Login: FC = () => {
 
     const { state } = useLocation();
 
-    const {isRequest, user} = useSelector((store: any) => store.user);
+    const {isRequest, user} = useAppSelector(store => store.user);
 
     if (isRequest) {
       return <PreLoader />

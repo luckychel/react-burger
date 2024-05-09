@@ -3,12 +3,13 @@ import { Button, EmailInput } from '@ya.praktikum/react-developer-burger-ui-comp
 import styles from './forgot-password.module.css';
 
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+
 import { forgotPassword } from '../../services/actions';
 import { PreLoader } from '../../components/pre-loader/PreLoader';
 import { ErrorRequestHandler } from '../../components/ErrorRequestHadler'
 
 import { IResponse } from '../../utils/types';
+import { useAppSelector, useAppDispatch } from '../../services/hooks';
 
 const ForgotPassword: FC = () => {
 
@@ -23,7 +24,7 @@ const ForgotPassword: FC = () => {
     });
   }
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -31,8 +32,7 @@ const ForgotPassword: FC = () => {
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    
-    //@ts-ignore
+  
     dispatch(forgotPassword(formData))
       .then((result: IResponse<null>) => {
         if (result && result.success) {
@@ -44,7 +44,7 @@ const ForgotPassword: FC = () => {
       });
   }
 
-  const {isRequest} = useSelector((store: any) => store.user);
+  const {isRequest} = useAppSelector(store => store.user);
 
   if (isRequest) {
     return <PreLoader />

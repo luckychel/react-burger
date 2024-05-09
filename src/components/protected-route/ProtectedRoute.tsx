@@ -1,7 +1,8 @@
 import { FC, ReactElement } from 'react';
 import { useLocation, Navigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+
 import { PreLoader } from '../pre-loader/PreLoader';
+import { useAppSelector } from '../../services/hooks';
 
 interface IProtectedProps {
   element: ReactElement;
@@ -10,7 +11,7 @@ interface IProtectedProps {
 const ProtectedRoute: FC<{ onlyUnAuth?: boolean } & IProtectedProps> = ({ onlyUnAuth = false, element }) => {
 
   // @ts-ignore
-  const { user, isAuthChecked } = useSelector(store => store.user);
+  const { user, isAuthChecked } = useAppSelector(store => store.user);
   const location = useLocation()
 
   if (!isAuthChecked) {

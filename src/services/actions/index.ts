@@ -9,7 +9,7 @@ import { INGREDIENTS_REQUEST, INGREDIENTS_SUCCESS, INGREDIENTS_FAILED,
   IS_REQUESTING, IS_SUCCESS, IS_FAILED, SET_USER, SET_AUTH_CHECKED
  } from '../constants';
 
-import { TIngredientItem } from '../../utils/types';
+import { TIngredientItem, TUser } from '../../utils/types';
 
 // export interface IIngredientsRequest {
 //   readonly type: typeof INGREDIENTS_REQUEST
@@ -213,7 +213,7 @@ export function checkUserAuth() {
 }
 
 //регистрация
-export function register(formData: any) {
+export function register(formData: TUser) {
   return function(dispatch: AppDispatch) {
  
     dispatch({ type: IS_REQUESTING });
@@ -250,7 +250,7 @@ export function register(formData: any) {
 }
 
 //логин
-export function login(formData: any) {
+export function login(formData: TUser) {
   return function(dispatch: AppDispatch) {
  
     dispatch({ type: IS_REQUESTING });
@@ -328,7 +328,7 @@ export function logout() {
 }
 
 //изменение пользователя
-export function changeUser(formData: any) {
+export function changeUser(formData: TUser) {
   return function(dispatch: AppDispatch) {
  
     dispatch({ type: IS_REQUESTING });
@@ -367,7 +367,7 @@ export function changeUser(formData: any) {
 }
 
 //забыл пароль
-export function forgotPassword(formData: any) {
+export function forgotPassword(formData: TUser) {
   return function(dispatch: AppDispatch) {
  
     dispatch({ type: IS_REQUESTING });
@@ -395,7 +395,7 @@ export function forgotPassword(formData: any) {
 }
 
 //сбросить пароль
-export function resetPassword(formData: any) {
+export function resetPassword(formData: TUser) {
   return function(dispatch: AppDispatch) {
  
     dispatch({ type: IS_REQUESTING });

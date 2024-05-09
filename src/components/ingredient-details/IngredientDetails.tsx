@@ -1,13 +1,14 @@
 import { FC } from 'react'
 import styles from './IngredientDetails.module.css';
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { IIngredientItem, IIngredientDetails } from '../../utils/types';
+
+import { IIngredientDetails } from '../../utils/types';
+import { useAppSelector } from '../../services/hooks';
 
 const IngredientDetails: FC<IIngredientDetails> = ({...props}) => {
     
     const { ingredientId } = useParams<string>();
-    const ingredient: IIngredientItem = useSelector((store: any) => store.ingredients.listIngredients).filter((item: IIngredientItem) => item._id === ingredientId)[0];
+    const ingredient = useAppSelector(store => store.ingredients.listIngredients).filter(item => item && item._id === ingredientId)[0];
 
     return (
         <>
