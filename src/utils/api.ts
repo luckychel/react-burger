@@ -1,10 +1,10 @@
 const baseUrl = 'https://norma.nomoreparties.space/api/';
 
-const checkResponse = (res) => {
+const checkResponse = (res: Response) => {
     return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 };
 
-export const request = async (url, options) => {
+export const request = async (url: string, options: any) => {
     return await fetch(baseUrl + url, options)
         .then(checkResponse);
 }
@@ -21,7 +21,7 @@ export const refreshToken = () => {
     }).then(checkResponse);
 };
   
-export const fetchWithRefresh = async (url, options) => {
+export const fetchWithRefresh = async (url: string, options: any) => {
     try {
       const res = await request(url, options);
       return res;

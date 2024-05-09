@@ -9,20 +9,9 @@ import { INGREDIENTS_REQUEST, INGREDIENTS_SUCCESS, INGREDIENTS_FAILED,
   IS_REQUESTING, IS_SUCCESS, IS_FAILED, SET_USER, SET_AUTH_CHECKED
  } from '../constants';
 
-import { TIngredientItem, TUser } from '../../utils/types';
-
-// export interface IIngredientsRequest {
-//   readonly type: typeof INGREDIENTS_REQUEST
-// }
-// export const getIngredientsRequestAction = (): IIngredientsRequest => ({
-//   type: INGREDIENTS_REQUEST,
-// })
-
-// export type TIgredientsAndOrdersActions = 
-//   | IIngredientsRequest
+import { TIngredientItem, TUser, IResponse, IOrder } from '../../utils/types';
 
 /* Actions */
-
 
 //Получение данных ингредиентов
 export const getIngredients = () => {
@@ -33,10 +22,10 @@ export const getIngredients = () => {
     })
 
     request('ingredients', {})
-    .then(data => { 
+    .then((result: IResponse<TIngredientItem>) => { 
       dispatch({
         type: INGREDIENTS_SUCCESS,
-        data: data.data
+        data: result.data
       })
     })
     .catch(e => {
@@ -114,12 +103,12 @@ export function getOrderNumber(ids: string[] = []) {
       }, 
       body: JSON.stringify({ 'ingredients': ids})
     })
-    .then(data => { 
-      if (data && data.order && data.order.number) {
+    .then((result: IResponse<IOrder>) => { 
+      if (result && result.order && result.order.number) {
         dispatch({
           type: ORDER_NUMBER_SUCCESS,
           payload: {
-            orderNumber: data.order.number
+            orderNumber: result.order.number
           }
         })
       }
@@ -179,7 +168,7 @@ export function checkUserAuth() {
           "Authorization": accesstoken
         }
       })
-      .then(result => { 
+      .then((result: IResponse<TUser>) => { 
         if (result && result.success) {
           dispatch({
             type: SET_USER,
@@ -225,12 +214,12 @@ export function register(formData: TUser) {
       },
       body: JSON.stringify(formData)
     })
-    .then(result => {
+    .then((result: IResponse<TUser>) => {
 
       if (result && result.success) {
 
-        localStorage.setItem("refreshToken", result.refreshToken);
-        localStorage.setItem("accessToken", result.accessToken);
+        localStorage.setItem("refreshToken", result.refreshToken || "");
+        localStorage.setItem("accessToken", result.accessToken || "");
 
         dispatch({
           type: SET_USER,
@@ -262,12 +251,12 @@ export function login(formData: TUser) {
       },
       body: JSON.stringify(formData)
     })
-    .then(result => {
+    .then((result: IResponse<TUser>) => {
 
       if (result && result.success) {
         
-        localStorage.setItem("refreshToken", result.refreshToken);
-        localStorage.setItem("accessToken", result.accessToken);
+        localStorage.setItem("refreshToken", result.refreshToken || "");
+        localStorage.setItem("accessToken", result.accessToken || "");
        
         dispatch({
           type: SET_USER,
@@ -301,7 +290,7 @@ export function logout() {
       },
       body: JSON.stringify({ token: localStorage.getItem("refreshToken") })
     })
-    .then(result => {
+    .then((result: IResponse<TUser>) => {
 
       if (result && result.success) {
         
@@ -346,7 +335,7 @@ export function changeUser(formData: TUser) {
      },
      body: JSON.stringify(formData)
    })
-   .then(result => {
+   .then((result: IResponse<TUser>) => {
 
      if (result && result.success) {
        dispatch({
@@ -379,7 +368,7 @@ export function forgotPassword(formData: TUser) {
       },
       body: JSON.stringify(formData)
     })
-    .then(result => {
+    .then((result: IResponse<TUser>) => {
       if (result && result.success) {
         dispatch({type: IS_SUCCESS});
         return result;
@@ -407,7 +396,7 @@ export function resetPassword(formData: TUser) {
       },
       body: JSON.stringify(formData)
     })
-    .then(result => {
+    .then((result: IResponse<TUser>) => {
       if (result && result.success) {
         dispatch({type: IS_SUCCESS});
         return result;

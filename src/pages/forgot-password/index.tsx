@@ -8,7 +8,6 @@ import { forgotPassword } from '../../services/actions';
 import { PreLoader } from '../../components/pre-loader/PreLoader';
 import { ErrorRequestHandler } from '../../components/ErrorRequestHadler'
 
-import { IResponse } from '../../utils/types';
 import { useAppSelector, useAppDispatch } from '../../services/hooks';
 
 const ForgotPassword: FC = () => {
@@ -34,7 +33,7 @@ const ForgotPassword: FC = () => {
     event.preventDefault();
   
     dispatch(forgotPassword(formData))
-      .then((result: IResponse<null>) => {
+      .then(result => {
         if (result && result.success) {
           navigate('/reset-password', { state: {from: location}});
         }

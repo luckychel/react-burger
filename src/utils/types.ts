@@ -35,9 +35,38 @@ export type TUser = {
     token?: string;
 }
 
-export interface IResponse<T> {
-    success: boolean;
-    message?: string;
-    name?: string;
-    data?: T;
+export interface ITokens {
+    refreshToken?: string;
+    accessToken?: string;
 }
+
+export interface IResponseBase {
+    success: boolean;
+    name?: string;
+    message?: string;
+}
+
+export interface IResponse<T> extends IResponseBase, ITokens {
+    data?: T;
+    order?: T;
+    user?:T;
+}
+
+export interface IOrder {
+    ingredients: IIngredientItem[]
+    _id: string
+    owner: IOrderOwner
+    status: string
+    name: string
+    createdAt: string
+    updatedAt: string
+    number: number
+    price: number
+  }
+  
+  export interface IOrderOwner {
+    name: string
+    email: string
+    createdAt: string
+    updatedAt: string
+  }

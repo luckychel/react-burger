@@ -7,7 +7,7 @@ import { resetPassword } from '../../services/actions';
 import { PreLoader } from '../../components/pre-loader/PreLoader';
 import { ErrorRequestHandler } from '../../components/ErrorRequestHadler'
 
-import { TUser, IResponse } from '../../utils/types';
+import { TUser } from '../../utils/types';
 import { useAppSelector, useAppDispatch } from '../../services/hooks';
 
 const ResetPassword: FC = () => {
@@ -33,7 +33,7 @@ const ResetPassword: FC = () => {
         event.preventDefault();
 
         dispatch(resetPassword(formData))
-        .then((result: IResponse<null>) => {
+        .then(result => {
             if (result && result.success) {
                navigate('/login');
             }
