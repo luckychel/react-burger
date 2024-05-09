@@ -3,8 +3,7 @@ import styles from './BurgerIngredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import BurgerIngredientItem from '../burger-ingredient-item/BurgerIngredientItem';
 
-import { useSelector } from 'react-redux';
-import { IIngredientItem } from '../../utils/types';
+import { useAppSelector } from '../../services/hooks';
 
 const BurgerIngredients: FC = () => {
 
@@ -16,7 +15,7 @@ const BurgerIngredients: FC = () => {
       ]
     }, []);
 
-    const ingredients = useSelector((store: any) => store.ingredients.listIngredients);
+    const ingredients = useAppSelector(store => store.ingredients.listIngredients);
 
     const [current, setCurrent] = useState(tabs[0].type);
 
@@ -86,9 +85,9 @@ const BurgerIngredients: FC = () => {
                   <p key={tab.type} className="text text_type_main-medium" ref={refer}>{tab.name}</p>
                   <div className={styles.details}>
                   {
-                    ingredients.filter((item: IIngredientItem) => item.type === tab.type)
-                      .map((item: IIngredientItem) => 
-                        <BurgerIngredientItem key={item._id} {...item} />
+                    ingredients.filter((item) => item && item.type === tab.type)
+                      .map((item) => 
+                        item && <BurgerIngredientItem key={item._id} {...item} />
                       )
                   }
                   </div>

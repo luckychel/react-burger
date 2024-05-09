@@ -4,7 +4,7 @@ import AppHeader from '../app-header/AppHeader'
 import ErrorBoundary from '../error-boundary/ErrorBoundary';
 
 import { getIngredients, checkUserAuth } from '../../services/actions';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../../services/hooks';
 
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import Main from '../../pages/main'
@@ -26,12 +26,10 @@ import { OnlyAuth, OnlyUnAuth } from '../protected-route/ProtectedRoute';
 
 const App: FC = () => {
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    // @ts-ignore 
     dispatch(getIngredients()); 
-    // @ts-ignore
     dispatch(checkUserAuth());
   }, [dispatch]);
 

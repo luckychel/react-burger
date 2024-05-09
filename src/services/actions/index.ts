@@ -1,43 +1,37 @@
 import { request, fetchWithRefresh } from '../../utils/api';
 import { nanoid } from '@reduxjs/toolkit'
+import { AppDispatch } from '../store';
 
-/* Ингредиенты */
-export const INGREDIENTS_REQUEST = 'INGREDIENTS_REQUEST';
-export const INGREDIENTS_SUCCESS = 'INGREDIENTS_SUCCESS';
-export const INGREDIENTS_FAILED = 'INGREDIENTS_FAILED';
+import { INGREDIENTS_REQUEST, INGREDIENTS_SUCCESS, INGREDIENTS_FAILED, 
+  ADD_INGREDIENT_TO_BURGER, REMOVE_INGREDIENT_FROM_BURGER, 
+  IS_DRAGGING, INGREDIENTS_REPLACE, CLEAR_BURGER, 
+  ORDER_NUMBER_REQUEST, ORDER_NUMBER_SUCCESS, ORDER_NUMBER_FAILED,
+  IS_REQUESTING, IS_SUCCESS, IS_FAILED, SET_USER, SET_AUTH_CHECKED
+ } from '../constants';
 
-export const OPEN_INGREDIENT = 'OPEN_INGREDIENT';
-export const CLOSE_INGREDIENT = 'CLOSE_INGREDIENT';
-export const IS_DRAGGING = 'IS_DRAGGING'; 
+import { TIngredientItem } from '../../utils/types';
 
-/* Бургер */
-export const ADD_INGREDIENT_TO_BURGER = 'ADD_INGREDIENT_TO_BURGER';
-export const REMOVE_INGREDIENT_FROM_BURGER = 'REMOVE_INGREDIENT_FROM_BURGER';
-export const CLEAR_BURGER = 'CLEAR_BURGER';
-export const INGREDIENTS_REPLACE = 'INGREDIENTS_REPLACE';
+// export interface IIngredientsRequest {
+//   readonly type: typeof INGREDIENTS_REQUEST
+// }
+// export const getIngredientsRequestAction = (): IIngredientsRequest => ({
+//   type: INGREDIENTS_REQUEST,
+// })
 
-/* Заказ */
-export const ORDER_NUMBER_REQUEST = 'ORDER_NUMBER_REQUEST';
-export const ORDER_NUMBER_SUCCESS = 'ORDER_NUMBER_SUCCESS';
-export const ORDER_NUMBER_FAILED = 'ORDER_NUMBER_FAILED';
-
-/* Пользователь */
-
-export const IS_REQUESTING = 'IS_REQUESTING';
-export const IS_SUCCESS = 'IS_SUCCESS';
-export const IS_FAILED = 'IS_FAILED';
-
-export const SET_AUTH_CHECKED = 'USER_REQUEST';
-export const SET_USER = 'SET_USER';
+// export type TIgredientsAndOrdersActions = 
+//   | IIngredientsRequest
 
 /* Actions */
 
+
 //Получение данных ингредиентов
 export const getIngredients = () => {
-  return function(dispatch) {
+  return function(dispatch: AppDispatch) {
+    
     dispatch({
       type: INGREDIENTS_REQUEST,
     })
+
     request('ingredients', {})
     .then(data => { 
       dispatch({
@@ -55,7 +49,7 @@ export const getIngredients = () => {
 }
 
 //добавление ингредиента
-export const addItem = (item, ingredientType) => {
+export const addItem = (item: TIngredientItem, ingredientType: string) => {
   return {
     type: ADD_INGREDIENT_TO_BURGER,
     payload: { 
@@ -69,15 +63,27 @@ export const addItem = (item, ingredientType) => {
 }
 
 //удаление ингредиента
-export const deleteItem = (item) => {
+export const deleteItem = (item: TIngredientItem) => {
   return {
       type: REMOVE_INGREDIENT_FROM_BURGER,
-      item
+      payload: { 
+        item
+      }
     }
 }
 
+//перетаскивание
+export const dragging = (isDraggingBun: boolean, isDraggingIng: boolean) => {
+  return {
+    type: IS_DRAGGING,
+    isDraggingBun: isDraggingBun,
+    isDraggingIng: isDraggingIng,
+  }
+}
+
+
 //сортировка dnd
-export const replaceItems = (dragIndex, hoverIndex) => {
+export const replaceItems = (dragIndex: number, hoverIndex: number) => {
   return {
     type: INGREDIENTS_REPLACE,
     payload: {
@@ -95,8 +101,8 @@ export const clearBurger = () => {
 }
 
 //создание заказа
-export function getOrderNumber(ids) {
-  return function(dispatch) {
+export function getOrderNumber(ids: string[] = []) {
+  return function(dispatch: AppDispatch) {
     dispatch({
       type: ORDER_NUMBER_REQUEST,
     });
@@ -112,25 +118,28 @@ export function getOrderNumber(ids) {
       if (data && data.order && data.order.number) {
         dispatch({
           type: ORDER_NUMBER_SUCCESS,
-          orderNumber: data.order.number
+          payload: {
+            orderNumber: data.order.number
+          }
         })
       }
     })
-    .catch(e => {
+    .catch((err: Error) => {
       dispatch({
         type: ORDER_NUMBER_FAILED
       })
-      console.error('Error: ' + e.message);
+      console.error('Error: ' + err.message);
     });
   }
 }
 
 //рефреш токенов
 export function refreshTokens() {
-  return function(dispatch) {
+  return function(dispatch: AppDispatch) {
     const refreshtoken = localStorage.getItem('refreshToken') || null;
 
     if (refreshtoken) {
+
       request('auth/token', { 
         method: 'POST', 
         headers: { 'Content-Type': 'application/json' },
@@ -144,7 +153,7 @@ export function refreshTokens() {
           throw new Error("Ошибка refreshTokens");
         }
       })
-      .catch(err => {
+      .catch((err: Error) => {
         dispatch({ type: IS_FAILED });
       })
     }
@@ -157,7 +166,7 @@ export function refreshTokens() {
 
 //проверка пользователя с accesstoken (при наличии)
 export function checkUserAuth() {
-  return function(dispatch) {
+  return function(dispatch: AppDispatch) {
     
     const accesstoken = localStorage.getItem('accessToken') || null;
 
@@ -181,11 +190,11 @@ export function checkUserAuth() {
           throw new Error("Ошибка метода checkUserAuth");
         }
       })
-      .catch(e => {
+      .catch((err: Error) => {
         dispatch({
           type: IS_FAILED
         })
-        console.error('Error: ' + e.message);
+        console.error('Error: ' + err.message);
       })
       .finally(() => {
         dispatch({
@@ -204,8 +213,8 @@ export function checkUserAuth() {
 }
 
 //регистрация
-export function register(formData) {
-  return function(dispatch) {
+export function register(formData: any) {
+  return function(dispatch: AppDispatch) {
  
     dispatch({ type: IS_REQUESTING });
 
@@ -232,7 +241,7 @@ export function register(formData) {
         throw new Error("Ошибка метода register");
       }
     })
-    .catch(err => {
+    .catch((err: Error) => {
       dispatch({ type: IS_FAILED});
       throw err;
     });
@@ -241,8 +250,8 @@ export function register(formData) {
 }
 
 //логин
-export function login(formData) {
-  return function(dispatch) {
+export function login(formData: any) {
+  return function(dispatch: AppDispatch) {
  
     dispatch({ type: IS_REQUESTING });
 
@@ -271,7 +280,7 @@ export function login(formData) {
         throw new Error("Ошибка метода login");
       }
     })
-    .catch(err => {
+    .catch((err: Error) => {
       dispatch({ type: IS_FAILED});
       throw err;
     });
@@ -281,7 +290,7 @@ export function login(formData) {
 
 //логаут
 export function logout() {
-  return function(dispatch) {
+  return function(dispatch: AppDispatch) {
  
     dispatch({ type: IS_REQUESTING });
 
@@ -310,7 +319,7 @@ export function logout() {
         throw new Error("Ошибка метода logout");
       }
     })
-    .catch(err => {
+    .catch((err: Error) => {
       dispatch({ type: IS_FAILED});
       throw err;
     });
@@ -319,8 +328,8 @@ export function logout() {
 }
 
 //изменение пользователя
-export function changeUser(formData) {
-  return function(dispatch) {
+export function changeUser(formData: any) {
+  return function(dispatch: AppDispatch) {
  
     dispatch({ type: IS_REQUESTING });
 
@@ -349,7 +358,7 @@ export function changeUser(formData) {
        throw new Error("Ошибка метода changeUser");
      }
    })
-   .catch(err => {
+   .catch((err: Error) => {
      dispatch({ type: IS_FAILED});
      throw err;
    });
@@ -358,8 +367,8 @@ export function changeUser(formData) {
 }
 
 //забыл пароль
-export function forgotPassword(formData) {
-  return function(dispatch) {
+export function forgotPassword(formData: any) {
+  return function(dispatch: AppDispatch) {
  
     dispatch({ type: IS_REQUESTING });
 
@@ -378,7 +387,7 @@ export function forgotPassword(formData) {
         throw new Error("Ошибка метода forgotPassword");
       }
     })
-    .catch(err => {
+    .catch((err: Error) => {
       dispatch({ type: IS_FAILED});
       throw err;
     });
@@ -386,8 +395,8 @@ export function forgotPassword(formData) {
 }
 
 //сбросить пароль
-export function resetPassword(formData) {
-  return function(dispatch) {
+export function resetPassword(formData: any) {
+  return function(dispatch: AppDispatch) {
  
     dispatch({ type: IS_REQUESTING });
 
@@ -406,7 +415,7 @@ export function resetPassword(formData) {
         throw new Error("Ошибка метода resetPassword");
       }
     })
-    .catch(err => {
+    .catch((err: Error) => {
       dispatch({ type: IS_FAILED});
       throw err;
     });

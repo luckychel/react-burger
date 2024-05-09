@@ -2,11 +2,11 @@ import { useCallback, FC } from 'react'
 import styles from './AppHeader.module.css';
 import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Link, NavLink } from 'react-router-dom';
-import { useSelector } from 'react-redux'
+import { useAppSelector } from '../../services/hooks';
 
 const AppHeader: FC = () => {
 
-  const { user } = useSelector((store: any) => store.user);
+  const { user } = useAppSelector(store => store.user);
 
   const smartLink = useCallback((to: string, title: string) => {
     return (
@@ -24,7 +24,7 @@ const AppHeader: FC = () => {
   }, [user])
 
   return (
-        <header className={`${styles.main_content} mt-5 mr-5 ml-5`}>
+        <header className={`${styles.main_content}`}>
             {smartLink('/', 'Конструктор')}
             {smartLink('/orderfeed', 'Лента заказов')}
 

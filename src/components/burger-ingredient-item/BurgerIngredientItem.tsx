@@ -3,7 +3,7 @@ import styles from './BurgerIngredientItem.module.css';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components'
 
 import { useSelector, useDispatch } from 'react-redux';
-import { IS_DRAGGING } from '../../services/actions';
+import { dragging } from '../../services/actions';
 import { useDrag  } from 'react-dnd'
 
 import { Link, useLocation } from 'react-router-dom';
@@ -27,11 +27,7 @@ const BurgerIngredientItem: FC<IIngredientItem> = ({...props}) => {
     const dispatch = useDispatch();
 
     useEffect(()=>{
-        dispatch({
-            type: IS_DRAGGING,
-            isDraggingBun: isDraggingBun,
-            isDraggingIng: isDraggingIng,
-         });
+        dispatch(dragging(isDraggingBun, isDraggingIng));
     }, [isDraggingBun, isDraggingIng, dispatch])
 
     const beginDrugging = useCallback((type: string, val: boolean) => {

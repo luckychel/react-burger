@@ -1,16 +1,35 @@
 import { ADD_INGREDIENT_TO_BURGER, REMOVE_INGREDIENT_FROM_BURGER, INGREDIENTS_REPLACE, CLEAR_BURGER,
-        ORDER_NUMBER_REQUEST, ORDER_NUMBER_SUCCESS, ORDER_NUMBER_FAILED } from '../actions';
-//import update from 'immutability-helper';
+        ORDER_NUMBER_REQUEST, ORDER_NUMBER_SUCCESS, ORDER_NUMBER_FAILED } from '../constants';
 
-  const initialState = {
-    itemsRequest: false,
-    itemsFailed: false,
-    bun: null,  //для булки
-    burgerIngredients: [], // для остального
-    orderNumber: 0
-  };
+import { TIngredientItem } from '../../utils/types';
 
-export const burgerReducer = (state = initialState, action) => {
+type TBurgerState = Readonly<{
+  itemsRequest: boolean;
+  itemsFailed: boolean;
+  bun: TIngredientItem | null;
+  burgerIngredients: Array<TIngredientItem | null>;
+  orderNumber: string;
+}>;
+
+const initialState: TBurgerState = {
+  itemsRequest: false,
+  itemsFailed: false,
+  bun: null,  //для булки
+  burgerIngredients: [], // для остального
+  orderNumber: ""
+};
+
+type TBurgerAction =
+  | { type: typeof ADD_INGREDIENT_TO_BURGER; payload: { item: TIngredientItem, ingredientType: string } }
+  | { type: typeof REMOVE_INGREDIENT_FROM_BURGER; payload: { item: TIngredientItem } }
+  | { type: typeof INGREDIENTS_REPLACE; payload: { dragIndex: number, hoverIndex: number} }
+  | { type: typeof CLEAR_BURGER }
+  | { type: typeof ORDER_NUMBER_REQUEST }
+  | { type: typeof ORDER_NUMBER_SUCCESS; payload: { orderNumber: string } }
+  | { type: typeof ORDER_NUMBER_FAILED };
+
+
+export const burgerReducer = (state = initialState, action: TBurgerAction) => {
   switch(action.type) {
     case ADD_INGREDIENT_TO_BURGER: {
         if (action.payload.ingredientType === 'bun') {
@@ -38,7 +57,7 @@ export const burgerReducer = (state = initialState, action) => {
         
       return {
         ...state,
-        burgerIngredients:  state.burgerIngredients.filter((x) => x.uniqkey !== action.item.uniqkey)
+        burgerIngredients: state.burgerIngredients.filter((x) => x !== null && x.uniqkey !== action.payload.item.uniqkey)
       }
     }
     case INGREDIENTS_REPLACE: {
@@ -49,12 +68,6 @@ export const burgerReducer = (state = initialState, action) => {
         return {
             ...state,
             burgerIngredients: newArr
-            //burgerIngredients: [update(state.burgerIngredients, {
-            //  $splice: [
-            //    [action.payload.dragIndex, 1],
-            //    [action.payload.hoverIndex, 0, state.burgerIngredients[action.payload.dragIndex]]
-            //  ]
-            //})]
         }
     }
     case CLEAR_BURGER: {
@@ -78,7 +91,7 @@ export const burgerReducer = (state = initialState, action) => {
           ...state,
           itemsRequest: false,
           itemsFailed: false,
-          orderNumber: action.orderNumber
+          orderNumber: action.payload.orderNumber
         }
       }
       case ORDER_NUMBER_FAILED: {
@@ -86,7 +99,7 @@ export const burgerReducer = (state = initialState, action) => {
           ...state,
           itemsRequest: false,
           itemsFailed: true,
-          orderNumber: 0
+          orderNumber: ""
         }
       }
     default: {

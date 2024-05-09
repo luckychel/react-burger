@@ -6,9 +6,9 @@ import { useDispatch } from 'react-redux'
 import { deleteItem } from '../../services/actions';
 import { DropTargetMonitor, useDrag, useDrop } from 'react-dnd'
 
-import { IIngredientItem, TMoveCard, IDragObject } from '../../utils/types';
+import { TIngredientItem, TMoveCard, IDragObject } from '../../utils/types';
 
-const BurgerConstructorItem: FC<{ id?: string, ingredient: IIngredientItem; index: number, moveCard: TMoveCard}> = ({ ingredient, id, index, moveCard}) => {
+const BurgerConstructorItem: FC<{ id?: string, ingredient: TIngredientItem; index: number, moveCard: TMoveCard}> = ({ ingredient, id, index, moveCard}) => {
 
   const [handlerId, setHandlerId] = useState<string | null>(null);
 

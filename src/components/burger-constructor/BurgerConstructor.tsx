@@ -7,21 +7,22 @@ import OrderDetails from '../order-details/OrderDetails';
 import BurgerBunItem from '../burger-bun-item/BurgerBunItem'
 import BurgerConstructorItem from '../burger-constructor-item/BurgerConstructorItem'
 
-import { useSelector, useDispatch } from 'react-redux'
 import { addItem, replaceItems, clearBurger } from '../../services/actions';
 import { useDrop } from 'react-dnd'
 
 import { useNavigate, useLocation} from 'react-router-dom';
-import { IIngredientItem } from '../../utils/types';
+import { TIngredientItem } from '../../utils/types';
+import { useAppSelector, useAppDispatch } from '../../services/hooks';
+
 
 const BurgerConstructor: FC = () => {
 
    //Данные ингредиентов
-   const bun: IIngredientItem = useSelector((store: any) => store.burger.bun); 
-   const ingredients: [IIngredientItem] = useSelector((store: any) => store.burger.burgerIngredients); 
+   const bun = useAppSelector(store => store.burger.bun); 
+   const ingredients = useAppSelector(store => store.burger.burgerIngredients); 
 
    //Данные для заказа в конструкторе
-   const isDraggingIng: boolean = useSelector((store: any) => store.ingredients.isDraggingIng);
+   const isDraggingIng= useAppSelector(store => store.ingredients.isDraggingIng);
 
    const [isCreateOrderBtnDisabled, setCreateOrderBtnDisabled] = useState(true);
    const [orderItems, setOrderItems] = useState<string[]>([]);
@@ -46,13 +47,12 @@ const BurgerConstructor: FC = () => {
       }
    }, [bun, ingredients])
 
-   const dispatch = useDispatch();
+   const dispatch = useAppDispatch();
 
    //Модальное окно заказа
    const [isOpenOrderDetailsModal, setOrderDetailsOpenModal] = useState(false);
 
-   //@ts-ignore
-   const {user} = useSelector(store => store.user);
+   const { user } = useAppSelector(store => store.user);
    const navigate = useNavigate();
    const location = useLocation();
 
@@ -67,7 +67,7 @@ const BurgerConstructor: FC = () => {
       if (bun) 
          ids.push(bun._id)
       if (ingredients) 
-         ids = ids.concat(ingredients.map(function (item) { return item._id; }));
+         ids = ids.concat(ingredients.map(function (item) { return item!._id; }));
       if (bun) 
          ids.push(bun._id)
 
@@ -77,13 +77,13 @@ const BurgerConstructor: FC = () => {
       dispatch(clearBurger());
    }
    
-  const [{ isItemHover }, refItemDrop] = useDrop({
+  const [{ isItemHover }, refItemDrop] = useDrop<TIngredientItem, unknown, any>({
       accept: "item",
       collect: monitor => ({
          isItemHover: monitor.isOver(),
       }),
       drop(item) {
-         dispatch(addItem(item));
+         dispatch(addItem(item, 'item'));
       },
    });
 
@@ -102,7 +102,7 @@ const BurgerConstructor: FC = () => {
                ingredients && ingredients.length > 0 ?
                   ingredients.map((item, index) => 
                      (
-                        <BurgerConstructorItem key={item.uniqkey} id={item.uniqkey} ingredient={item} index={index} moveCard={moveCard} />
+                        item && <BurgerConstructorItem key={item.uniqkey} id={item.uniqkey} ingredient={item} index={index} moveCard={moveCard} />
                      )
                   ) : (
                      <div className={`constructor-element ${styles.custom_aligment} ${styles.custom_margin_left} ${isItemHover || isDraggingIng ? styles.isHover : ''}`}>

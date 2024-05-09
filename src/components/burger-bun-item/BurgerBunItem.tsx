@@ -2,19 +2,19 @@ import { FC } from 'react'
 import styles from './BurgerBunItem.module.css';
 import { ConstructorElement} from '@ya.praktikum/react-developer-burger-ui-components'
 
-import { useSelector, useDispatch } from 'react-redux'
 import { addItem } from '../../services/actions';
 import { useDrop } from 'react-dnd'
 
-import { IIngredientItem } from '../../utils/types';
+import { TIngredientItem } from '../../utils/types';
+import { useAppSelector, useAppDispatch } from '../../services/hooks';
 
-const BurgerBunItem: FC<{pos: 'top' | 'bottom'; bun: IIngredientItem;}> = ({pos, bun}) => {
+const BurgerBunItem: FC<{pos: 'top' | 'bottom'; bun: TIngredientItem | null;}> = ({pos, bun}) => {
 
-    const isDraggingBun = useSelector((store: any) => store.ingredients.isDraggingBun);
+    const isDraggingBun = useAppSelector(store => store.ingredients.isDraggingBun);
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
-    const [{ isBunHover }, refBunDrop] = useDrop({
+    const [{ isBunHover }, refBunDrop] = useDrop<TIngredientItem, unknown, any>({
        accept: "bun",
        collect: monitor => ({
           isBunHover: monitor.isOver(),

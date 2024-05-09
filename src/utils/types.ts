@@ -1,11 +1,3 @@
-import { store } from '../index';
-// import { Action, ActionCreator } from 'redux';
-// import { ThunkAction } from 'redux-thunk';
-
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
-//export type AppThunk<TReturn = void> = ActionCreator<ThunkAction<TReturn, Action, RootState, TApplicationActions>>;
-
 export interface IIngredientItem {
     _id: string,
     type: string,
@@ -21,7 +13,7 @@ export interface IIngredientItem {
     uniqkey?: string | undefined
 };
 
-export type TIngredientItem = Omit<IIngredientItem, "uniqkey">
+export type TIngredientItem = Pick<IIngredientItem, keyof IIngredientItem>
 
 export interface IDragDrop { dragIndex: number; dropIndex: number }
 
