@@ -1,4 +1,4 @@
-import { request, fetchWithRefresh } from '../../utils/api';
+import { request, fetchWithRefresh, headers } from '../../utils/api';
 import { nanoid } from '@reduxjs/toolkit'
 import { AppDispatch } from '../store';
 
@@ -90,17 +90,16 @@ export const clearBurger = () => {
 }
 
 //создание заказа
-export function getOrderNumber(ids: string[] = []) {
+export function getOrderNumber(ids: string[]) {
   return function(dispatch: AppDispatch) {
+    
     dispatch({
       type: ORDER_NUMBER_REQUEST,
     });
+
     return fetchWithRefresh('orders', { 
       method: 'POST', 
-      headers: { 
-        'Content-Type': 'application/json;charset=utf-8' ,
-        "Authorization": localStorage.getItem('accessToken') || null
-      }, 
+      headers: headers("auth"), 
       body: JSON.stringify({ 'ingredients': ids})
     })
     .then((result: IResponse<IOrder>) => { 
@@ -131,7 +130,7 @@ export function refreshTokens() {
 
       request('auth/token', { 
         method: 'POST', 
-        headers: { 'Content-Type': 'application/json' },
+        headers: headers(),
         body: JSON.stringify({ token: refreshtoken })
       })
       .then(result => {
@@ -160,13 +159,12 @@ export function checkUserAuth() {
     const accesstoken = localStorage.getItem('accessToken') || null;
 
     if (accesstoken) {
+
       dispatch({ type: IS_REQUESTING });
+
       fetchWithRefresh('auth/user', {
         method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": accesstoken
-        }
+        headers: headers("auth")
       })
       .then((result: IResponse<TUser>) => { 
         if (result && result.success) {
@@ -209,9 +207,7 @@ export function register(formData: TUser) {
 
     return request('auth/register', {
       method: "POST",
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      headers: headers(),
       body: JSON.stringify(formData)
     })
     .then((result: IResponse<TUser>) => {
@@ -246,9 +242,7 @@ export function login(formData: TUser) {
 
     return request('auth/login', {
       method: "POST",
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      headers: headers(),
       body: JSON.stringify(formData)
     })
     .then((result: IResponse<TUser>) => {
@@ -285,9 +279,7 @@ export function logout() {
 
     return fetchWithRefresh('auth/logout', {
       method: "POST",
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      headers: headers(),
       body: JSON.stringify({ token: localStorage.getItem("refreshToken") })
     })
     .then((result: IResponse<TUser>) => {
@@ -329,10 +321,7 @@ export function changeUser(formData: TUser) {
 
    return fetchWithRefresh('auth/user', {
      method: "PATCH",
-     headers: {
-       'Content-Type': 'application/json',
-       "Authorization": localStorage.getItem('accessToken') || null
-     },
+     headers: headers("auth"),
      body: JSON.stringify(formData)
    })
    .then((result: IResponse<TUser>) => {
@@ -363,9 +352,7 @@ export function forgotPassword(formData: TUser) {
 
     return request('password-reset', {
       method: "POST",
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      headers: headers(),
       body: JSON.stringify(formData)
     })
     .then((result: IResponse<TUser>) => {
@@ -391,9 +378,7 @@ export function resetPassword(formData: TUser) {
 
     return request('password-reset/reset', {
       method: "POST",
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      headers: headers(),
       body: JSON.stringify(formData)
     })
     .then((result: IResponse<TUser>) => {

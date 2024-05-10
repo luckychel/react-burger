@@ -32,7 +32,7 @@ const BurgerConstructor: FC = () => {
       if (ingredients || bun) {
          let totalSumTemp = 0;
          if (ingredients && ingredients.length > 0) {
-            totalSumTemp = ingredients?.map((i: any) => i.price)?.reduce((a: number, b: number) => a + b);
+            totalSumTemp = (ingredients as TIngredientItem[]).map(i => i.price).reduce((a, b) => a + b);
          }
          if (bun) {
             totalSumTemp += bun.price * 2;

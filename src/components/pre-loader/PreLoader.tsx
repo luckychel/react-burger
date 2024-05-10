@@ -3,7 +3,7 @@ import imgloader from '../../images/loader.gif';
 import styles from './PreLoader.module.css'
 
 interface IPreLoaderProps {
-    style?: any;
+    style?: React.CSSProperties;
 } 
 
 export const PreLoader: FC<IPreLoaderProps> = ({ style }) => {

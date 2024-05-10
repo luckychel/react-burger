@@ -39,9 +39,10 @@ export interface ITokens {
     refreshToken?: string;
     accessToken?: string;
 }
+export type TTokens = Pick<ITokens, keyof ITokens>
 
 export interface IResponseBase {
-    success: boolean;
+    success?: boolean;
     name?: string;
     message?: string;
 }
@@ -53,7 +54,7 @@ export interface IResponse<T> extends IResponseBase, ITokens {
 }
 
 export interface IOrder {
-    ingredients: IIngredientItem[]
+    ingredients: TIngredientItem[]
     _id: string
     owner: IOrderOwner
     status: string

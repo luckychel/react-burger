@@ -7,10 +7,10 @@ import { useDrag  } from 'react-dnd'
 
 import { Link, useLocation } from 'react-router-dom';
 
-import { IIngredientItem } from '../../utils/types';
+import { TIngredientItem } from '../../utils/types';
 import { useAppSelector, useAppDispatch } from '../../services/hooks';
 
-const BurgerIngredientItem: FC<IIngredientItem> = ({...props}) => {
+const BurgerIngredientItem: FC<TIngredientItem> = ({...props}) => {
 
     const [isDraggingBun, setDraggingBun] = useState(false);
     const [isDraggingIng, setDraggingIng] = useState(false);
