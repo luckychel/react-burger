@@ -35,28 +35,10 @@ export type TUser = {
     token?: string;
 }
 
-export interface ITokens {
-    refreshToken?: string;
-    accessToken?: string;
-}
-export type TTokens = Pick<ITokens, keyof ITokens>
-
-export interface IResponseBase {
-    success?: boolean;
-    name?: string;
-    message?: string;
-}
-
-export interface IResponse<T> extends IResponseBase, ITokens {
-    data?: T;
-    order?: T;
-    user?:T;
-}
-
-export interface IOrder {
+export type TOrder = {
     ingredients: TIngredientItem[]
     _id: string
-    owner: IOrderOwner
+    owner: TOrderOwner
     status: string
     name: string
     createdAt: string
@@ -65,9 +47,30 @@ export interface IOrder {
     price: number
   }
   
-  export interface IOrderOwner {
+  export type TOrderOwner = {
     name: string
     email: string
     createdAt: string
     updatedAt: string
   }
+
+export type TServerResponse<T> = {
+    success: boolean;
+} & T;
+  
+export type TRefreshResponse = TServerResponse<{
+    refreshToken: string;
+    accessToken: string;
+}>;
+  
+ export type TIngredientsResponse = TServerResponse<{
+    data: TIngredientItem[];
+ }>;
+
+export type TOrderResponse = TServerResponse<{
+    order: TOrder
+}>;
+
+export type TUserResponse = TServerResponse<{
+    user: TUser
+}>;

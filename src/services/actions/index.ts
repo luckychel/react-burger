@@ -1,4 +1,4 @@
-import { request, fetchWithRefresh, headers } from '../../utils/api';
+import { request, fetchWithRefresh, headers, checkResponse } from '../../utils/api';
 import { nanoid } from '@reduxjs/toolkit'
 import { AppDispatch } from '../store';
 
@@ -9,7 +9,7 @@ import { INGREDIENTS_REQUEST, INGREDIENTS_SUCCESS, INGREDIENTS_FAILED,
   IS_REQUESTING, IS_SUCCESS, IS_FAILED, SET_USER, SET_AUTH_CHECKED
  } from '../constants';
 
-import { TIngredientItem, TUser, IResponse, IOrder } from '../../utils/types';
+import { TIngredientItem, TServerResponse, TIngredientsResponse, TOrderResponse, TRefreshResponse, TUser, TUserResponse  } from '../../utils/types';
 
 /* Actions */
 
@@ -22,17 +22,18 @@ export const getIngredients = () => {
     })
 
     request('ingredients', {})
-    .then((result: IResponse<TIngredientItem>) => { 
+    .then(checkResponse<TIngredientsResponse>)
+    .then(res => { 
       dispatch({
         type: INGREDIENTS_SUCCESS,
-        data: result.data
+        data: res.data
       })
     })
-    .catch(e => {
+    .catch((err: Error) => {
       dispatch({
         type: INGREDIENTS_FAILED
       });
-      console.error('Error: ' + e.message);
+      console.error('Error: ' + err.message);
     });
   }
 }
@@ -102,7 +103,8 @@ export function getOrderNumber(ids: string[]) {
       headers: headers("auth"), 
       body: JSON.stringify({ 'ingredients': ids})
     })
-    .then((result: IResponse<IOrder>) => { 
+    .then(checkResponse<TOrderResponse>)
+    .then(result => { 
       if (result && result.order && result.order.number) {
         dispatch({
           type: ORDER_NUMBER_SUCCESS,
@@ -133,6 +135,7 @@ export function refreshTokens() {
         headers: headers(),
         body: JSON.stringify({ token: refreshtoken })
       })
+      .then(checkResponse<TRefreshResponse>)
       .then(result => {
         if (result.success) {
           localStorage.setItem('accessToken', result.accessToken);
@@ -166,7 +169,8 @@ export function checkUserAuth() {
         method: "GET",
         headers: headers("auth")
       })
-      .then((result: IResponse<TUser>) => { 
+      .then(checkResponse<TUserResponse>)
+      .then(result => { 
         if (result && result.success) {
           dispatch({
             type: SET_USER,
@@ -210,12 +214,13 @@ export function register(formData: TUser) {
       headers: headers(),
       body: JSON.stringify(formData)
     })
-    .then((result: IResponse<TUser>) => {
+    .then(checkResponse<TUserResponse & TRefreshResponse>)
+    .then(result => {
 
       if (result && result.success) {
 
-        localStorage.setItem("refreshToken", result.refreshToken || "");
-        localStorage.setItem("accessToken", result.accessToken || "");
+        localStorage.setItem("refreshToken", result.refreshToken);
+        localStorage.setItem("accessToken", result.accessToken);
 
         dispatch({
           type: SET_USER,
@@ -245,12 +250,13 @@ export function login(formData: TUser) {
       headers: headers(),
       body: JSON.stringify(formData)
     })
-    .then((result: IResponse<TUser>) => {
+    .then(checkResponse<TUserResponse & TRefreshResponse>)
+    .then(result => {
 
       if (result && result.success) {
         
-        localStorage.setItem("refreshToken", result.refreshToken || "");
-        localStorage.setItem("accessToken", result.accessToken || "");
+        localStorage.setItem("refreshToken", result.refreshToken);
+        localStorage.setItem("accessToken", result.accessToken);
        
         dispatch({
           type: SET_USER,
@@ -282,7 +288,8 @@ export function logout() {
       headers: headers(),
       body: JSON.stringify({ token: localStorage.getItem("refreshToken") })
     })
-    .then((result: IResponse<TUser>) => {
+    .then(checkResponse<TServerResponse<boolean>>)
+    .then(result => {
 
       if (result && result.success) {
         
@@ -324,7 +331,8 @@ export function changeUser(formData: TUser) {
      headers: headers("auth"),
      body: JSON.stringify(formData)
    })
-   .then((result: IResponse<TUser>) => {
+   .then(checkResponse<TUserResponse>)
+   .then(result => {
 
      if (result && result.success) {
        dispatch({
@@ -355,7 +363,9 @@ export function forgotPassword(formData: TUser) {
       headers: headers(),
       body: JSON.stringify(formData)
     })
-    .then((result: IResponse<TUser>) => {
+    .then(checkResponse<TUserResponse>)
+    .then(result => {
+
       if (result && result.success) {
         dispatch({type: IS_SUCCESS});
         return result;
@@ -381,7 +391,9 @@ export function resetPassword(formData: TUser) {
       headers: headers(),
       body: JSON.stringify(formData)
     })
-    .then((result: IResponse<TUser>) => {
+    .then(checkResponse<TUserResponse>)
+    .then(result => {
+      
       if (result && result.success) {
         dispatch({type: IS_SUCCESS});
         return result;

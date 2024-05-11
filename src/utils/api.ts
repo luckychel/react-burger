@@ -1,23 +1,24 @@
-import { IResponse, TTokens } from "./types";
+import { TRefreshResponse } from "./types";
+
 const baseUrl = 'https://norma.nomoreparties.space/api/';
 
-const checkResponse = (res: Response): Promise<any> => {
-    return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
-};
-
 export const request = async (url: string, options?: RequestInit) => {
-    return await fetch(baseUrl + url, options)
-        .then(checkResponse);
+  return await fetch(baseUrl + url, options)
 }
 
-export const refreshToken = ():Promise<IResponse<TTokens>> => {
+export const checkResponse = <T>(res: Response): Promise<T> => {
+  return res.ok ? res.json() : res.json().then(err => Promise.reject(err));
+};
+
+const refreshToken = () => {
     return fetch(`${baseUrl}auth/token`, {
       method: "POST",
       headers: headers(),
       body: JSON.stringify({
         token: localStorage.getItem("refreshToken"),
       }),
-    }).then(checkResponse);
+    })
+    .then(checkResponse<TRefreshResponse>);
 };
   
 export const fetchWithRefresh = async (url: string, options?: RequestInit) => {
