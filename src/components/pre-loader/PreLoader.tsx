@@ -1,9 +1,9 @@
-import { FC } from 'react';
+import { FC, CSSProperties } from 'react';
 import imgloader from '../../images/loader.gif';
 import styles from './PreLoader.module.css'
 
 interface IPreLoaderProps {
-    style?: React.CSSProperties;
+    style?: CSSProperties;
 } 
 
 export const PreLoader: FC<IPreLoaderProps> = ({ style }) => {
