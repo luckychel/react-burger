@@ -1,4 +1,4 @@
-import { useEffect, FC } from 'react'
+import { useEffect, useRef, FC } from 'react'
 import styles from './OrderDetails.module.css';
 import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 
@@ -13,8 +13,13 @@ const OrderDetails: FC<{ ids: string[] }> = ({ ids}) => {
 
     const dispatch = useAppDispatch();
 
+    const only1time = useRef(true);
+
     useEffect(() => {
-      dispatch(getOrderNumber(ids));
+        if (only1time.current) {
+            only1time.current = false;
+            dispatch(getOrderNumber(ids));
+        }
     }, [ids, dispatch]);
 
     return (
