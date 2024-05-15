@@ -23,7 +23,6 @@
     composes: total_sum;
 }
 
-
 .components {
     display: flex;
     flex-direction: column;

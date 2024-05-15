@@ -115,24 +115,24 @@ const BurgerConstructor: FC = () => {
 
             <BurgerBunItem pos="bottom" bun={bun} />
             
-      </div>
+         </div>
     
-      <div className={`${styles.total} mt-10`}>
-         <span className={`${styles.total_sum} mr-10 text_type_digits-medium`}>
-            {totalSum} 
-            <CurrencyIcon type="primary" />
-         </span>
-         <Button type="primary" size="large" htmlType='button' onClick={handleOrderDetailsClick} disabled={isCreateOrderBtnDisabled}>
-            Оформить заказ
-         </Button>
-      </div>
-    
-      { 
-         isOpenOrderDetailsModal && 
-            <Modal onClose={() => setOrderDetailsOpenModal(false)}>
-               <OrderDetails ids={orderItems} />
-            </Modal>
-      }
+         <div className={`${styles.total} mt-10`}>
+            <span className={`${styles.total_sum} mr-10 text_type_digits-medium`}>
+               {totalSum} 
+               <CurrencyIcon type="primary" />
+            </span>
+            <Button type="primary" size="large" htmlType='button' onClick={handleOrderDetailsClick} disabled={isCreateOrderBtnDisabled}>
+               Оформить заказ
+            </Button>
+         </div>
+      
+         { 
+            isOpenOrderDetailsModal && 
+               <Modal onClose={() => setOrderDetailsOpenModal(false)}>
+                  <OrderDetails ids={orderItems} />
+               </Modal>
+         }
       </section>
   )
 }

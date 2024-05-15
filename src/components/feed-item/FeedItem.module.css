@@ -1,0 +1,53 @@
+.feed_item_main_content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    max-width: 796px;
+    width: 100%;
+    padding: 24px;
+    gap: 24px;
+    border-radius: 40px;
+    background-color: #1c1c21;
+    box-sizing: border-box;
+  }
+  
+  .feed_item_header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .feed_item_brief_order {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    position: relative;
+    align-items: center;
+  }
+  
+  .feed_item_images {
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .feed_item_date {
+    text-align: center;
+    margin: 0;
+  }
+  
+  .feed_item_link {
+    text-decoration: none;
+    color: white;
+  }
+  
+  .feed_item_caption_active {
+    color: #0cc;
+  }
+
+  .total_cost {
+    display: flex;
+    margin-left: auto;
+    align-items: center;
+    margin-right: 12px;
+}

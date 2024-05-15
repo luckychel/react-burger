@@ -1,7 +1,24 @@
 .order_feed_main_content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-top: 88px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  max-width: 1200px;
+}
+  
+.container {
+  display: grid;
+  grid-template-columns: repeat(2, 600px);
+  column-gap: 60px;
+}
+
+.feed_list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-height: 812px;
+  height: 93%;
+  overflow-y: scroll;
+  padding: 0px 0px 40px 8px;
+  max-width: 600px;
+  width: 100%;
 }

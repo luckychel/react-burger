@@ -1,0 +1,49 @@
+.feed_statistics_main_content {
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+    max-width: 600px;
+    width: 100%;
+  }
+  
+  .feed_statistics_table {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+  }
+  
+  .feed_statistics_status {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-width: 272px;
+    width: 100%;
+  }
+  
+  .feed_statistics_orders {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 8px;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    height: 270px;
+  }
+  
+  .feed_statistics_orders_ready {
+    composes: feed_statistics_orders;
+    color: #0cc;
+    margin: 0;
+  }
+  
+  .feed_statistics_orders_in_work {
+    composes: feed_statistics_orders;
+    color: #fff;
+    margin: 0;
+  }
+  
+
+  .feed_statistics_orders_count {
+    display: block;
+  }
