@@ -640,13 +640,13 @@ export const FeedStatistics = () => {
           <ul className={`${styles.feed_statistics_orders} ${styles.feed_statistics_orders_in_work}`}>{ordersInWorkList}</ul>
         </div>
       </div>
-      <div className={styles.feed_statistics_orders_count}>
-        <h2 className={`${'text text_type_main-medium'}`}>Выполнено за все время:</h2>
-        <p className={'text text_type_digits-large'}>{ordersQnty.totalAll}</p>
+      <div>
+        <h2 className={'text text_type_main-medium'}>Выполнено за все время:</h2>
+        <p className={`${'text text_type_digits-large'} ${styles.feed_statistics_orders_shadow}`}>{ordersQnty.totalAll}</p>
       </div>
-      <div className={styles.feed_statistics_orders_count}>
-        <h2 className={`${'text text_type_main-medium'}`}>Выполнено за сегодня:</h2>
-        <p className={'text text_type_digits-large'}>{ordersQnty.totalToday}</p>
+      <div>
+        <h2 className={'text text_type_main-medium'}>Выполнено за сегодня:</h2>
+        <p className={`${'text text_type_digits-large'} ${styles.feed_statistics_orders_shadow}`}>{ordersQnty.totalToday}</p>
       </div>
     </div>
   )

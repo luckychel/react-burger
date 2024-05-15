@@ -42,11 +42,8 @@ export const FeedItem: FC<{ data: TOrder, key: number}> = ({ data, key}) => {
   )
 
   return (
-    <Link
-      key={data.number}
-      to={`${location.pathname}/${data.number}`}
-      state={{ background: location }}
-      className={`${styles.feedItem__link} ${'text text_type_digits-default'}`}
+    <Link key={data.number} to={`${location.pathname}/${data.number}`} state={{ background: location }}
+      className={`${styles.feedItem_link} ${'text text_type_digits-default'}`}
     >
       <div className={styles.feed_item_main_content}>
         <div className={styles.feed_item_header}>
