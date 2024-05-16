@@ -26,11 +26,7 @@
     align-items: center;
   }
   
-  .feed_item_images {
-    display: flex;
-    flex-direction: row;
-  }
-  
+
   .feed_item_date {
     text-align: center;
     margin: 0;
@@ -50,4 +46,28 @@
     margin-left: auto;
     align-items: center;
     margin-right: 12px;
+}
+.feed_item_images {
+  display: inline-flex;
+  flex-direction: row-reverse;
+  max-width: 458px;
+  max-height: 64px;
+}
+.feed_item_element {
+  position: relative;
+  overflow: hidden;
+  width: 120px;
+  border-radius: 100px;
+  border: 2px solid #fff;
+}
+.feed_item_element:not(:last-child) {
+  margin-left: -70px;
+}
+.feed_item_element img {
+  float:left;
+  margin-right:10px;
+  object-fit: cover;
+  display: block;
+  
+
 }

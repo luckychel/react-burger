@@ -69,8 +69,18 @@ export const FeedItem: FC<{ data: TOrder, key: number}> = ({ data, key}) => {
         )}
         <div className={styles.feed_item_brief_order}>
           <div className={styles.feed_item_images}>
-            {contentVisible}
-            {restOfTheContent}
+            <div className={styles.feed_item_element}>
+              <img src='https://code.s3.yandex.net/react/code/bun-02-mobile.png' />
+            </div>
+            <div className={styles.feed_item_element}>
+              <img src='https://code.s3.yandex.net/react/code/meat-04-mobile.png' />
+            </div>
+            <div className={styles.feed_item_element}>
+              <img src='https://code.s3.yandex.net/react/code/meat-01-mobile.png' />
+            </div>
+            <div className={styles.feed_item_element}>
+              <img src='https://code.s3.yandex.net/react/code/sauce-02-mobile.png' />
+            </div>
           </div>
           <div className={styles.total_cost}>
             <p className="text text_type_digits-default">{12345}</p>&nbsp;<CurrencyIcon type="primary" />
