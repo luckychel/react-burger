@@ -65,8 +65,8 @@
   z-index: 1;  
 }
 
-.feed_item_element img { margin: 0px 0px 0px -36px; 
-  object-fit: cover; 
+.feed_item_element img { 
+  margin: 0px 0px 0px -36px; 
   height: 64px; 
   margin-left: -31px; 
   margin-top: 2px;
