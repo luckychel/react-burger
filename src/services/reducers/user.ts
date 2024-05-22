@@ -1,12 +1,6 @@
 import { SET_AUTH_CHECKED, SET_USER, IS_REQUESTING, IS_SUCCESS, IS_FAILED } from '../constants';
-import { TUser } from '../../utils/types';
-
-type TUserState = Readonly<{
-  user: TUser | null;
-  isAuthChecked: boolean;
-  isRequest: boolean;
-  isFailed: boolean;
-}>;
+import { TUserAction } from '../actions';
+import { TUserState } from '../../utils/types';
 
 const initialState: TUserState = {
   user: null,
@@ -14,13 +8,6 @@ const initialState: TUserState = {
   isRequest: false,
   isFailed: false
 };
-
-type TUserAction =
-  | { type: typeof SET_AUTH_CHECKED; isAuthChecked: boolean; }
-  | { type: typeof SET_USER; user: TUser | null; }
-  | { type: typeof IS_REQUESTING; }
-  | { type: typeof IS_SUCCESS; }
-  | { type: typeof IS_FAILED; }
   
 export const userReducer = (state = initialState, action: TUserAction) => {
   switch(action.type) {

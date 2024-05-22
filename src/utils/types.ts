@@ -74,3 +74,28 @@ export type TOrderResponse = TServerResponse<{
 export type TUserResponse = TServerResponse<{
     user: TUser
 }>;
+
+export type TIngredientsState = Readonly<{
+    itemsRequest: boolean;
+    itemsFailed: boolean;
+    listIngredients: Array<TIngredientItem | null>;
+    currentIngredient: TIngredientItem | null;
+    isDraggingBun: boolean;
+    isDraggingIng: boolean;
+  }>;
+
+ export type TBurgerState = Readonly<{
+    itemsRequest: boolean;
+    itemsFailed: boolean;
+    bun: TIngredientItem | null;
+    burgerIngredients: Array<TIngredientItem | null>;
+    orderNumber: number;
+  }>;
+  
+  export type TUserState = Readonly<{
+    user: TUser | null;
+    isAuthChecked: boolean;
+    isRequest: boolean;
+    isFailed: boolean;
+  }>;
+  

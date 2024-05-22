@@ -1,15 +1,7 @@
 import { ADD_INGREDIENT_TO_BURGER, REMOVE_INGREDIENT_FROM_BURGER, INGREDIENTS_REPLACE, CLEAR_BURGER,
         ORDER_NUMBER_REQUEST, ORDER_NUMBER_SUCCESS, ORDER_NUMBER_FAILED } from '../constants';
-
-import { TIngredientItem } from '../../utils/types';
-
-type TBurgerState = Readonly<{
-  itemsRequest: boolean;
-  itemsFailed: boolean;
-  bun: TIngredientItem | null;
-  burgerIngredients: Array<TIngredientItem | null>;
-  orderNumber: number;
-}>;
+import { TBurgerAction } from '../actions';
+import { TBurgerState } from '../../utils/types';
 
 const initialState: TBurgerState = {
   itemsRequest: false,
@@ -18,16 +10,6 @@ const initialState: TBurgerState = {
   burgerIngredients: [], // для остального
   orderNumber: 0
 };
-
-type TBurgerAction =
-  | { type: typeof ADD_INGREDIENT_TO_BURGER; payload: { item: TIngredientItem, ingredientType: string } }
-  | { type: typeof REMOVE_INGREDIENT_FROM_BURGER; payload: { item: TIngredientItem } }
-  | { type: typeof INGREDIENTS_REPLACE; payload: { dragIndex: number, hoverIndex: number} }
-  | { type: typeof CLEAR_BURGER }
-  | { type: typeof ORDER_NUMBER_REQUEST }
-  | { type: typeof ORDER_NUMBER_SUCCESS; payload: { orderNumber: number } }
-  | { type: typeof ORDER_NUMBER_FAILED };
-
 
 export const burgerReducer = (state = initialState, action: TBurgerAction) => {
   switch(action.type) {

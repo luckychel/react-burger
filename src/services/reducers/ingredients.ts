@@ -1,15 +1,6 @@
 import { INGREDIENTS_REQUEST, INGREDIENTS_SUCCESS, INGREDIENTS_FAILED, OPEN_INGREDIENT, CLOSE_INGREDIENT, IS_DRAGGING } from '../constants';
-
-import { TIngredientItem } from '../../utils/types';
-
-type TIngredientsState = Readonly<{
-  itemsRequest: boolean;
-  itemsFailed: boolean;
-  listIngredients: Array<TIngredientItem | null>;
-  currentIngredient: TIngredientItem | null;
-  isDraggingBun: boolean;
-  isDraggingIng: boolean;
-}>;
+import { TIngredientsAction } from '../actions';
+import { TIngredientsState } from '../../utils/types';
 
 const initialState: TIngredientsState = {
   itemsRequest: false,
@@ -19,14 +10,6 @@ const initialState: TIngredientsState = {
   isDraggingBun: false,
   isDraggingIng: false
 };
-
-type TIngredientsAction =
-  | { type: typeof INGREDIENTS_REQUEST; }
-  | { type: typeof INGREDIENTS_SUCCESS; data: Array<TIngredientItem | null> }
-  | { type: typeof INGREDIENTS_FAILED; }
-  | { type: typeof OPEN_INGREDIENT; currentIngredient: TIngredientItem | null }
-  | { type: typeof CLOSE_INGREDIENT }
-  | { type: typeof IS_DRAGGING; isDraggingBun: boolean; isDraggingIng: boolean; }
 
 export const ingredientsReducer = (state = initialState, action: TIngredientsAction) => {
   switch(action.type) {

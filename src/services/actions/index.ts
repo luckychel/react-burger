@@ -3,7 +3,7 @@ import { nanoid } from '@reduxjs/toolkit'
 import { AppDispatch } from '../store';
 
 import { INGREDIENTS_REQUEST, INGREDIENTS_SUCCESS, INGREDIENTS_FAILED, 
-  ADD_INGREDIENT_TO_BURGER, REMOVE_INGREDIENT_FROM_BURGER, 
+  ADD_INGREDIENT_TO_BURGER, REMOVE_INGREDIENT_FROM_BURGER, OPEN_INGREDIENT, CLOSE_INGREDIENT,
   IS_DRAGGING, INGREDIENTS_REPLACE, CLEAR_BURGER, 
   ORDER_NUMBER_REQUEST, ORDER_NUMBER_SUCCESS, ORDER_NUMBER_FAILED,
   IS_REQUESTING, IS_SUCCESS, IS_FAILED, SET_USER, SET_AUTH_CHECKED
@@ -12,6 +12,29 @@ import { INGREDIENTS_REQUEST, INGREDIENTS_SUCCESS, INGREDIENTS_FAILED,
 import { TIngredientItem, TServerResponse, TIngredientsResponse, TOrderResponse, TRefreshResponse, TUser, TUserResponse  } from '../../utils/types';
 
 /* Actions */
+export type TIngredientsAction =
+  | { type: typeof INGREDIENTS_REQUEST; }
+  | { type: typeof INGREDIENTS_SUCCESS; data: Array<TIngredientItem | null> }
+  | { type: typeof INGREDIENTS_FAILED; }
+  | { type: typeof OPEN_INGREDIENT; currentIngredient: TIngredientItem | null }
+  | { type: typeof CLOSE_INGREDIENT }
+  | { type: typeof IS_DRAGGING; isDraggingBun: boolean; isDraggingIng: boolean; }
+
+export type TBurgerAction =
+  | { type: typeof ADD_INGREDIENT_TO_BURGER; payload: { item: TIngredientItem, ingredientType: string } }
+  | { type: typeof REMOVE_INGREDIENT_FROM_BURGER; payload: { item: TIngredientItem } }
+  | { type: typeof INGREDIENTS_REPLACE; payload: { dragIndex: number, hoverIndex: number} }
+  | { type: typeof CLEAR_BURGER }
+  | { type: typeof ORDER_NUMBER_REQUEST }
+  | { type: typeof ORDER_NUMBER_SUCCESS; payload: { orderNumber: number } }
+  | { type: typeof ORDER_NUMBER_FAILED };
+
+  export type TUserAction =
+  | { type: typeof SET_AUTH_CHECKED; isAuthChecked: boolean; }
+  | { type: typeof SET_USER; user: TUser | null; }
+  | { type: typeof IS_REQUESTING; }
+  | { type: typeof IS_SUCCESS; }
+  | { type: typeof IS_FAILED; }
 
 //Получение данных ингредиентов
 export const getIngredients = () => {
@@ -43,11 +66,11 @@ export const addItem = (item: TIngredientItem, ingredientType: string) => {
   return {
     type: ADD_INGREDIENT_TO_BURGER,
     payload: { 
-      ingredientType: ingredientType,
       item: {
         ...item, 
         uniqkey: nanoid()
-      }
+      },
+      ingredientType: ingredientType
     }
   }
 }
