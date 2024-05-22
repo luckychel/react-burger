@@ -81,6 +81,12 @@ export const FeedItem: FC<{ data: TOrder, key: number}> = ({ data, key}) => {
             <div className={styles.feed_item_element}>
               <img src='https://code.s3.yandex.net/react/code/sauce-02-mobile.png' />
             </div>
+            <div className={styles.feed_item_element}>
+              <img src='https://code.s3.yandex.net/react/code/core-mobile.png' />
+            </div>
+            <div className={styles.feed_item_element}>
+              <img src='https://code.s3.yandex.net/react/code/meat-03-mobile.png' />
+            </div>
           </div>
           <div className={styles.total_cost}>
             <p className="text text_type_digits-default">{12345}</p>&nbsp;<CurrencyIcon type="primary" />
