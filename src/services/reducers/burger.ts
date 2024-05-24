@@ -11,7 +11,7 @@ const initialState: TBurgerState = {
   orderNumber: 0
 };
 
-export const burgerReducer = (state = initialState, action: TBurgerAction) => {
+export const burgerReducer = (state = initialState, action: TBurgerAction): TBurgerState => {
   switch(action.type) {
     case ADD_INGREDIENT_TO_BURGER: {
         if (action.payload.ingredientType === 'bun') {

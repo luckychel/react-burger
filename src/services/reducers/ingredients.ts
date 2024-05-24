@@ -11,7 +11,7 @@ const initialState: TIngredientsState = {
   isDraggingIng: false
 };
 
-export const ingredientsReducer = (state = initialState, action: TIngredientsAction) => {
+export const ingredientsReducer = (state = initialState, action: TIngredientsAction): TIngredientsState => {
   switch(action.type) {
     case INGREDIENTS_REQUEST: {
       return {

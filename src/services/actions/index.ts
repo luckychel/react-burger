@@ -1,6 +1,6 @@
 import { request, fetchWithRefresh, headers, checkResponse } from '../../utils/api';
 import { nanoid } from '@reduxjs/toolkit'
-import { AppDispatch } from '../store';
+import { AppDispatch, AppThunk } from '../store';
 
 import { INGREDIENTS_REQUEST, INGREDIENTS_SUCCESS, INGREDIENTS_FAILED, 
   ADD_INGREDIENT_TO_BURGER, REMOVE_INGREDIENT_FROM_BURGER, OPEN_INGREDIENT, CLOSE_INGREDIENT,
@@ -10,6 +10,21 @@ import { INGREDIENTS_REQUEST, INGREDIENTS_SUCCESS, INGREDIENTS_FAILED,
  } from '../constants';
 
 import { TIngredientItem, TServerResponse, TIngredientsResponse, TOrderResponse, TRefreshResponse, TUser, TUserResponse  } from '../../utils/types';
+
+export interface IGetIngredientsAction {
+  readonly type: typeof INGREDIENTS_REQUEST;
+}
+
+export interface IGetIngredientsFailedAction {
+  readonly type: typeof INGREDIENTS_FAILED;
+}
+
+export interface IGetIngredientsSuccessAction {
+  readonly type: typeof INGREDIENTS_SUCCESS;
+  readonly data: ReadonlyArray<TIngredientItem | null>;
+}
+
+
 
 /* Actions */
 export type TIngredientsAction =
@@ -35,6 +50,9 @@ export type TBurgerAction =
   | { type: typeof IS_REQUESTING; }
   | { type: typeof IS_SUCCESS; }
   | { type: typeof IS_FAILED; }
+
+
+
 
 //Получение данных ингредиентов
 export const getIngredients = () => {

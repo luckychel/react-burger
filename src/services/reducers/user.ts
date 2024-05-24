@@ -9,7 +9,7 @@ const initialState: TUserState = {
   isFailed: false
 };
   
-export const userReducer = (state = initialState, action: TUserAction) => {
+export const userReducer = (state = initialState, action: TUserAction): TUserState => {
   switch(action.type) {
     
     case SET_AUTH_CHECKED: {
