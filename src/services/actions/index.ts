@@ -139,12 +139,12 @@ export function getOrderNumber(ids: string[]) {
       type: ORDER_NUMBER_REQUEST,
     });
 
-    return fetchWithRefresh('orders', { 
+    return fetchWithRefresh<TOrderResponse>('orders', { 
       method: 'POST', 
       headers: headers("auth"), 
       body: JSON.stringify({ 'ingredients': ids})
     })
-    .then(checkResponse<TOrderResponse>)
+    //.then(checkResponse<TOrderResponse>)
     .then(result => { 
       if (result && result.order && result.order.number) {
         dispatch({
@@ -206,11 +206,11 @@ export function checkUserAuth() {
 
       dispatch({ type: IS_REQUESTING });
 
-      fetchWithRefresh('auth/user', {
+      fetchWithRefresh<TUserResponse>('auth/user', {
         method: "GET",
         headers: headers("auth")
       })
-      .then(checkResponse<TUserResponse>)
+      //.then(checkResponse<TUserResponse>)
       .then(result => { 
         if (result && result.success) {
           dispatch({
@@ -324,12 +324,12 @@ export function logout() {
  
     dispatch({ type: IS_REQUESTING });
 
-    return fetchWithRefresh('auth/logout', {
+    return fetchWithRefresh<TServerResponse<boolean>>('auth/logout', {
       method: "POST",
       headers: headers(),
       body: JSON.stringify({ token: localStorage.getItem("refreshToken") })
     })
-    .then(checkResponse<TServerResponse<boolean>>)
+    //.then(checkResponse<TServerResponse<boolean>>)
     .then(result => {
 
       if (result && result.success) {
@@ -367,13 +367,13 @@ export function changeUser(formData: TUser) {
       reject({message: "my error"});
     }); */
 
-   return fetchWithRefresh('auth/user', {
+   return fetchWithRefresh<TUserResponse>('auth/user', {
      method: "PATCH",
      headers: headers("auth"),
      body: JSON.stringify(formData)
    })
-   .then(checkResponse<TUserResponse>)
-   .then(result => {
+   //.then(checkResponse<TUserResponse>)
+   .then((result: any) => {
 
      if (result && result.success) {
        dispatch({
