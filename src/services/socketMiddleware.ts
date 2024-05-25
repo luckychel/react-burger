@@ -1,10 +1,9 @@
 import { Middleware,MiddlewareAPI } from 'redux';
 import { AppDispatch, RootState } from './store';
-import { WS_CONNECTION_CLOSED, WS_CONNECTION_ERROR, WS_CONNECTION_START, WS_CONNECTION_SUCCESS, WS_GET_MESSAGE, WS_SEND_MESSAGE } from './constants';
+import { WS_CONNECTION_CLOSED, WS_CONNECTION_ERROR, WS_CONNECTION_START, WS_CONNECTION_SUCCESS, WS_GET_MESSAGE } from './constants';
 
 export type TWSStoreActions = {
     wsInit: typeof  WS_CONNECTION_START,
-    wsSendMessage: typeof WS_SEND_MESSAGE,
     onSuccess: typeof  WS_CONNECTION_SUCCESS,
     onClose: typeof WS_CONNECTION_CLOSED,
     onError: typeof  WS_CONNECTION_ERROR,
@@ -18,7 +17,7 @@ export const socketMiddleware = (wsUrl: string, wsActions: TWSStoreActions): Mid
       return next => (action: any) => {
         const { dispatch, getState } = store;
         const { type } = action;
-        const { wsInit, wsSendMessage, onSuccess, onClose, onError, onMessage } = wsActions;
+        const { wsInit, onSuccess, onClose, onError, onMessage } = wsActions;
         const { user } = getState().user;
 
           // let accessToken = localStorage.getItem("accessToken")?.replace("Bearer ", "") || '';
@@ -56,11 +55,11 @@ export const socketMiddleware = (wsUrl: string, wsActions: TWSStoreActions): Mid
             dispatch({ type: onClose, payload: event });
           };
   
-          if (type === wsSendMessage) {
-            const payload = action.payload;
-            //const message = { ...(payload as IMessage), token: user?.token };
-            //socket.send(JSON.stringify(message));
-          }
+        //   if (type === wsSendMessage) {
+        //     const payload = action.payload;
+        //     const message = { ...(payload as IMessage), token: user?.token };
+        //     socket.send(JSON.stringify(message));
+        //   }
         }
   
         next(action);

@@ -1,4 +1,4 @@
-import { WS_CONNECTION_START, WS_CONNECTION_SUCCESS, WS_CONNECTION_CLOSED, WS_CONNECTION_ERROR, WS_GET_MESSAGE, WS_SEND_MESSAGE } from '../constants';
+import { WS_CONNECTION_START, WS_CONNECTION_SUCCESS, WS_CONNECTION_CLOSED, WS_CONNECTION_ERROR, WS_GET_MESSAGE } from '../constants';
 
 import { TWsState } from '../../utils/types';
 import { TWsActions } from '../actions/ws';
