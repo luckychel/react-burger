@@ -4,6 +4,8 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { ingredientsReducer } from './reducers/ingredients';
 import { burgerReducer } from './reducers/burger';
 import { userReducer } from './reducers/user';
+import { wsReducer } from './reducers/ws';
+import { wsUserReducer } from './reducers/wsUser';
 
 import { store } from '../index';
 import { TIngredientsAction, TBurgerAction, TUserAction } from './actions';
@@ -11,7 +13,9 @@ import { TIngredientsAction, TBurgerAction, TUserAction } from './actions';
 export const rootReducer = combineReducers({
     ingredients: ingredientsReducer,
     burger: burgerReducer,
-    user: userReducer
+    user: userReducer,
+    wsAll: wsReducer,
+    wsUser: wsUserReducer,
 });
 
 type TApplicationActions = TIngredientsAction | TBurgerAction | TUserAction;

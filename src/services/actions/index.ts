@@ -44,7 +44,7 @@ export type TBurgerAction =
   | { type: typeof ORDER_NUMBER_SUCCESS; payload: { orderNumber: number } }
   | { type: typeof ORDER_NUMBER_FAILED };
 
-  export type TUserAction =
+export type TUserAction =
   | { type: typeof SET_AUTH_CHECKED; isAuthChecked: boolean; }
   | { type: typeof SET_USER; user: TUser | null; }
   | { type: typeof IS_REQUESTING; }
