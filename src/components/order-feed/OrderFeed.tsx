@@ -1,10 +1,26 @@
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import styles from './OrderFeed.module.css';
 import { FeedStatistics } from '../feed-statistics/FeedStatistics';
 import { FeedItem } from '../feed-item/FeedItem';
 import { TOrder } from '../../utils/types';
-
+import { useAppSelector, useAppDispatch } from '../../services/hooks';
+import { wsConnectionStart, wsConnectionDisconnect } from '../../services/actions/ws';
 const OrderFeed: FC = () => {
+
+   const ws = useAppSelector(store => store.wsAll);
+   const dispatch = useAppDispatch();
+
+   useEffect(() => {
+      if(!ws.connected) {
+        dispatch(wsConnectionStart("wss://norma.nomoreparties.space/orders/all"));
+      }
+      return () => {
+         //debugger
+         //dispatch(wsConnectionDisconnect());
+      }
+    }, [dispatch, ws.connected]);
+
+    /*
     const orders: TOrder[] = [{
         _id: "111", 
         ingredients: [{
@@ -599,15 +615,21 @@ const OrderFeed: FC = () => {
         number: 161241,
         price: 882.12,
       }]
+   */
     return (
       
         <section className={styles.order_feed_main_content}>
             <p className={`text_type_main-large mt-10 mb-0`}>Лента заказов</p>
             <div className={styles.container}>
                 <div className={`${styles.feed_list} ${'custom-scroll'}`}>
-                    {orders.map((order, index) => (
+                    
+                    {
+                    /*orders.map((order, index) => (
                         <FeedItem data={order} key={index} />
-                    ))}
+                    ))
+                    */
+                    }
+                    
                 </div>
                 <FeedStatistics />
             </div>

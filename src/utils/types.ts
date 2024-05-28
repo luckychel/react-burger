@@ -100,11 +100,11 @@ export type TUserState = Readonly<{
 }>;
   
 export type TWsState = {
-  wsConnected: boolean;
+  connected: boolean;
   orders: TOrder[];
 };
 
 export type TWsUserState = {
-  wsConnected: boolean;
+    connected: boolean;
   orders: TOrder[]
 };

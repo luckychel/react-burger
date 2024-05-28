@@ -4,7 +4,7 @@ import { TWsUserState } from '../../utils/types';
 import { TWsUserActions } from '../actions/wsUser';
   
 const initialState: TWsUserState = {
-    wsConnected: false,
+    connected: false,
     orders: []
 };
   
@@ -36,7 +36,7 @@ export const wsUserReducer = (state = initialState, action: TWsUserActions) => {
         case WS_USER_GET_MESSAGE: {
         return {
             ...state,
-            orders: action.orders
+            orders: action.payload
         }
         }
         default: {
