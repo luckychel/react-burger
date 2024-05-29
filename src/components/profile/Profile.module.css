@@ -39,4 +39,5 @@
     align-items: start;
     justify-content: center;
     flex-direction: column;
+    width: 700px;
 }
