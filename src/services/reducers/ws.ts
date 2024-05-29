@@ -9,7 +9,7 @@ const initialState: TWsState = {
     url: "wss://norma.nomoreparties.space/orders/all"
 };
   
-export const wsReducer = (state = initialState, action: TWsActions) => {
+export const wsReducer = (state = initialState, action: TWsActions): TWsState => {
     switch (action.type) {
         case WS_CONNECTION_START: {
             return {

@@ -13,7 +13,6 @@ export const userReducer = (state = initialState, action: TUserAction): TUserSta
   switch(action.type) {
     
     case SET_AUTH_CHECKED: {
-      //console.log('SET_AUTH_CHECKED')
       return {
         ...state,
         isAuthChecked: action.isAuthChecked,
@@ -22,7 +21,6 @@ export const userReducer = (state = initialState, action: TUserAction): TUserSta
       }
     }
     case SET_USER: {
-      //console.log('SET_USER')
       return {
         ...state,
         user: action.user,
@@ -31,7 +29,6 @@ export const userReducer = (state = initialState, action: TUserAction): TUserSta
       }
     }
     case IS_REQUESTING: {
-      //console.log('IS_REQUESTING')
       return {
         ...state,
         isRequest: true,
@@ -39,7 +36,6 @@ export const userReducer = (state = initialState, action: TUserAction): TUserSta
       }
     }
     case IS_SUCCESS: {
-      //console.log('IS_SUCCESS')
       return {
         ...state,
         isRequest: false,
@@ -47,7 +43,6 @@ export const userReducer = (state = initialState, action: TUserAction): TUserSta
       }
     }
     case IS_FAILED: {
-      //console.log('IS_FAILED')
       return {
         ...state,
         isRequest: false,

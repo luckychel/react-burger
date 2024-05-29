@@ -2,7 +2,7 @@ import { FC } from 'react'
 import styles from './BurgerBunItem.module.css';
 import { ConstructorElement} from '@ya.praktikum/react-developer-burger-ui-components'
 
-import { addItem } from '../../services/actions';
+import { AddItemAction } from '../../services/actions';
 import { useDrop } from 'react-dnd'
 
 import { TIngredientItem } from '../../utils/types';
@@ -20,7 +20,7 @@ const BurgerBunItem: FC<{pos: 'top' | 'bottom'; bun: TIngredientItem | null;}> =
           isBunHover: monitor.isOver(),
        }),
        drop(item) {
-          dispatch(addItem(item, 'bun'));
+          dispatch(AddItemAction(item, 'bun'));
        },
     });
 

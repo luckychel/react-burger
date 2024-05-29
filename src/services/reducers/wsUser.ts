@@ -5,42 +5,43 @@ import { TWsUserActions } from '../actions/wsUser';
   
 const initialState: TWsUserState = {
     connected: false,
-    data: null
+    data: null,
+    url: `wss://norma.nomoreparties.space/orders?token=${localStorage.getItem("accessToken")?.replace("Bearer ", "") || ''}`
 };
   
-export const wsUserReducer = (state = initialState, action: TWsUserActions) => {
+export const wsUserReducer = (state = initialState, action: TWsUserActions): TWsUserState => {
     switch (action.type) {
         case WS_USER_CONNECTION_START: {
-        return {
-            ...state
-        }
+            return {
+                ...state
+            }
         }
         case WS_USER_CONNECTION_SUCCESS: {
-        return {
-            ...state,
-            connected: true
-        }
+            return {
+                ...state,
+                connected: true
+            }
         }
         case WS_USER_CONNECTION_CLOSED: {
-        return {
-            ...state,
-            connected: false
-        }
+            return {
+                ...state,
+                connected: false
+            }
         }
         case WS_USER_CONNECTION_ERROR: {
-        return {
-            ...state,
-            connected: false
-        }
+            return {
+                ...state,
+                connected: false
+            }
         }
         case WS_USER_GET_MESSAGE: {
-        return {
-            ...state,
-            data: action.payload
-        }
+            return {
+                ...state,
+                data: action.payload
+            }
         }
         default: {
-        return state;
+            return state;
         }
     }
 }

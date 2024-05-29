@@ -1,6 +1,6 @@
 import { request, fetchWithRefresh, headers, checkResponse } from '../../utils/api';
 import { nanoid } from '@reduxjs/toolkit'
-import { AppDispatch, AppThunk } from '../store';
+import { AppDispatch, AppThunkAction } from '../store';
 
 import { INGREDIENTS_REQUEST, INGREDIENTS_SUCCESS, INGREDIENTS_FAILED, 
   ADD_INGREDIENT_TO_BURGER, REMOVE_INGREDIENT_FROM_BURGER, OPEN_INGREDIENT, CLOSE_INGREDIENT,
@@ -11,77 +11,126 @@ import { INGREDIENTS_REQUEST, INGREDIENTS_SUCCESS, INGREDIENTS_FAILED,
 
 import { TIngredientItem, TServerResponse, TIngredientsResponse, TOrderResponse, TRefreshResponse, TUser, TUserResponse  } from '../../utils/types';
 
+/*Ingredients interface & Actions*/
+
 export interface IGetIngredientsAction {
   readonly type: typeof INGREDIENTS_REQUEST;
+}
+export interface IGetIngredientsSuccessAction {
+  readonly type: typeof INGREDIENTS_SUCCESS;
+  readonly data: Array<TIngredientItem | null>;
 }
 
 export interface IGetIngredientsFailedAction {
   readonly type: typeof INGREDIENTS_FAILED;
 }
 
-export interface IGetIngredientsSuccessAction {
-  readonly type: typeof INGREDIENTS_SUCCESS;
-  readonly data: ReadonlyArray<TIngredientItem | null>;
+export interface ICurrentIngredientAction {
+  readonly type: typeof OPEN_INGREDIENT;
+  readonly currentIngredient: TIngredientItem | null;
 }
 
+export interface ICloseIngredientsAction {
+  readonly type: typeof CLOSE_INGREDIENT;
+}
 
+export interface IIsDraggingAction {
+  readonly type: typeof IS_DRAGGING;
+  readonly isDraggingBun: boolean;
+  readonly isDraggingIng: boolean;
+}
 
-/* Actions */
 export type TIngredientsAction =
-  | { type: typeof INGREDIENTS_REQUEST; }
-  | { type: typeof INGREDIENTS_SUCCESS; data: Array<TIngredientItem | null> }
-  | { type: typeof INGREDIENTS_FAILED; }
-  | { type: typeof OPEN_INGREDIENT; currentIngredient: TIngredientItem | null }
-  | { type: typeof CLOSE_INGREDIENT }
-  | { type: typeof IS_DRAGGING; isDraggingBun: boolean; isDraggingIng: boolean; }
+  | IGetIngredientsAction 
+  | IGetIngredientsSuccessAction 
+  | IGetIngredientsFailedAction 
+  | ICurrentIngredientAction
+  | ICloseIngredientsAction 
+  | IIsDraggingAction
 
-export type TBurgerAction =
-  | { type: typeof ADD_INGREDIENT_TO_BURGER; payload: { item: TIngredientItem, ingredientType: string } }
-  | { type: typeof REMOVE_INGREDIENT_FROM_BURGER; payload: { item: TIngredientItem } }
-  | { type: typeof INGREDIENTS_REPLACE; payload: { dragIndex: number, hoverIndex: number} }
-  | { type: typeof CLEAR_BURGER }
-  | { type: typeof ORDER_NUMBER_REQUEST }
-  | { type: typeof ORDER_NUMBER_SUCCESS; payload: { orderNumber: number } }
-  | { type: typeof ORDER_NUMBER_FAILED };
+export const IngredientsRequestAction = (): IGetIngredientsAction => ({
+  type: INGREDIENTS_REQUEST,
+})
 
-export type TUserAction =
-  | { type: typeof SET_AUTH_CHECKED; isAuthChecked: boolean; }
-  | { type: typeof SET_USER; user: TUser | null; }
-  | { type: typeof IS_REQUESTING; }
-  | { type: typeof IS_SUCCESS; }
-  | { type: typeof IS_FAILED; }
+export const IngredientsSuccessAction = (data: Array<TIngredientItem | null>): IGetIngredientsSuccessAction => ({
+  type: INGREDIENTS_SUCCESS,
+  data: data
+})
+
+export const IngredientsFailedAction = (): IGetIngredientsFailedAction => ({
+  type: INGREDIENTS_FAILED,
+})
+
+export const CurrentIngredientAction = (currentIngredient: TIngredientItem | null): ICurrentIngredientAction => ({
+  type: OPEN_INGREDIENT,
+  currentIngredient: currentIngredient
+})
+
+export const closeIngredientAction = (): ICloseIngredientsAction => ({
+  type: CLOSE_INGREDIENT,
+})
+
+export const IsDraggingAction = (isDraggingBun: boolean, isDraggingIng: boolean): IIsDraggingAction => ({
+  type: IS_DRAGGING,
+  isDraggingBun: isDraggingBun,
+  isDraggingIng: isDraggingIng
+})
 
 
+/*Burger Interfaces & Actions*/
 
-
-//Получение данных ингредиентов
-export const getIngredients = () => {
-  return function(dispatch: AppDispatch) {
-    
-    dispatch({
-      type: INGREDIENTS_REQUEST,
-    })
-
-    request('ingredients', {})
-    .then(checkResponse<TIngredientsResponse>)
-    .then(res => { 
-      dispatch({
-        type: INGREDIENTS_SUCCESS,
-        data: res.data
-      })
-    })
-    .catch((err: Error) => {
-      dispatch({
-        type: INGREDIENTS_FAILED
-      });
-      console.error('Error: ' + err.message);
-    });
+  export interface IAddItemAction {
+    readonly type: typeof ADD_INGREDIENT_TO_BURGER;
+    readonly payload: {
+      item: TIngredientItem,
+      ingredientType: string
+    };
   }
-}
 
-//добавление ингредиента
-export const addItem = (item: TIngredientItem, ingredientType: string) => {
-  return {
+  export interface IRemoveItemAction {
+    readonly type: typeof REMOVE_INGREDIENT_FROM_BURGER;
+    readonly payload: {
+      item: TIngredientItem
+    };
+  }
+
+  export interface IReplaceItemsAction{
+    readonly type: typeof INGREDIENTS_REPLACE;
+    readonly payload: { 
+        dragIndex: number;
+        hoverIndex: number;
+    };
+  }
+
+  export interface IClearBurgerAction {
+    readonly type: typeof CLEAR_BURGER
+  }
+
+  export interface IOrderNumberRequestAction {
+    readonly type: typeof ORDER_NUMBER_REQUEST
+  }
+
+  export interface IOrderNumberSuccessAction {
+    readonly type: typeof ORDER_NUMBER_SUCCESS;
+    readonly payload: { 
+      orderNumber: number 
+    } 
+  }
+  export interface IOrderNumberFailedAction {
+    readonly type: typeof ORDER_NUMBER_FAILED
+  }
+
+  export type TBurgerAction =
+  | IAddItemAction
+  | IRemoveItemAction
+  | IReplaceItemsAction
+  | IClearBurgerAction
+  | IOrderNumberRequestAction
+  | IOrderNumberSuccessAction
+  | IOrderNumberFailedAction
+
+  //добавление ингредиента
+  export const AddItemAction = (item: TIngredientItem, ingredientType: string): IAddItemAction => ({
     type: ADD_INGREDIENT_TO_BURGER,
     payload: { 
       item: {
@@ -90,82 +139,139 @@ export const addItem = (item: TIngredientItem, ingredientType: string) => {
       },
       ingredientType: ingredientType
     }
-  }
-}
+  })
 
-//удаление ингредиента
-export const deleteItem = (item: TIngredientItem) => {
-  return {
-      type: REMOVE_INGREDIENT_FROM_BURGER,
-      payload: { 
-        item
-      }
+ //удаление ингредиента
+ export const RemoveItemAction = (item: TIngredientItem): IRemoveItemAction => ({
+    type: REMOVE_INGREDIENT_FROM_BURGER,
+    payload: { 
+      item
     }
-}
-
-//перетаскивание
-export const dragging = (isDraggingBun: boolean, isDraggingIng: boolean) => {
-  return {
-    type: IS_DRAGGING,
-    isDraggingBun: isDraggingBun,
-    isDraggingIng: isDraggingIng,
-  }
-}
-
+  })
 
 //сортировка dnd
-export const replaceItems = (dragIndex: number, hoverIndex: number) => {
-  return {
+export const ReplaceItemsAction = (dragIndex: number, hoverIndex: number): IReplaceItemsAction  => ({
     type: INGREDIENTS_REPLACE,
     payload: {
       dragIndex: dragIndex,
       hoverIndex: hoverIndex
     }
-  }
-}
+  })
 
-//очистка бургера
-export const clearBurger = () => {
-  return {
+  //очистка бургера
+  export const ClearBurgerAction = (): IClearBurgerAction => ({
     type: CLEAR_BURGER,
+  })
+
+  export const OrderNumberRequestAction = (): IOrderNumberRequestAction => ({
+    type: ORDER_NUMBER_REQUEST,
+  })
+
+  export const OrderNumberSuccessAction = (orderNumber: number): IOrderNumberSuccessAction  => ({
+    type: ORDER_NUMBER_SUCCESS,
+    payload: {
+      orderNumber: orderNumber
+    }
+  })
+ export const OrderNumberFailedAction = (): IOrderNumberFailedAction => ({
+    type: ORDER_NUMBER_FAILED,
+  })
+
+/*User Interfaces & Actions*/
+  
+  export interface IUserSetAuthAction {
+    readonly type: typeof SET_AUTH_CHECKED;
+    readonly isAuthChecked: boolean
+  }
+
+  export interface ISetUserAction {
+    readonly type: typeof SET_USER;
+    readonly user: TUser | null;
+  }
+
+  export interface IIsRequestingAction {
+    readonly type: typeof IS_REQUESTING;
+  }
+
+  export interface IIsSuccessAction {
+    readonly type: typeof IS_SUCCESS;
+  }
+
+  export interface IIsFailedAction {
+    readonly type: typeof IS_FAILED;
+  }
+export type TUserAction =
+  | IUserSetAuthAction
+  | ISetUserAction
+  | IIsRequestingAction
+  | IIsSuccessAction
+  | IIsFailedAction
+
+  export const UserSetAuthAction = (isAuthChecked: boolean): IUserSetAuthAction => ({
+    type: SET_AUTH_CHECKED,
+    isAuthChecked: isAuthChecked
+  })
+
+  export const SetUserAction = (user: TUser | null): ISetUserAction => ({
+    type: SET_USER,
+    user: user
+  })
+
+  export const IsRequestingAction = (): IIsRequestingAction => ({
+    type: IS_REQUESTING
+  })
+
+  export const IsSuccessAction = (): IIsSuccessAction => ({
+    type: IS_SUCCESS
+  })
+
+  export const IsFailedAction = (): IIsFailedAction => ({
+    type: IS_FAILED
+  })
+
+//Получение данных ингредиентов
+export function getIngredients(): AppThunkAction {
+  return function(dispatch: AppDispatch) {
+
+    dispatch(IngredientsRequestAction)
+
+    request('ingredients', {})
+    .then(checkResponse<TIngredientsResponse>)
+    .then(res => { 
+      dispatch(IngredientsSuccessAction(res.data))
+    })
+    .catch((err: Error) => {
+      dispatch(IngredientsFailedAction);
+      console.error('Error: ' + err.message);
+    });
   }
 }
 
 //создание заказа
-export function getOrderNumber(ids: string[]) {
+export function getOrderNumber(ids: string[]): AppThunkAction {
   return function(dispatch: AppDispatch) {
     
-    dispatch({
-      type: ORDER_NUMBER_REQUEST,
-    });
+    dispatch(OrderNumberRequestAction);
 
     return fetchWithRefresh<TOrderResponse>('orders', { 
       method: 'POST', 
       headers: headers("auth"), 
       body: JSON.stringify({ 'ingredients': ids})
     })
-    //.then(checkResponse<TOrderResponse>)
     .then(result => { 
       if (result && result.order && result.order.number) {
-        dispatch({
-          type: ORDER_NUMBER_SUCCESS,
-          payload: {
-            orderNumber: result.order.number
-          }
-        })
+        dispatch(OrderNumberSuccessAction(result.order.number))
       }
     })
     .catch((err: Error) => {
-      dispatch({
-        type: ORDER_NUMBER_FAILED
-      })
+      dispatch(OrderNumberFailedAction)
       console.error('Error: ' + err.message);
     });
   }
 }
 
 //рефреш токенов
-export function refreshTokens() {
+export function refreshTokens(): AppThunkAction {
   return function(dispatch: AppDispatch) {
     const refreshtoken = localStorage.getItem('refreshToken') || null;
 
@@ -197,7 +303,7 @@ export function refreshTokens() {
 }
 
 //проверка пользователя с accesstoken (при наличии)
-export function checkUserAuth() {
+export function checkUserAuth(): AppThunkAction {
   return function(dispatch: AppDispatch) {
     
     const accesstoken = localStorage.getItem('accessToken') || null;
@@ -210,7 +316,6 @@ export function checkUserAuth() {
         method: "GET",
         headers: headers("auth")
       })
-      //.then(checkResponse<TUserResponse>)
       .then(result => { 
         if (result && result.success) {
           dispatch({
@@ -329,7 +434,6 @@ export function logout() {
       headers: headers(),
       body: JSON.stringify({ token: localStorage.getItem("refreshToken") })
     })
-    //.then(checkResponse<TServerResponse<boolean>>)
     .then(result => {
 
       if (result && result.success) {
@@ -372,9 +476,7 @@ export function changeUser(formData: TUser) {
      headers: headers("auth"),
      body: JSON.stringify(formData)
    })
-   //.then(checkResponse<TUserResponse>)
-   .then((result: any) => {
-
+   .then((result) => {
      if (result && result.success) {
        dispatch({
          type: SET_USER,

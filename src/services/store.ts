@@ -9,6 +9,8 @@ import { wsUserReducer } from './reducers/wsUser';
 
 import { store } from '../index';
 import { TIngredientsAction, TBurgerAction, TUserAction } from './actions';
+import { TWsActions } from './actions/ws';
+import { TWsUserActions } from './actions/wsUser';
 
 export const rootReducer = combineReducers({
     ingredients: ingredientsReducer,
@@ -18,10 +20,11 @@ export const rootReducer = combineReducers({
     wsUser: wsUserReducer,
 });
 
-type TApplicationActions = TIngredientsAction | TBurgerAction | TUserAction;
+export type TApplicationActions = TIngredientsAction | TBurgerAction | TUserAction | TWsActions | TWsUserActions;
 
 export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
+//export type AppDispatch = typeof store.dispatch;
 //export type AppThunk<TReturn = void> = ActionCreator<ThunkAction<TReturn, Action, RootState, TApplicationActions>>; 
-// export type AppDispatch = ThunkDispatch<RootState, unknown, TApplicationActions>;
-export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, TApplicationActions>;
+
+export type AppDispatch = ThunkDispatch<RootState, unknown, TApplicationActions>;
+export type AppThunkAction<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, TApplicationActions>;

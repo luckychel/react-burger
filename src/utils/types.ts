@@ -113,6 +113,7 @@ export type TWsState = {
 
 export type TWsUserState = {
   connected: boolean;
-  data: TOrder | null;
+  data: TOrdersResponse | null;
+  url: string;
 };
 

@@ -7,7 +7,7 @@ import OrderDetails from '../order-details/OrderDetails';
 import BurgerBunItem from '../burger-bun-item/BurgerBunItem'
 import BurgerConstructorItem from '../burger-constructor-item/BurgerConstructorItem'
 
-import { addItem, replaceItems, clearBurger } from '../../services/actions';
+import { AddItemAction, ReplaceItemsAction, ClearBurgerAction } from '../../services/actions';
 import { useDrop } from 'react-dnd'
 
 import { useNavigate, useLocation} from 'react-router-dom';
@@ -73,7 +73,7 @@ const BurgerConstructor: FC = () => {
       setOrderItems(ids);
       setOrderDetailsOpenModal(!isOpenOrderDetailsModal);
       
-      dispatch(clearBurger());
+      dispatch(ClearBurgerAction());
    }
    
   const [{ isItemHover }, refItemDrop] = useDrop<TIngredientItem, unknown, any>({
@@ -82,12 +82,12 @@ const BurgerConstructor: FC = () => {
          isItemHover: monitor.isOver(),
       }),
       drop(item) {
-         dispatch(addItem(item, 'item'));
+         dispatch(AddItemAction(item, 'item'));
       },
    });
 
    const moveCard = useCallback((dragIndex: number, hoverIndex: number) => {
-      dispatch(replaceItems(dragIndex,hoverIndex))
+      dispatch(ReplaceItemsAction(dragIndex,hoverIndex))
     }, [dispatch])
 
    return (
