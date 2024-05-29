@@ -26,7 +26,6 @@
   align-items: center;
 }
 
-
 .feed_item_date {
   text-align: center;
   margin: 0;
@@ -86,4 +85,23 @@
 
 .feed_item_element:not(:last-child) {
   margin-left: -15px;
+}
+
+.brief_order_overlay {
+  width: 64px;
+  height: 64px;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 2;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.brief_order_counter {
+  z-index: 3;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }

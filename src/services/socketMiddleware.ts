@@ -21,7 +21,8 @@ export const socketMiddleware = (wsActions: TWSStoreActions): Middleware => {
         const { dispatch, getState } = store;
         const { type, payload } = action;
         const { wsInit, onOpen, onClose, onError, onMessage, wsDisconnect } = wsActions;
-       
+        
+        const { url } = getState().wsAll;
         //const { user } = getState().user;
         // let accessToken = localStorage.getItem("accessToken")?.replace("Bearer ", "") || '';
 
@@ -35,34 +36,47 @@ export const socketMiddleware = (wsActions: TWSStoreActions): Middleware => {
     //   }
 //`${wsUrl}?token=${user.token}`
 
-        if (type === wsInit) {
-          debugger
-          socket = new WebSocket(payload);
+        if (type === wsInit && url) {
+          console.log('ws init');
+          socket = new WebSocket(url);
         }
         if (socket) {
-
           socket.onopen = event => {
-            debugger
+            console.log('ws onopen');
             dispatch({ type: onOpen, payload: event });
           };
   
           socket.onerror = event => {
+            console.log('ws init');
             dispatch({ type: onError, payload: event });
           };
   
           socket.onmessage = event => {
+            console.log('ws onmessage');
             const { data } = event;
             const parsedData = JSON.parse(data);
             dispatch({ type: onMessage, payload: { ...parsedData } });
           };
   
           socket.onclose = event => {
+            console.log('ws onclose');
             dispatch({ type: onClose, payload: event });
+
+            if (socket) {
+              console.log('ws socket close');
+              if (url) {
+                setTimeout(() => {
+                  socket = new WebSocket(url);
+                }, 3000)
+              }
+            }
           };
           
           if (type === wsDisconnect) {
-            debugger
-            socket.close();
+            if (socket && socket.readyState === WebSocket.OPEN) {
+              socket.close()
+              socket = null;
+            }
           }
         }
   

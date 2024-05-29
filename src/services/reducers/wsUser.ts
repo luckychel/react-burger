@@ -5,7 +5,7 @@ import { TWsUserActions } from '../actions/wsUser';
   
 const initialState: TWsUserState = {
     connected: false,
-    orders: []
+    data: null
 };
   
 export const wsUserReducer = (state = initialState, action: TWsUserActions) => {
@@ -18,25 +18,25 @@ export const wsUserReducer = (state = initialState, action: TWsUserActions) => {
         case WS_USER_CONNECTION_SUCCESS: {
         return {
             ...state,
-            wsConnected: true
+            connected: true
         }
         }
         case WS_USER_CONNECTION_CLOSED: {
         return {
             ...state,
-            wsConnected: false
+            connected: false
         }
         }
         case WS_USER_CONNECTION_ERROR: {
         return {
             ...state,
-            wsConnected: false
+            connected: false
         }
         }
         case WS_USER_GET_MESSAGE: {
         return {
             ...state,
-            orders: action.payload
+            data: action.payload
         }
         }
         default: {

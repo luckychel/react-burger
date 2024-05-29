@@ -7,11 +7,10 @@ import {
     WS_DISCONNECT
   } from '../constants';
   
-  import { TOrder } from '../../utils/types';
+  import { TOrdersResponse } from '../../utils/types';
   
   export interface IWsConnectionStart {
-    readonly type: typeof WS_CONNECTION_START,
-    readonly payload: string
+    readonly type: typeof WS_CONNECTION_START
   }
   
   export interface IWsConnectionSuccess {
@@ -28,7 +27,7 @@ import {
   
   export interface IWsGetMessage {
     readonly type: typeof WS_GET_MESSAGE
-    readonly payload: TOrder[]
+    readonly payload: TOrdersResponse
   }
   
   export interface IWsDisconnect {
@@ -43,9 +42,8 @@ import {
   | IWsGetMessage
   | IWsDisconnect;
 
-  export const wsConnectionStart = (url: string): IWsConnectionStart => ({
-    type: WS_CONNECTION_START,
-    payload: url
+  export const wsConnectionStart = (): IWsConnectionStart => ({
+    type: WS_CONNECTION_START
   })
   
   export const wsConnectionSuccess = (): IWsConnectionSuccess => ({
@@ -60,7 +58,7 @@ import {
     type: WS_CONNECTION_ERROR
   })
   
-  export const wsGetMessage = (orders: TOrder[]): IWsGetMessage => ({
+  export const wsGetMessage = (orders: TOrdersResponse): IWsGetMessage => ({
     type: WS_GET_MESSAGE,
     payload: orders
   })

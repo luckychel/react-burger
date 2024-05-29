@@ -36,8 +36,8 @@ export type TUser = {
 }
 
 export type TOrder = {
-  ingredients: TIngredientItem[];
   _id: string;
+  ingredients: TIngredientItem[];
   owner: TOrderOwner;
   status: 'done' | 'pending' | 'created';
   name: string;
@@ -98,13 +98,21 @@ export type TUserState = Readonly<{
   isRequest: boolean;
   isFailed: boolean;
 }>;
-  
+
+export type TOrdersResponse = TServerResponse<{
+  orders: TOrder[];
+  total: number;
+  totalToday: number;
+}>;
+
 export type TWsState = {
   connected: boolean;
-  orders: TOrder[];
+  data: TOrdersResponse | null;
+  url: string;
 };
 
 export type TWsUserState = {
-    connected: boolean;
-  orders: TOrder[]
+  connected: boolean;
+  data: TOrder | null;
 };
+

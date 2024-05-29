@@ -1,62 +1,70 @@
-import {  FC } from 'react'
+import { FC, ReactNode, useState, useEffect } from 'react'
 import { FormattedDate, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import styles from './FeedItem.module.css'
 import { Link, useLocation } from 'react-router-dom'
 import { TIngredientItem, TOrder } from '../../utils/types'
-import { useAppSelector, useAppDispatch } from '../../services/hooks';
+import { useAppSelector } from '../../services/hooks';
 
-export const FeedItem: FC<{ data: TOrder, key: number}> = ({ data, key}) => {
+export const FeedItem: FC<{ data: TOrder}> = ({ data }) => {
 
+  const [totalCost, setTotalCost] = useState(0);
+  const [contentVisible, setContentVisible] = useState<ReactNode>(null);
+  const [restContent, setRestContent] = useState<ReactNode>(null);
   const location = useLocation()
 
   const ingredients = useAppSelector(store => store.ingredients.listIngredients);
 
-  let orderIngredients: TIngredientItem[] = []
+  useEffect(() => {  
+    if (data.ingredients && ingredients) {
 
-  data.ingredients.map((x) => {
-    (ingredients as TIngredientItem[]).map((i) => {
-      if (i._id === x._id) {
-        return orderIngredients.push(i)
-      }
-      return 0
-    })
-  })
+      let orderIngredients: TIngredientItem[] = []
 
-  const visibleSet = new Set(orderIngredients)
+      data.ingredients.map((x) => {
+        (ingredients as TIngredientItem[]).map((i) => {
+          if (i._id === x.toString()) {
+            return orderIngredients.push(i)
+          }
+          return 0
+        })
+      })
 
-  const uniqueVisibleIngredients = Array.from(new Set(orderIngredients)).slice(0, 5)
+      setTotalCost(orderIngredients.reduce(function (a, b) { return a + b.price }, 0));
 
-  const contentVisible = uniqueVisibleIngredients.map((ingredient, index) => (
-    <span>List Of Images</span>
-  ))
-
-  const uniqueInVisibleIngredients = Array.from(visibleSet).slice(5, 6)
-
-  const invisibleIngredientsQnty =
-    orderIngredients.length - uniqueVisibleIngredients.length
-
-  const restOfTheContent = uniqueInVisibleIngredients.map(
-    (ingredient, index) => (
-        <span>List Of Images</span>
-    )
-  )
+      const uniqIngredients  = new Set(orderIngredients)
+      const uniqVisibleIngredients = Array.from(uniqIngredients).slice(0, 5)
+    
+      setContentVisible(uniqVisibleIngredients.map((ingredient, index) => (
+         <div key={index} className={styles.feed_item_element}>
+          <img src={ingredient.image_mobile} />
+        </div>
+      )))
+    
+      const uniqInvisibleIngredients = Array.from(uniqIngredients).slice(5, 6)
+    
+      const invisibleIngredientsQnty = orderIngredients.length - uniqVisibleIngredients.length
+    
+      setRestContent(uniqInvisibleIngredients.map((ingredient, index) => (
+        <div key={index} className={`${styles.feed_item_element}`}>
+            <img src={ingredient.image_mobile} />
+            <span className={styles.brief_order_overlay} />
+            <span className={`${styles.brief_order_counter} ${'text text_type_digits-default'}`}>
+              {`+${invisibleIngredientsQnty}`}
+            </span>
+          </div>
+      )))
+    }
+  }, [data.ingredients, ingredients])
 
   return (
     <Link key={data.number} to={`${location.pathname}/${data.number}`} state={{ background: location }}
-      className={`${styles.feed_item_link} ${'text text_type_digits-default'}`}
-    >
+      className={`${styles.feed_item_link} ${'text text_type_digits-default'}`}>
       <div className={styles.feed_item_main_content}>
         <div className={styles.feed_item_header}>
-          <p className='text text_type_digits-default'>{data.number}</p>
-          <FormattedDate
-            date={new Date(data.createdAt)}
-            className={`${'text text_type_main-small text_color_inactive'} ${
-              styles.feed_item_date
-            }`}
-          />
+          <p className='text text_type_digits-default'>#{data.number}</p>
+          <FormattedDate  date={new Date(data.createdAt)} className={`${'text text_type_main-small text_color_inactive'} ${styles.feed_item_date}`} />
         </div>
         <h2 className={`${'text text_type_main-medium'}`}>{data.name}</h2>
-        {location.pathname === '/profile/orders' && (
+          {location.pathname === '/profile/orders' && (
             <p className={`${'text text_type_main-default'} ${data.status === 'created' ? styles.feed_item_caption_active : styles.feed_item_caption }`}>
             {
               data.status === 'done'
@@ -66,30 +74,14 @@ export const FeedItem: FC<{ data: TOrder, key: number}> = ({ data, key}) => {
                 : 'Готовится'
             }
             </p>
-        )}
+          )}
         <div className={styles.feed_item_brief_order}>
           <div className={styles.feed_item_images}>
-            <div className={styles.feed_item_element}>
-              <img src='https://code.s3.yandex.net/react/code/bun-02-mobile.png' />
-            </div>
-            <div className={styles.feed_item_element}>
-              <img src='https://code.s3.yandex.net/react/code/meat-04-mobile.png' />
-            </div>
-            <div className={styles.feed_item_element}>
-              <img src='https://code.s3.yandex.net/react/code/meat-01-mobile.png' />
-            </div>
-            <div className={styles.feed_item_element}>
-              <img src='https://code.s3.yandex.net/react/code/sauce-02-mobile.png' />
-            </div>
-            <div className={styles.feed_item_element}>
-              <img src='https://code.s3.yandex.net/react/code/core-mobile.png' />
-            </div>
-            <div className={styles.feed_item_element}>
-              <img src='https://code.s3.yandex.net/react/code/meat-03-mobile.png' />
-            </div>
+            {restContent}
+            {contentVisible}
           </div>
           <div className={styles.total_cost}>
-            <p className="text text_type_digits-default">{12345}</p>&nbsp;<CurrencyIcon type="primary" />
+            <p className="text text_type_digits-default">{totalCost}</p>&nbsp;<CurrencyIcon type="primary" />
         </div>
         </div>
       </div>
