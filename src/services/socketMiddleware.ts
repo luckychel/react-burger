@@ -49,7 +49,10 @@ export const socketMiddleware = (wsActions: TWSStoreActions): Middleware => {
             console.log('ws onmessage');
             const { data } = event;
             const parsedData = JSON.parse(data);
-            dispatch({ type: onMessage, payload: { ...parsedData } });
+            if (parsedData.success)
+            {
+              dispatch({ type: onMessage, payload: { ...parsedData } });  
+            }
           };
   
           socket.onclose = event => {
