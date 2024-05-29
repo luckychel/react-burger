@@ -292,12 +292,12 @@ export function refreshTokens(): AppThunkAction {
         }
       })
       .catch((err: Error) => {
-        dispatch({ type: IS_FAILED });
+        dispatch(IsFailedAction);
       })
     }
     else
     {
-      dispatch({ type: IS_FAILED });
+      dispatch(IsFailedAction);
     }
   }
 }
@@ -310,7 +310,7 @@ export function checkUserAuth(): AppThunkAction {
 
     if (accesstoken) {
 
-      dispatch({ type: IS_REQUESTING });
+      dispatch(IsRequestingAction);
 
       fetchWithRefresh<TUserResponse>('auth/user', {
         method: "GET",
@@ -318,33 +318,23 @@ export function checkUserAuth(): AppThunkAction {
       })
       .then(result => { 
         if (result && result.success) {
-          dispatch({
-            type: SET_USER,
-            user: result.user
-          })
+          dispatch(SetUserAction(result.user))
         }
         else {
           throw new Error("Ошибка метода checkUserAuth");
         }
       })
       .catch((err: Error) => {
-        dispatch({
-          type: IS_FAILED
-        })
+        dispatch(IsFailedAction);
         console.error('Error: ' + err.message);
       })
       .finally(() => {
-        dispatch({
-          type: SET_AUTH_CHECKED,
-          isAuthChecked: true
-        });
+        
+        dispatch(UserSetAuthAction(true));
       });
     }
     else {
-      dispatch({
-        type: SET_AUTH_CHECKED,
-        isAuthChecked: true
-      });
+      dispatch(UserSetAuthAction(true));
     }
   }
 }
@@ -353,7 +343,7 @@ export function checkUserAuth(): AppThunkAction {
 export function register(formData: TUser) {
   return function(dispatch: AppDispatch) {
  
-    dispatch({ type: IS_REQUESTING });
+    dispatch(IsRequestingAction);
 
     return request('auth/register', {
       method: "POST",
@@ -368,17 +358,14 @@ export function register(formData: TUser) {
         localStorage.setItem("refreshToken", result.refreshToken);
         localStorage.setItem("accessToken", result.accessToken);
 
-        dispatch({
-          type: SET_USER,
-          user: result.user
-        });
+        dispatch(SetUserAction(result.user));
 
       } else {
         throw new Error("Ошибка метода register");
       }
     })
     .catch((err: Error) => {
-      dispatch({ type: IS_FAILED});
+      dispatch(IsFailedAction);
       throw err;
     });
 
@@ -389,7 +376,7 @@ export function register(formData: TUser) {
 export function login(formData: TUser) {
   return function(dispatch: AppDispatch) {
  
-    dispatch({ type: IS_REQUESTING });
+    dispatch(IsRequestingAction);
 
     return request('auth/login', {
       method: "POST",
@@ -404,19 +391,16 @@ export function login(formData: TUser) {
         localStorage.setItem("refreshToken", result.refreshToken);
         localStorage.setItem("accessToken", result.accessToken);
        
-        dispatch({
-          type: SET_USER,
-          user: result.user
-        });
+        dispatch(SetUserAction(result.user));
        
-        dispatch({ type: IS_SUCCESS});
+        dispatch(IsSuccessAction);
      
       } else {
         throw new Error("Ошибка метода login");
       }
     })
     .catch((err: Error) => {
-      dispatch({ type: IS_FAILED});
+      dispatch(IsFailedAction);
       throw err;
     });
 
@@ -427,7 +411,7 @@ export function login(formData: TUser) {
 export function logout() {
   return function(dispatch: AppDispatch) {
  
-    dispatch({ type: IS_REQUESTING });
+    dispatch(IsRequestingAction);
 
     return fetchWithRefresh<TServerResponse<boolean>>('auth/logout', {
       method: "POST",
@@ -441,19 +425,16 @@ export function logout() {
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
        
-        dispatch({
-          type: SET_USER,
-          user: null
-        });
+        dispatch(SetUserAction(null));
        
-        dispatch({ type: IS_SUCCESS});
+        dispatch(IsSuccessAction);
      
       } else {
         throw new Error("Ошибка метода logout");
       }
     })
     .catch((err: Error) => {
-      dispatch({ type: IS_FAILED});
+      dispatch(IsFailedAction);
       throw err;
     });
 
@@ -464,10 +445,10 @@ export function logout() {
 export function changeUser(formData: TUser) {
   return function(dispatch: AppDispatch) {
  
-    dispatch({ type: IS_REQUESTING });
+    dispatch(IsRequestingAction);
 
    /*  return new Promise((resolve, reject) => {
-      dispatch({ type: IS_SUCCESS});
+       dispatch(IsSuccessAction);
       reject({message: "my error"});
     }); */
 
@@ -478,17 +459,15 @@ export function changeUser(formData: TUser) {
    })
    .then((result) => {
      if (result && result.success) {
-       dispatch({
-         type: SET_USER,
-         user: result.user
-       });
+
+      dispatch(SetUserAction(result.user));
 
      } else {
        throw new Error("Ошибка метода changeUser");
      }
    })
    .catch((err: Error) => {
-     dispatch({ type: IS_FAILED});
+    dispatch(IsFailedAction);
      throw err;
    });
 
@@ -499,7 +478,7 @@ export function changeUser(formData: TUser) {
 export function forgotPassword(formData: TUser) {
   return function(dispatch: AppDispatch) {
  
-    dispatch({ type: IS_REQUESTING });
+    dispatch(IsRequestingAction);
 
     return request('password-reset', {
       method: "POST",
@@ -510,14 +489,14 @@ export function forgotPassword(formData: TUser) {
     .then(result => {
 
       if (result && result.success) {
-        dispatch({type: IS_SUCCESS});
+        dispatch(IsSuccessAction);
         return result;
       } else {
         throw new Error("Ошибка метода forgotPassword");
       }
     })
     .catch((err: Error) => {
-      dispatch({ type: IS_FAILED});
+      dispatch(IsFailedAction);
       throw err;
     });
   }
@@ -527,7 +506,7 @@ export function forgotPassword(formData: TUser) {
 export function resetPassword(formData: TUser) {
   return function(dispatch: AppDispatch) {
  
-    dispatch({ type: IS_REQUESTING });
+    dispatch(IsRequestingAction);
 
     return request('password-reset/reset', {
       method: "POST",
@@ -538,14 +517,14 @@ export function resetPassword(formData: TUser) {
     .then(result => {
       
       if (result && result.success) {
-        dispatch({type: IS_SUCCESS});
+        dispatch(IsSuccessAction);
         return result;
       } else {
         throw new Error("Ошибка метода resetPassword");
       }
     })
     .catch((err: Error) => {
-      dispatch({ type: IS_FAILED});
+      dispatch(IsFailedAction);
       throw err;
     });
 

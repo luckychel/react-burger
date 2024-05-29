@@ -19,7 +19,7 @@ const OrdersHistory: FC = () => {
           }
        }
  
-     }, [dispatch, connected]);
+     }, [dispatch, user, connected]);
      
     const orders = data?.orders?.sort((a, b) => {
         return b.number - a.number;

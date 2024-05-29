@@ -1,5 +1,5 @@
 
-import { combineReducers, Action, ActionCreator } from 'redux';
+import { combineReducers } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { ingredientsReducer } from './reducers/ingredients';
 import { burgerReducer } from './reducers/burger';
