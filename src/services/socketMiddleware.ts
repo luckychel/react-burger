@@ -29,29 +29,36 @@ export const socketMiddleware = (wsActions: TWSStoreActions): Middleware => {
           else 
             url = getState().wsUser.url;
 
+          console.log('ws init');
           if (url) {
             socket = new WebSocket(url);
           }
         }
         if (socket) {
           socket.onopen = event => {
+            console.log('ws onopen');
             dispatch({ type: onOpen, payload: event });
           };
   
           socket.onerror = event => {
+            console.log('ws init');
             dispatch({ type: onError, payload: event });
           };
   
           socket.onmessage = event => {
+            console.log('ws onmessage');
             const { data } = event;
             const parsedData = JSON.parse(data);
             dispatch({ type: onMessage, payload: { ...parsedData } });
           };
   
           socket.onclose = event => {
+            console.log('ws onclose');
             dispatch({ type: onClose, payload: event });
 
             if (socket) {
+              console.log('ws socket close');
+
               let url = "";
               if (action.type === WS_CONNECTION_CLOSED)
                 url = getState().wsAll.url;

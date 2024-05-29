@@ -1,9 +1,10 @@
 import { FC, useEffect } from 'react'
 import styles from './OrderFeed.module.css';
-import { FeedStatistics } from '../feed-statistics/FeedStatistics';
-import { FeedItem } from '../feed-item/FeedItem';
+
 import { useAppSelector, useAppDispatch } from '../../services/hooks';
 import { wsConnectionStart, wsConnectionDisconnect } from '../../services/actions/ws';
+import { FeedItem } from '../feed-item/FeedItem';
+import { FeedStatistics } from '../feed-statistics/FeedStatistics';
 
 const OrderFeed: FC = () => {
 

@@ -1,7 +1,8 @@
-import { FC, useState, useEffect } from 'react'
+import { FC, useEffect } from 'react'
 import styles from './OrdersHistory.module.css';
 import { useAppSelector, useAppDispatch } from '../../services/hooks';
 import { wsUserConnectionStart, wsUserConnectionDisconnect } from '../../services/actions/wsUser';
+import { FeedItem } from '../feed-item/FeedItem';
 
 const OrdersHistory: FC = () => {
     const { user } = useAppSelector(store => store.user);
@@ -19,12 +20,21 @@ const OrdersHistory: FC = () => {
        }
  
      }, [dispatch, connected]);
+     
+    const orders = data?.orders?.sort((a, b) => {
+        return b.number - a.number;
+    })
+    .slice(0,50);
 
     return (
         <div className={styles.orders_history_main_content}>
-            <p className="text_type_main-default mt-0">
-                Скоро1 здесь будет история заказов...
-            </p>
+            <div className={`${styles.orders_history_list} custom-scroll`}>
+                {orders && orders.length > 0 &&
+                    orders.map((order, index) => (
+                        <FeedItem data={order} key={index} />
+                    ))
+                }
+            </div>
         </div>)
 }
 

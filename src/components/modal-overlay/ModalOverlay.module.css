@@ -11,4 +11,5 @@
     
     opacity: 0.6;
     background-color: #000000;
+    z-index: 10;
 }
