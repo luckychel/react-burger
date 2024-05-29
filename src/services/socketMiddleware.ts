@@ -19,7 +19,7 @@ export const socketMiddleware = (wsActions: TWSStoreActions): Middleware => {
   
       return next => (action: any) => {
         const { dispatch, getState } = store;
-        const { type, payload } = action;
+        const { type } = action;
         const { wsInit, onOpen, onClose, onError, onMessage, wsDisconnect } = wsActions;
         
         const { url } = getState().wsAll;
@@ -67,7 +67,7 @@ export const socketMiddleware = (wsActions: TWSStoreActions): Middleware => {
               if (url) {
                 setTimeout(() => {
                   socket = new WebSocket(url);
-                }, 3000)
+                }, 5000)
               }
             }
           };

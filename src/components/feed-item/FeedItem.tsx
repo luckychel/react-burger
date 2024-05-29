@@ -19,14 +19,15 @@ export const FeedItem: FC<{ data: TOrder}> = ({ data }) => {
 
       let orderIngredients: TIngredientItem[] = []
 
-      data.ingredients.map((x) => {
+      data.ingredients.map((x) => (
         (ingredients as TIngredientItem[]).map((i) => {
           if (i._id === x.toString()) {
             return orderIngredients.push(i)
           }
-          return 0
+          else 
+            return null
         })
-      })
+      ))
 
       setTotalCost(orderIngredients.reduce(function (a, b) { return a + b.price }, 0));
 
@@ -35,7 +36,7 @@ export const FeedItem: FC<{ data: TOrder}> = ({ data }) => {
     
       setContentVisible(uniqVisibleIngredients.map((ingredient, index) => (
          <div key={index} className={styles.feed_item_element}>
-          <img src={ingredient.image_mobile} />
+          <img src={ingredient.image_mobile} alt={ingredient.name}/>
         </div>
       )))
     
@@ -45,7 +46,7 @@ export const FeedItem: FC<{ data: TOrder}> = ({ data }) => {
     
       setRestContent(uniqInvisibleIngredients.map((ingredient, index) => (
         <div key={index} className={`${styles.feed_item_element}`}>
-            <img src={ingredient.image_mobile} />
+            <img src={ingredient.image_mobile} alt={ingredient.name} />
             <span className={styles.brief_order_overlay} />
             <span className={`${styles.brief_order_counter} ${'text text_type_digits-default'}`}>
               {`+${invisibleIngredientsQnty}`}

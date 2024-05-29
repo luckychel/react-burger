@@ -17,7 +17,7 @@ export const FeedStatistics: FC = () => {
    useEffect(() => { 
 
       if (data) {
-         
+
          setTotalAll(data.total);
          setTotalToday(data.totalToday);
 
@@ -44,7 +44,7 @@ export const FeedStatistics: FC = () => {
             ))
          )
       }
-    }, [data?.orders])
+    }, [data])
 
   return (
     <div className={styles.feed_statistics_main_content}>
