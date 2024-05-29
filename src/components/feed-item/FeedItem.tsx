@@ -41,7 +41,6 @@ export const FeedItem: FC<{ data: TOrder}> = ({ data }) => {
       )))
     
       const uniqInvisibleIngredients = Array.from(uniqIngredients).slice(5, 6)
-    
       const invisibleIngredientsQnty = orderIngredients.length - uniqVisibleIngredients.length
     
       setRestContent(uniqInvisibleIngredients.map((ingredient, index) => (

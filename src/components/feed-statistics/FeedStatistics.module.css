@@ -1,7 +1,7 @@
 .feed_statistics_main_content {
   display: flex;
   flex-direction: column;
-  gap: 45px;
+  gap: 40px;
   max-width: 600px;
   width: 100%;
 }

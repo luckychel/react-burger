@@ -26,8 +26,8 @@ const OrderFeed: FC = () => {
       
         <section className={styles.order_feed_main_content}>
             <p className={`text_type_main-large mt-10 mb-0`}>Лента заказов</p>
-            <div className={styles.container}>
-                <div className={`${styles.feed_list} ${'custom-scroll'}`}>
+            <div className={`${styles.container} mt-2`}>
+                <div className={`${styles.feed_list} custom-scroll`}>
                     {data?.orders && data.orders.length > 0 &&
                         data?.orders.map((order, index) => (
                            <FeedItem data={order} key={index} />

@@ -15,10 +15,10 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-  max-height: 740px;
+  max-height: 730px;
   height: 90%;
   overflow-y: scroll;
-  padding: 0px 0px 40px 8px;
+  padding: 0px 8px 40px 8px;
   max-width: 600px;
   width: 100%;
   scrollbar-width: thin;
