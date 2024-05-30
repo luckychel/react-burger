@@ -233,7 +233,7 @@ export type TUserAction =
 export function getIngredients(): AppThunkAction {
   return function(dispatch: AppDispatch) {
 
-    dispatch(IngredientsRequestAction)
+    dispatch(IngredientsRequestAction())
 
     request('ingredients', {})
     .then(checkResponse<TIngredientsResponse>)
@@ -241,7 +241,7 @@ export function getIngredients(): AppThunkAction {
       dispatch(IngredientsSuccessAction(res.data))
     })
     .catch((err: Error) => {
-      dispatch(IngredientsFailedAction);
+      dispatch(IngredientsFailedAction());
       console.error('Error: ' + err.message);
     });
   }
@@ -251,7 +251,7 @@ export function getIngredients(): AppThunkAction {
 export function getOrderNumber(ids: string[]): AppThunkAction {
   return function(dispatch: AppDispatch) {
     
-    dispatch(OrderNumberRequestAction);
+    dispatch(OrderNumberRequestAction());
 
     return fetchWithRefresh<TOrderResponse>('orders', { 
       method: 'POST', 
@@ -264,7 +264,7 @@ export function getOrderNumber(ids: string[]): AppThunkAction {
       }
     })
     .catch((err: Error) => {
-      dispatch(OrderNumberFailedAction)
+      dispatch(OrderNumberFailedAction())
       console.error('Error: ' + err.message);
     });
   }
@@ -292,12 +292,12 @@ export function refreshTokens(): AppThunkAction {
         }
       })
       .catch((err: Error) => {
-        dispatch(IsFailedAction);
+        dispatch(IsFailedAction());
       })
     }
     else
     {
-      dispatch(IsFailedAction);
+      dispatch(IsFailedAction());
     }
   }
 }
@@ -310,7 +310,7 @@ export function checkUserAuth(): AppThunkAction {
 
     if (accesstoken) {
 
-      dispatch(IsRequestingAction);
+      dispatch(IsRequestingAction());
 
       fetchWithRefresh<TUserResponse>('auth/user', {
         method: "GET",
@@ -325,7 +325,7 @@ export function checkUserAuth(): AppThunkAction {
         }
       })
       .catch((err: Error) => {
-        dispatch(IsFailedAction);
+        dispatch(IsFailedAction());
         console.error('Error: ' + err.message);
       })
       .finally(() => {
@@ -343,7 +343,7 @@ export function checkUserAuth(): AppThunkAction {
 export function register(formData: TUser) {
   return function(dispatch: AppDispatch) {
  
-    dispatch(IsRequestingAction);
+    dispatch(IsRequestingAction());
 
     return request('auth/register', {
       method: "POST",
@@ -365,7 +365,7 @@ export function register(formData: TUser) {
       }
     })
     .catch((err: Error) => {
-      dispatch(IsFailedAction);
+      dispatch(IsFailedAction());
       throw err;
     });
 
@@ -376,7 +376,7 @@ export function register(formData: TUser) {
 export function login(formData: TUser) {
   return function(dispatch: AppDispatch) {
  
-    dispatch(IsRequestingAction);
+    dispatch(IsRequestingAction());
 
     return request('auth/login', {
       method: "POST",
@@ -393,7 +393,7 @@ export function login(formData: TUser) {
        
         dispatch(SetUserAction(result.user));
        
-        dispatch(IsSuccessAction);
+        dispatch(IsSuccessAction());
      
       } else {
         throw new Error("Ошибка метода login");
@@ -411,7 +411,7 @@ export function login(formData: TUser) {
 export function logout() {
   return function(dispatch: AppDispatch) {
  
-    dispatch(IsRequestingAction);
+    dispatch(IsRequestingAction());
 
     return fetchWithRefresh<TServerResponse<boolean>>('auth/logout', {
       method: "POST",
@@ -427,14 +427,14 @@ export function logout() {
        
         dispatch(SetUserAction(null));
        
-        dispatch(IsSuccessAction);
+        dispatch(IsSuccessAction());
      
       } else {
         throw new Error("Ошибка метода logout");
       }
     })
     .catch((err: Error) => {
-      dispatch(IsFailedAction);
+      dispatch(IsFailedAction());
       throw err;
     });
 
@@ -445,7 +445,7 @@ export function logout() {
 export function changeUser(formData: TUser) {
   return function(dispatch: AppDispatch) {
  
-    dispatch(IsRequestingAction);
+    dispatch(IsRequestingAction());
 
    /*  return new Promise((resolve, reject) => {
        dispatch(IsSuccessAction);
@@ -467,7 +467,7 @@ export function changeUser(formData: TUser) {
      }
    })
    .catch((err: Error) => {
-    dispatch(IsFailedAction);
+    dispatch(IsFailedAction());
      throw err;
    });
 
@@ -478,7 +478,7 @@ export function changeUser(formData: TUser) {
 export function forgotPassword(formData: TUser) {
   return function(dispatch: AppDispatch) {
  
-    dispatch(IsRequestingAction);
+    dispatch(IsRequestingAction());
 
     return request('password-reset', {
       method: "POST",
@@ -489,14 +489,14 @@ export function forgotPassword(formData: TUser) {
     .then(result => {
 
       if (result && result.success) {
-        dispatch(IsSuccessAction);
+        dispatch(IsSuccessAction());
         return result;
       } else {
         throw new Error("Ошибка метода forgotPassword");
       }
     })
     .catch((err: Error) => {
-      dispatch(IsFailedAction);
+      dispatch(IsFailedAction());
       throw err;
     });
   }
@@ -506,7 +506,7 @@ export function forgotPassword(formData: TUser) {
 export function resetPassword(formData: TUser) {
   return function(dispatch: AppDispatch) {
  
-    dispatch(IsRequestingAction);
+    dispatch(IsRequestingAction());
 
     return request('password-reset/reset', {
       method: "POST",
@@ -517,14 +517,14 @@ export function resetPassword(formData: TUser) {
     .then(result => {
       
       if (result && result.success) {
-        dispatch(IsSuccessAction);
+        dispatch(IsSuccessAction());
         return result;
       } else {
         throw new Error("Ошибка метода resetPassword");
       }
     })
     .catch((err: Error) => {
-      dispatch(IsFailedAction);
+      dispatch(IsFailedAction());
       throw err;
     });
 

@@ -2,11 +2,12 @@ import { WS_CONNECTION_START, WS_CONNECTION_SUCCESS, WS_CONNECTION_CLOSED, WS_CO
 
 import { TWsState } from '../../utils/types';
 import { TWsActions } from '../actions/ws';
-  
+import { protocolWss, baseUrl } from '../constants';
+
 const initialState: TWsState = {
     connected: false,
     data: null,
-    url: "wss://norma.nomoreparties.space/orders/all"
+    url: protocolWss + baseUrl + "orders/all"
 };
   
 export const wsReducer = (state = initialState, action: TWsActions): TWsState => {

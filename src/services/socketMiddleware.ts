@@ -57,9 +57,10 @@ export const socketMiddleware = (wsActions: TWSStoreActions): Middleware => {
   
           socket.onclose = event => {
             console.log('ws onclose');
+          
             dispatch({ type: onClose, payload: event });
 
-            if (socket) {
+            /*if (!socket) {
               console.log('ws socket close');
 
               let url = "";
@@ -69,11 +70,9 @@ export const socketMiddleware = (wsActions: TWSStoreActions): Middleware => {
                 url = getState().wsUser.url;
               
               if (url) {
-                setTimeout(() => {
                   socket = new WebSocket(url);
-                }, 5000)
               }
-            }
+            }*/
           };
           
           if (type === wsDisconnect) {

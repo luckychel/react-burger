@@ -1,3 +1,7 @@
+export const protocolHttps = 'https://';
+export const protocolWss = 'wss://';
+export const baseUrl = 'norma.nomoreparties.space/';
+
 /* Ингредиенты */
 export const INGREDIENTS_REQUEST = 'INGREDIENTS_REQUEST';
 export const INGREDIENTS_SUCCESS = 'INGREDIENTS_SUCCESS';

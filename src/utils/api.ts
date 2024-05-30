@@ -1,9 +1,8 @@
+import { protocolHttps, baseUrl } from "../services/constants";
 import { TRefreshResponse } from "./types";
 
-const baseUrl = 'https://norma.nomoreparties.space/api/';
-
 export const request = async (url: string, options?: RequestInit) => {
-  return await fetch(baseUrl + url, options)
+  return await fetch(protocolHttps + baseUrl + "api/" + url, options)
 }
 
 export const checkResponse = <T>(res: Response): Promise<T> => {
@@ -11,7 +10,7 @@ export const checkResponse = <T>(res: Response): Promise<T> => {
 };
 
 const refreshToken = () => {
-    return fetch(`${baseUrl}auth/token`, {
+    return fetch(`${protocolHttps + baseUrl}api/auth/token`, {
       method: "POST",
       headers: headers(),
       body: JSON.stringify({
