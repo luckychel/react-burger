@@ -59,8 +59,9 @@ const App: FC = () => {
               <Route index element={<Profile />} />
               <Route path="" element={<Profile />} />
               <Route path="orders" element={<OrdersHistory />} />
-              <Route path="orders/:number" element={<Order />} />
             </Route>
+
+            <Route path="/profile/orders/:number" element={<OnlyAuth element={<Order/>} />} />
 
             <Route path="/login" element={<OnlyUnAuth element={<Login />} />} />
             <Route path="/register" element={<OnlyUnAuth element={<Register />} />} />
