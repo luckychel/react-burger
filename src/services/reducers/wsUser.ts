@@ -2,11 +2,12 @@ import { WS_USER_CONNECTION_START, WS_USER_CONNECTION_SUCCESS, WS_USER_CONNECTIO
 
 import { TWsUserState } from '../../utils/types';
 import { TWsUserActions } from '../actions/wsUser';
-  
+import { protocolWss, baseUrl } from '../constants';
+
 const initialState: TWsUserState = {
     connected: false,
     data: null,
-    url: `wss://norma.nomoreparties.space/orders?token=${localStorage.getItem("accessToken")?.replace("Bearer ", "") || ''}`
+    url: `${protocolWss}${baseUrl}orders?token=${localStorage.getItem("accessToken")?.replace("Bearer ", "") || ''}`
 };
   
 export const wsUserReducer = (state = initialState, action: TWsUserActions): TWsUserState => {
