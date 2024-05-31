@@ -4,6 +4,7 @@ import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import BurgerIngredientItem from '../burger-ingredient-item/BurgerIngredientItem';
 
 import { useAppSelector } from '../../services/hooks';
+import { PreLoader } from '../pre-loader/PreLoader'; 
 
 const BurgerIngredients: FC = () => {
 
@@ -15,7 +16,7 @@ const BurgerIngredients: FC = () => {
       ]
     }, []);
 
-    const ingredients = useAppSelector(store => store.ingredients.listIngredients);
+    const {itemsRequest, listIngredients} = useAppSelector(store => store.ingredients);
 
     const [current, setCurrent] = useState(tabs[0].type);
 
@@ -57,6 +58,10 @@ const BurgerIngredients: FC = () => {
       }
     }, [tabs]);
 
+    if (itemsRequest) {
+      return <PreLoader />
+    }
+
     return (
 
       <section className={styles.ingredient_main_content}>
@@ -75,7 +80,7 @@ const BurgerIngredients: FC = () => {
 
         <div className={`${styles.ingredients} mt-10 mb-5`} ref={scrollRef} onScroll={handleOnScroll}>
         {
-          ingredients && (
+          listIngredients && (
             tabs.map((tab) => {
 
               const refer = tab.type === tabs[0].type ? bunRef : tab.type === tabs[1].type ? sauceRef:  mainRef;
@@ -85,7 +90,7 @@ const BurgerIngredients: FC = () => {
                   <p key={tab.type} className="text text_type_main-medium" ref={refer}>{tab.name}</p>
                   <div className={styles.details}>
                   {
-                    ingredients.filter((item) => item && item.type === tab.type)
+                    listIngredients.filter((item) => item && item.type === tab.type)
                       .map((item) => 
                         item && <BurgerIngredientItem key={item._id} {...item} />
                       )

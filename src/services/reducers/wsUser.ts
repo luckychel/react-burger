@@ -8,7 +8,7 @@ const initialState: TWsUserState = {
     connected: false,
     data: null,
     isRequest: false,
-    url: `${protocolWss}${baseUrl}orders?token=${localStorage.getItem("accessToken")?.replace("Bearer ", "") || ''}`
+    url: `${protocolWss}${baseUrl}orders?token=`
 };
   
 export const wsUserReducer = (state = initialState, action: TWsUserActions): TWsUserState => {

@@ -32,7 +32,7 @@ const OrdersHistory: FC = () => {
     return (
         <div className={styles.orders_history_main_content}>
             <div className={`${styles.orders_history_list} custom-scroll`}>
-                {isRequest && <PreLoader />}
+                {isRequest && <PreLoader style={{left: '65%', top: '30%'}} />}
                 {!isRequest && orders && orders.length > 0 &&
                     orders.map((order, index) => (
                         <FeedItem data={order} key={index} />

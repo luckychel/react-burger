@@ -40,9 +40,9 @@ export const socketMiddleware = (wsActions: TWSStoreActions): Middleware => {
           let url = "";
           if (action.type === WS_CONNECTION_START)
             url = getState().wsAll.url;
-          else 
-            url = getState().wsUser.url;
-
+          else {
+            url = getState().wsUser.url + localStorage.getItem("accessToken")?.replace("Bearer ", "") || '';
+          }
           console.log('ws init');
           if (url) {
             socket = new WebSocket(url);
@@ -63,13 +63,14 @@ export const socketMiddleware = (wsActions: TWSStoreActions): Middleware => {
             console.log('ws onmessage');
             const { data } = event;
 
-            if (data?.message === "Invalid or missing token") {
+            const parsedData = JSON.parse(data);
+
+            if (!parsedData.success && parsedData?.message === "Invalid or missing token") {
                 console.log('ws refershToken');
                 await refershTokenWS();  //обновляем токен
             }
             else
             {
-                const parsedData = JSON.parse(data);
                 if (parsedData.success)
                 {
                     dispatch({ type: onMessage, payload: { ...parsedData } });  
