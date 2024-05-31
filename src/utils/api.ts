@@ -9,7 +9,7 @@ export const checkResponse = <T>(res: Response): Promise<T> => {
   return res.ok ? res.json() : res.json().then(err => Promise.reject(err));
 };
 
-const refreshToken = () => {
+export const refreshToken = () => {
     return fetch(`${protocolHttps + baseUrl}api/auth/token`, {
       method: "POST",
       headers: headers(),
@@ -27,6 +27,7 @@ export const fetchWithRefresh = async <T>(url: string, options?: RequestInit): P
       //throw new Error("jwt expired");
     } catch (err) {
       if (err.message === "jwt expired") {
+        console.log('fetchWithRefresh refershToken');
         const data = await refreshToken(); //обновляем токен
         if (!data.success) {
           return Promise.reject(data);

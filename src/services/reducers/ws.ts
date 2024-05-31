@@ -7,6 +7,7 @@ import { protocolWss, baseUrl } from '../constants';
 const initialState: TWsState = {
     connected: false,
     data: null,
+    isRequest: false,
     url: protocolWss + baseUrl + "orders/all"
 };
   
@@ -14,31 +15,36 @@ export const wsReducer = (state = initialState, action: TWsActions): TWsState =>
     switch (action.type) {
         case WS_CONNECTION_START: {
             return {
-                ...state
+                ...state,
+                isRequest: true
             }
         }
         case WS_CONNECTION_SUCCESS: {
             return {
                 ...state,
-                connected: true
+                connected: true,
+                isRequest: false
             }
         }
         case WS_CONNECTION_CLOSED: {
             return {
                 ...state,
-                connected: false
+                connected: false,
+                isRequest: false
             }
         }
         case WS_CONNECTION_ERROR: {
             return {
                 ...state,
-                connected: false
+                connected: false,
+                isRequest: false
             }
         }
         case WS_GET_MESSAGE: {
             return {
                 ...state,
-                data: action.payload
+                data: action.payload,
+                isRequest: false
             }
         }
         default: {

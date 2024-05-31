@@ -7,6 +7,7 @@ import { protocolWss, baseUrl } from '../constants';
 const initialState: TWsUserState = {
     connected: false,
     data: null,
+    isRequest: false,
     url: `${protocolWss}${baseUrl}orders?token=${localStorage.getItem("accessToken")?.replace("Bearer ", "") || ''}`
 };
   
@@ -14,31 +15,36 @@ export const wsUserReducer = (state = initialState, action: TWsUserActions): TWs
     switch (action.type) {
         case WS_USER_CONNECTION_START: {
             return {
-                ...state
+                ...state,
+                isRequest: true
             }
         }
         case WS_USER_CONNECTION_SUCCESS: {
             return {
                 ...state,
-                connected: true
+                connected: true,
+                isRequest: false
             }
         }
         case WS_USER_CONNECTION_CLOSED: {
             return {
                 ...state,
-                connected: false
+                connected: false,
+                isRequest: false
             }
         }
         case WS_USER_CONNECTION_ERROR: {
             return {
                 ...state,
-                connected: false
+                connected: false,
+                isRequest: false
             }
         }
         case WS_USER_GET_MESSAGE: {
             return {
                 ...state,
-                data: action.payload
+                data: action.payload,
+                isRequest: false
             }
         }
         default: {

@@ -4,6 +4,10 @@ import { WS_CONNECTION_START, WS_CONNECTION_SUCCESS, WS_CONNECTION_CLOSED, WS_CO
     WS_USER_CONNECTION_START, WS_USER_CONNECTION_SUCCESS, WS_USER_CONNECTION_CLOSED, WS_USER_CONNECTION_ERROR,WS_USER_GET_MESSAGE, WS_USER_DISCONNECT
 } from './constants';
 
+import { refreshToken } from '../utils/api'
+import { TRefreshResponse } from '../utils/types';
+
+
 export type TWSStoreActions = {
     wsInit: typeof WS_CONNECTION_START | typeof WS_USER_CONNECTION_START,
     onOpen: typeof WS_CONNECTION_SUCCESS | typeof WS_USER_CONNECTION_SUCCESS,
@@ -13,7 +17,17 @@ export type TWSStoreActions = {
     wsDisconnect: typeof WS_DISCONNECT | typeof WS_USER_DISCONNECT
 };
 
+
 export const socketMiddleware = (wsActions: TWSStoreActions): Middleware => {
+
+    const refershTokenWS = async () => {
+        const data: TRefreshResponse = await refreshToken();
+        if (data.success) {
+            localStorage.setItem("refreshToken", data.refreshToken || "");
+            localStorage.setItem("accessToken", data.accessToken|| "");
+        }
+    }
+
     return ((store: MiddlewareAPI<AppDispatch, RootState>) => {
       let socket: WebSocket | null = null;
 
@@ -41,17 +55,25 @@ export const socketMiddleware = (wsActions: TWSStoreActions): Middleware => {
           };
   
           socket.onerror = event => {
-            console.log('ws init');
+            console.log('ws error');
             dispatch({ type: onError, payload: event });
           };
   
-          socket.onmessage = event => {
+          socket.onmessage = async event => {
             console.log('ws onmessage');
             const { data } = event;
-            const parsedData = JSON.parse(data);
-            if (parsedData.success)
+
+            if (data?.message === "Invalid or missing token") {
+                console.log('ws refershToken');
+                await refershTokenWS();  //обновляем токен
+            }
+            else
             {
-              dispatch({ type: onMessage, payload: { ...parsedData } });  
+                const parsedData = JSON.parse(data);
+                if (parsedData.success)
+                {
+                    dispatch({ type: onMessage, payload: { ...parsedData } });  
+                }
             }
           };
   
@@ -76,7 +98,9 @@ export const socketMiddleware = (wsActions: TWSStoreActions): Middleware => {
           };
           
           if (type === wsDisconnect) {
+            console.log(`WebSocket status = ${socket.readyState}`)
             if (socket && socket.readyState === WebSocket.OPEN) {
+              console.log('ws disconnect')
               socket.close()
               socket = null;
             }

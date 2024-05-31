@@ -3,18 +3,21 @@ import styles from './OrdersHistory.module.css';
 import { useAppSelector, useAppDispatch } from '../../services/hooks';
 import { wsUserConnectionStart, wsUserConnectionDisconnect } from '../../services/actions/wsUser';
 import { FeedItem } from '../feed-item/FeedItem';
+import { PreLoader } from '../pre-loader/PreLoader';
 
 const OrdersHistory: FC = () => {
     const { user } = useAppSelector(store => store.user);
-    const { connected, data } = useAppSelector(store => store.wsUser);
+    const { connected, data, isRequest } = useAppSelector(store => store.wsUser);
     const dispatch = useAppDispatch();
  
     useEffect(() => {
        if(!connected && user) {
+         console.log('useEffect wsUserConnectionStart')
          dispatch(wsUserConnectionStart());
        }
        return () => {
           if (connected) {
+            console.log('useEffect wsUserConnectionDisconnect')
              dispatch(wsUserConnectionDisconnect());
           }
        }
@@ -29,7 +32,8 @@ const OrdersHistory: FC = () => {
     return (
         <div className={styles.orders_history_main_content}>
             <div className={`${styles.orders_history_list} custom-scroll`}>
-                {orders && orders.length > 0 &&
+                {isRequest && <PreLoader />}
+                {!isRequest && orders && orders.length > 0 &&
                     orders.map((order, index) => (
                         <FeedItem data={order} key={index} />
                     ))

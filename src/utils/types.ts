@@ -107,12 +107,14 @@ export type TOrdersResponse = TServerResponse<{
 
 export type TWsState = {
   connected: boolean;
+  isRequest: boolean;
   data: TOrdersResponse | null;
   url: string;
 };
 
 export type TWsUserState = {
   connected: boolean;
+  isRequest: boolean;
   data: TOrdersResponse | null;
   url: string;
 };

@@ -1,5 +1,5 @@
 import {useState, FC, MouseEvent } from 'react'
-import { NavLink, Outlet, useMatch } from 'react-router-dom';
+import { NavLink, Outlet } from 'react-router-dom';
 import styles from './Profile.module.css';
 
 import { logout } from '../../services/actions';

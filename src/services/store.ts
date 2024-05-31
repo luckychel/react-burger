@@ -23,8 +23,5 @@ export const rootReducer = combineReducers({
 export type TApplicationActions = TIngredientsAction | TBurgerAction | TUserAction | TWsActions | TWsUserActions;
 
 export type RootState = ReturnType<typeof store.getState>;
-//export type AppDispatch = typeof store.dispatch;
-//export type AppThunk<TReturn = void> = ActionCreator<ThunkAction<TReturn, Action, RootState, TApplicationActions>>; 
-
 export type AppDispatch = ThunkDispatch<RootState, unknown, TApplicationActions>;
 export type AppThunkAction<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, TApplicationActions>;

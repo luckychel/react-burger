@@ -5,23 +5,30 @@ import { useAppSelector, useAppDispatch } from '../../services/hooks';
 import { wsConnectionStart, wsConnectionDisconnect } from '../../services/actions/ws';
 import { FeedItem } from '../feed-item/FeedItem';
 import { FeedStatistics } from '../feed-statistics/FeedStatistics';
+import { PreLoader } from '../pre-loader/PreLoader';
 
 const OrderFeed: FC = () => {
 
-   const { connected, data } = useAppSelector(store => store.wsAll);
+   const { connected, data, isRequest} = useAppSelector(store => store.wsAll);
    const dispatch = useAppDispatch();
 
    useEffect(() => {
       if(!connected) {
+        console.log('useEffect wsConnectionStart')
         dispatch(wsConnectionStart());
       }
       return () => {
          if (connected) {
+            console.log('useEffect wsConnectionDisconnect')
             dispatch(wsConnectionDisconnect());
          }
       }
 
     }, [dispatch, connected]);
+
+    if (isRequest) {
+        return <PreLoader />
+    }
 
     return (
       
