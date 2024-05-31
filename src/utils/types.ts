@@ -119,8 +119,8 @@ export type TWsUserState = {
   url: string;
 };
 
-export type TOrderState = Readonly<{
-  orderRequest: false,
-  orderFailed: false,
+export type TGetOrderState = Readonly<{
+  orderRequest: boolean,
+  orderFailed: boolean,
   order: TOrder | null
 }>

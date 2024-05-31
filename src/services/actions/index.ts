@@ -6,10 +6,11 @@ import { INGREDIENTS_REQUEST, INGREDIENTS_SUCCESS, INGREDIENTS_FAILED,
   ADD_INGREDIENT_TO_BURGER, REMOVE_INGREDIENT_FROM_BURGER, OPEN_INGREDIENT, CLOSE_INGREDIENT,
   IS_DRAGGING, INGREDIENTS_REPLACE, CLEAR_BURGER, 
   CREATE_ORDER_REQUEST, CREATE_ORDER_SUCCESS, CREATE_ORDER_FAILED,
-  IS_REQUESTING, IS_SUCCESS, IS_FAILED, SET_USER, SET_AUTH_CHECKED
+  IS_REQUESTING, IS_SUCCESS, IS_FAILED, SET_USER, SET_AUTH_CHECKED,
+  ORDER_NUMBER_REQUEST, ORDER_NUMBER_SUCCESS, ORDER_NUMBER_FAILED
  } from '../constants';
 
-import { TIngredientItem, TServerResponse, TIngredientsResponse, TOrderResponse, TRefreshResponse, TUser, TUserResponse  } from '../../utils/types';
+import { TIngredientItem, TServerResponse, TIngredientsResponse, TOrderResponse, TRefreshResponse, TUser, TUserResponse, TOrder  } from '../../utils/types';
 
 /*Ingredients interface & Actions*/
 
@@ -177,7 +178,7 @@ export const ReplaceItemsAction = (dragIndex: number, hoverIndex: number): IRepl
     type: CREATE_ORDER_FAILED,
   })
 
-/*User Interfaces & Actions*/
+/* User Interfaces & Actions */
   
   export interface IUserSetAuthAction {
     readonly type: typeof SET_AUTH_CHECKED;
@@ -227,6 +228,39 @@ export type TUserAction =
 
   export const IsFailedAction = (): IIsFailedAction => ({
     type: IS_FAILED
+  })
+
+/* Order Interfaces & Actions */
+
+  export interface IGetOrderRequestAction {
+    readonly type: typeof ORDER_NUMBER_REQUEST;
+  }
+
+  export interface IGetOrderSuccessAction {
+    readonly type: typeof ORDER_NUMBER_SUCCESS;
+    readonly order: TOrder | null;
+  }
+
+  export interface IGetOrderFailedAction {
+    readonly type: typeof ORDER_NUMBER_FAILED;
+  }
+
+  export type TGetOrderAction =
+    | IGetOrderRequestAction 
+    | IGetOrderSuccessAction 
+    | IGetOrderFailedAction 
+  
+  export const GetOrderRequestAction = (): IGetOrderRequestAction => ({
+    type: ORDER_NUMBER_REQUEST,
+  })
+  
+  export const GetOrderSuccessAction = (order: TOrder | null): IGetOrderSuccessAction => ({
+    type: ORDER_NUMBER_SUCCESS,
+    order: order
+  })
+  
+  export const GetOrderFailedAction = (): IGetOrderFailedAction => ({
+    type: ORDER_NUMBER_FAILED,
   })
 
 //Получение данных ингредиентов
@@ -528,5 +562,23 @@ export function resetPassword(formData: TUser) {
       throw err;
     });
 
+  }
+}
+
+//Получение данных по заказу
+export function getOrder(orderId: number): AppThunkAction {
+  return function(dispatch: AppDispatch) {
+
+    dispatch(GetOrderRequestAction())
+
+    request(`orders/${orderId}`, {})
+    .then(checkResponse<TOrderResponse>)
+    .then(res => { 
+      dispatch(GetOrderSuccessAction(res.order))
+    })
+    .catch((err: Error) => {
+      dispatch(GetOrderFailedAction());
+      console.error('Error: ' + err.message);
+    });
   }
 }

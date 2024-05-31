@@ -8,7 +8,7 @@ const initialState: TWsState = {
     connected: false,
     data: null,
     isRequest: false,
-    url: protocolWss + baseUrl + "orders/all"
+    url: `${protocolWss}${baseUrl}orders/all`
 };
   
 export const wsReducer = (state = initialState, action: TWsActions): TWsState => {

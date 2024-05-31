@@ -17,7 +17,6 @@ export type TWSStoreActions = {
     wsDisconnect: typeof WS_DISCONNECT | typeof WS_USER_DISCONNECT
 };
 
-
 export const socketMiddleware = (wsActions: TWSStoreActions): Middleware => {
 
     const refershTokenWS = async () => {
