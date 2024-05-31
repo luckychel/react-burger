@@ -72,10 +72,11 @@
   padding: 2px; 
   background:linear-gradient(45deg,#801AB2,#4C4CFF); 
   -webkit-mask: 
-     linear-gradient(#801AB2 0 0) content-box, 
-     linear-gradient(#4C4CFF 0 0);
+    linear-gradient(#801AB2 0 0) content-box, 
+    linear-gradient(#4C4CFF 0 0);
   -webkit-mask-composite: xor;
-          mask-composite: exclude; 
+  mask-composite: exclude; 
+  z-index:3;
 }
 
 .feed_item_element img { 

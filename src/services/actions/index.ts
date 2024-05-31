@@ -5,7 +5,7 @@ import { AppDispatch, AppThunkAction } from '../store';
 import { INGREDIENTS_REQUEST, INGREDIENTS_SUCCESS, INGREDIENTS_FAILED, 
   ADD_INGREDIENT_TO_BURGER, REMOVE_INGREDIENT_FROM_BURGER, OPEN_INGREDIENT, CLOSE_INGREDIENT,
   IS_DRAGGING, INGREDIENTS_REPLACE, CLEAR_BURGER, 
-  ORDER_NUMBER_REQUEST, ORDER_NUMBER_SUCCESS, ORDER_NUMBER_FAILED,
+  CREATE_ORDER_REQUEST, CREATE_ORDER_SUCCESS, CREATE_ORDER_FAILED,
   IS_REQUESTING, IS_SUCCESS, IS_FAILED, SET_USER, SET_AUTH_CHECKED
  } from '../constants';
 
@@ -106,18 +106,18 @@ export const IsDraggingAction = (isDraggingBun: boolean, isDraggingIng: boolean)
     readonly type: typeof CLEAR_BURGER
   }
 
-  export interface IOrderNumberRequestAction {
-    readonly type: typeof ORDER_NUMBER_REQUEST
+  export interface ICreateOrderRequestAction {
+    readonly type: typeof CREATE_ORDER_REQUEST
   }
 
-  export interface IOrderNumberSuccessAction {
-    readonly type: typeof ORDER_NUMBER_SUCCESS;
+  export interface ICreateOrderSuccessAction {
+    readonly type: typeof CREATE_ORDER_SUCCESS;
     readonly payload: { 
       orderNumber: number 
     } 
   }
-  export interface IOrderNumberFailedAction {
-    readonly type: typeof ORDER_NUMBER_FAILED
+  export interface ICreateOrderFailedAction {
+    readonly type: typeof CREATE_ORDER_FAILED
   }
 
   export type TBurgerAction =
@@ -125,9 +125,9 @@ export const IsDraggingAction = (isDraggingBun: boolean, isDraggingIng: boolean)
   | IRemoveItemAction
   | IReplaceItemsAction
   | IClearBurgerAction
-  | IOrderNumberRequestAction
-  | IOrderNumberSuccessAction
-  | IOrderNumberFailedAction
+  | ICreateOrderRequestAction
+  | ICreateOrderSuccessAction
+  | ICreateOrderFailedAction
 
   //добавление ингредиента
   export const AddItemAction = (item: TIngredientItem, ingredientType: string): IAddItemAction => ({
@@ -163,18 +163,18 @@ export const ReplaceItemsAction = (dragIndex: number, hoverIndex: number): IRepl
     type: CLEAR_BURGER,
   })
 
-  export const OrderNumberRequestAction = (): IOrderNumberRequestAction => ({
-    type: ORDER_NUMBER_REQUEST,
+  export const CreateOrderRequestAction = (): ICreateOrderRequestAction => ({
+    type: CREATE_ORDER_REQUEST,
   })
 
-  export const OrderNumberSuccessAction = (orderNumber: number): IOrderNumberSuccessAction  => ({
-    type: ORDER_NUMBER_SUCCESS,
+  export const CreateOrderSuccessAction = (orderNumber: number): ICreateOrderSuccessAction  => ({
+    type: CREATE_ORDER_SUCCESS,
     payload: {
       orderNumber: orderNumber
     }
   })
- export const OrderNumberFailedAction = (): IOrderNumberFailedAction => ({
-    type: ORDER_NUMBER_FAILED,
+ export const CreateOrderFailedAction = (): ICreateOrderFailedAction => ({
+    type: CREATE_ORDER_FAILED,
   })
 
 /*User Interfaces & Actions*/
@@ -248,10 +248,10 @@ export function getIngredients(): AppThunkAction {
 }
 
 //создание заказа
-export function getOrderNumber(ids: string[]): AppThunkAction {
+export function createOrder(ids: string[]): AppThunkAction {
   return function(dispatch: AppDispatch) {
     
-    dispatch(OrderNumberRequestAction());
+    dispatch(CreateOrderRequestAction());
 
     return fetchWithRefresh<TOrderResponse>('orders', { 
       method: 'POST', 
@@ -260,11 +260,11 @@ export function getOrderNumber(ids: string[]): AppThunkAction {
     })
     .then(result => { 
       if (result && result.order && result.order.number) {
-        dispatch(OrderNumberSuccessAction(result.order.number))
+        dispatch(CreateOrderSuccessAction(result.order.number))
       }
     })
     .catch((err: Error) => {
-      dispatch(OrderNumberFailedAction())
+      dispatch(CreateOrderFailedAction())
       console.error('Error: ' + err.message);
     });
   }

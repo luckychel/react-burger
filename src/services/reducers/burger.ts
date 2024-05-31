@@ -1,5 +1,5 @@
 import { ADD_INGREDIENT_TO_BURGER, REMOVE_INGREDIENT_FROM_BURGER, INGREDIENTS_REPLACE, CLEAR_BURGER,
-        ORDER_NUMBER_REQUEST, ORDER_NUMBER_SUCCESS, ORDER_NUMBER_FAILED } from '../constants';
+  CREATE_ORDER_REQUEST, CREATE_ORDER_SUCCESS, CREATE_ORDER_FAILED } from '../constants';
 import { TBurgerAction } from '../actions';
 import { TBurgerState } from '../../utils/types';
 
@@ -60,7 +60,7 @@ export const burgerReducer = (state = initialState, action: TBurgerAction): TBur
         }
       }
       
-      case ORDER_NUMBER_REQUEST: {
+      case CREATE_ORDER_REQUEST: {
         return {
           ...state,
           itemsRequest: true,
@@ -68,7 +68,7 @@ export const burgerReducer = (state = initialState, action: TBurgerAction): TBur
           orderNumber: 0
         }
       }
-      case ORDER_NUMBER_SUCCESS: {
+      case CREATE_ORDER_SUCCESS: {
         return {
           ...state,
           itemsRequest: false,
@@ -76,7 +76,7 @@ export const burgerReducer = (state = initialState, action: TBurgerAction): TBur
           orderNumber: action.payload.orderNumber
         }
       }
-      case ORDER_NUMBER_FAILED: {
+      case CREATE_ORDER_FAILED: {
         return {
           ...state,
           itemsRequest: false,
