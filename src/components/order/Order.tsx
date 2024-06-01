@@ -35,7 +35,8 @@ const Order: FC = () => {
             else 
               return null
           })
-        ))
+        ));
+
         let resultIngrediets: TIngredientItem[] = []
         orderIngredients.map(item => {
             const found = resultIngrediets.findIndex((element) => element._id === item._id);
@@ -47,6 +48,7 @@ const Order: FC = () => {
                 return resultIngrediets[found].count_x! += + 1;
             }
         });
+        
         setOrderIngredients(resultIngrediets);
         setTotalCost(resultIngrediets.reduce(function (a, b) { return a + b.price * (b.count_x || 1) }, 0));
       }
@@ -91,8 +93,8 @@ const Order: FC = () => {
                         { 
                             return (
                                 <div className={styles.ingredients_item} key={index}> 
-                                        <img className={`${styles.ingredient_icon} mr-4`} src={item.image} alt={item.name}
-                                    />
+                                    <img className={`${styles.ingredient_icon} mr-4`} src={item.image} alt={item.name}/>
+
                                     <p className="text text_type_main-small">{item.name}</p>
                                     <div className={styles.ingredients_item_total}>
                                         <p className="text text_type_digits-default">{item.count_x}</p>
