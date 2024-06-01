@@ -10,7 +10,7 @@ import { INGREDIENTS_REQUEST, INGREDIENTS_SUCCESS, INGREDIENTS_FAILED,
   ORDER_NUMBER_REQUEST, ORDER_NUMBER_SUCCESS, ORDER_NUMBER_FAILED
  } from '../constants';
 
-import { TIngredientItem, TServerResponse, TIngredientsResponse, TOrderResponse, TRefreshResponse, TUser, TUserResponse, TOrder  } from '../../utils/types';
+import { TIngredientItem, TServerResponse, TIngredientsResponse, TOrderResponse, TRefreshResponse, TUser, TUserResponse, TGetOrderResponse, TOrder  } from '../../utils/types';
 
 /*Ingredients interface & Actions*/
 
@@ -271,8 +271,8 @@ export function getIngredients(): AppThunkAction {
 
     request('ingredients', {})
     .then(checkResponse<TIngredientsResponse>)
-    .then(res => { 
-      dispatch(IngredientsSuccessAction(res.data))
+    .then(result => { 
+      dispatch(IngredientsSuccessAction(result.data))
     })
     .catch((err: Error) => {
       dispatch(IngredientsFailedAction());
@@ -566,15 +566,17 @@ export function resetPassword(formData: TUser) {
 }
 
 //Получение данных по заказу
-export function getOrder(orderId: number): AppThunkAction {
+export function getOrder(orderId: string): AppThunkAction {
   return function(dispatch: AppDispatch) {
 
     dispatch(GetOrderRequestAction())
 
     request(`orders/${orderId}`, {})
-    .then(checkResponse<TOrderResponse>)
-    .then(res => { 
-      dispatch(GetOrderSuccessAction(res.order))
+    .then(checkResponse<TGetOrderResponse>)
+    .then(result => { 
+      if (result && result.orders) {
+        dispatch(GetOrderSuccessAction(result.orders[0]))
+      }
     })
     .catch((err: Error) => {
       dispatch(GetOrderFailedAction());

@@ -10,7 +10,8 @@ export interface IIngredientItem {
     image: string,
     image_large: string,
     image_mobile?: string,
-    uniqkey?: string | undefined
+    uniqkey?: string | undefined,
+    count_x?: number | undefined
 };
 
 export type TIngredientItem = Pick<IIngredientItem, keyof IIngredientItem>
@@ -70,6 +71,11 @@ export type TIngredientsResponse = TServerResponse<{
 export type TOrderResponse = TServerResponse<{
   order: TOrder;
 }>;
+
+export type TGetOrderResponse = TServerResponse<{
+  orders: TOrder[];
+}>;
+
 
 export type TUserResponse = TServerResponse<{
   user: TUser;

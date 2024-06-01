@@ -14,12 +14,10 @@ const OrderFeed: FC = () => {
 
    useEffect(() => {
       if(!connected) {
-        console.log('useEffect wsConnectionStart')
         dispatch(wsConnectionStart());
       }
       return () => {
          if (connected) {
-            console.log('useEffect wsConnectionDisconnect')
             dispatch(wsConnectionDisconnect());
          }
       }

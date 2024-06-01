@@ -61,7 +61,7 @@ export const FeedItem: FC<{ data: TOrder}> = ({ data }) => {
       <div className={styles.feed_item_main_content}>
         <div className={styles.feed_item_header}>
           <p className='text text_type_digits-default'>#{data.number}</p>
-          <FormattedDate  date={new Date(data.createdAt)} className={`${'text text_type_main-small text_color_inactive'} ${styles.feed_item_date}`} />
+          <FormattedDate date={new Date(data.createdAt)} className={`${'text text_type_main-small text_color_inactive'} ${styles.feed_item_date}`} />
         </div>
         <h2 className={`${'text text_type_main-medium'}`}>{data.name}</h2>
           {location.pathname === '/profile/orders' && (

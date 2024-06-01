@@ -42,30 +42,30 @@ export const socketMiddleware = (wsActions: TWSStoreActions): Middleware => {
           else {
             url = getState().wsUser.url + localStorage.getItem("accessToken")?.replace("Bearer ", "") || '';
           }
-          console.log('ws init');
+          //console.log('ws init');
           if (url) {
             socket = new WebSocket(url);
           }
         }
         if (socket) {
           socket.onopen = event => {
-            console.log('ws onopen');
+            //console.log('ws onopen');
             dispatch({ type: onOpen, payload: event });
           };
   
           socket.onerror = event => {
-            console.log('ws error');
+            //console.log('ws error');
             dispatch({ type: onError, payload: event });
           };
   
           socket.onmessage = async event => {
-            console.log('ws onmessage');
+            //console.log('ws onmessage');
             const { data } = event;
 
             const parsedData = JSON.parse(data);
 
             if (!parsedData.success && parsedData?.message === "Invalid or missing token") {
-                console.log('ws refershToken');
+                //console.log('ws refershToken');
                 await refershTokenWS();  //обновляем токен
             }
             else
@@ -78,29 +78,15 @@ export const socketMiddleware = (wsActions: TWSStoreActions): Middleware => {
           };
   
           socket.onclose = event => {
-            console.log('ws onclose');
+            //console.log('ws onclose');
           
             dispatch({ type: onClose, payload: event });
-
-            /*if (!socket) {
-              console.log('ws socket close');
-
-              let url = "";
-              if (action.type === WS_CONNECTION_CLOSED)
-                url = getState().wsAll.url;
-              else 
-                url = getState().wsUser.url;
-              
-              if (url) {
-                  socket = new WebSocket(url);
-              }
-            }*/
           };
           
           if (type === wsDisconnect) {
-            console.log(`WebSocket status = ${socket.readyState}`)
+            ///console.log(`WebSocket status = ${socket.readyState}`)
             if (socket && socket.readyState === WebSocket.OPEN) {
-              console.log('ws disconnect')
+              //console.log('ws disconnect')
               socket.close()
               socket = null;
             }

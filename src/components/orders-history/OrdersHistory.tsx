@@ -12,12 +12,10 @@ const OrdersHistory: FC = () => {
  
     useEffect(() => {
        if(!connected && user) {
-         console.log('useEffect wsUserConnectionStart')
          dispatch(wsUserConnectionStart());
        }
        return () => {
           if (connected) {
-            console.log('useEffect wsUserConnectionDisconnect')
              dispatch(wsUserConnectionDisconnect());
           }
        }
