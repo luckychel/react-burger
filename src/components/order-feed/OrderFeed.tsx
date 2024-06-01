@@ -35,8 +35,8 @@ const OrderFeed: FC = () => {
             <div className={`${styles.container} mt-2`}>
                 <div className={`${styles.feed_list} custom-scroll`}>
                     {data?.orders && data.orders.length > 0 &&
-                        data?.orders.map((order, index) => (
-                           <FeedItem data={order} key={index} />
+                        data?.orders.map((order, index) => (                   
+                           <FeedItem order={order} key={index} />
                         ))
                     }
                 </div>

@@ -25,11 +25,11 @@ const Order: FC = () => {
     useEffect(() => {  
       if (order && ingredients) {
   
-        let orderIngredients: TIngredientItem[] = []
+        let orderIngredients: TIngredientItem[] = [];
   
-        order.ingredients.map((x) => (
+        (order.ingredients as string[]).map((x) => (
             (ingredients as TIngredientItem[]).map((i) => {
-            if (i._id === x.toString()) {
+            if (i._id === x) {
               return orderIngredients.push(i)
             }
             else 
@@ -48,7 +48,7 @@ const Order: FC = () => {
                 return resultIngrediets[found].count_x! += + 1;
             }
         });
-        
+
         setOrderIngredients(resultIngrediets);
         setTotalCost(resultIngrediets.reduce(function (a, b) { return a + b.price * (b.count_x || 1) }, 0));
       }

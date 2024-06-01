@@ -5,7 +5,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { TIngredientItem, TOrder } from '../../utils/types'
 import { useAppSelector } from '../../services/hooks';
 
-export const FeedItem: FC<{ data: TOrder}> = ({ data }) => {
+export const FeedItem: FC<{ order: TOrder}> = ({ order }) => {
 
   const [totalCost, setTotalCost] = useState(0);
   const [contentVisible, setContentVisible] = useState<ReactNode>(null);
@@ -15,19 +15,19 @@ export const FeedItem: FC<{ data: TOrder}> = ({ data }) => {
   const ingredients = useAppSelector(store => store.ingredients.listIngredients);
 
   useEffect(() => {  
-    if (data.ingredients && ingredients) {
+    if (order.ingredients && ingredients) {
 
-      let orderIngredients: TIngredientItem[] = []
+      let orderIngredients: TIngredientItem[] = [];
 
-      data.ingredients.map((x) => (
+      (order.ingredients as string[]).map((x) => (
         (ingredients as TIngredientItem[]).map((i) => {
-          if (i._id === x.toString()) {
-            return orderIngredients.push(i)
-          }
-          else 
-            return null
-        })
-      ))
+        if (i._id === x) {
+          return orderIngredients.push(i)
+        }
+        else 
+          return null
+      })
+     ));
 
       setTotalCost(orderIngredients.reduce(function (a, b) { return a + b.price }, 0));
 
@@ -53,23 +53,23 @@ export const FeedItem: FC<{ data: TOrder}> = ({ data }) => {
           </div>
       )))
     }
-  }, [data.ingredients, ingredients])
+  }, [order.ingredients, ingredients])
 
   return (
-    <Link key={data.number} to={`${location.pathname}/${data.number}`} state={{ background: location }}
+    <Link key={order.number} to={`${location.pathname}/${order.number}`} state={{ background: location }}
       className={`${styles.feed_item_link} ${'text text_type_digits-default'}`}>
       <div className={styles.feed_item_main_content}>
         <div className={styles.feed_item_header}>
-          <p className='text text_type_digits-default'>#{data.number}</p>
-          <FormattedDate date={new Date(data.createdAt)} className={`${'text text_type_main-small text_color_inactive'} ${styles.feed_item_date}`} />
+          <p className='text text_type_digits-default'>#{order.number}</p>
+          <FormattedDate date={new Date(order.createdAt)} className={`${'text text_type_main-small text_color_inactive'} ${styles.feed_item_date}`} />
         </div>
-        <h2 className={`${'text text_type_main-medium'}`}>{data.name}</h2>
+        <h2 className={`${'text text_type_main-medium'}`}>{order.name}</h2>
           {location.pathname === '/profile/orders' && (
-            <p className={`${'text text_type_main-default'} ${data.status === 'created' ? styles.feed_item_caption_active : styles.feed_item_caption }`}>
+            <p className={`${'text text_type_main-default'} ${order.status === 'created' ? styles.feed_item_caption_active : styles.feed_item_caption }`}>
             {
-              data.status === 'done'
+              order.status === 'done'
                 ? 'Выполнен'
-                : data.status === 'pending'
+                : order.status === 'pending'
                 ? 'Отменен'
                 : 'Готовится'
             }

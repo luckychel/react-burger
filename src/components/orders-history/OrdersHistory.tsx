@@ -33,7 +33,7 @@ const OrdersHistory: FC = () => {
                 {isRequest && <PreLoader style={{left: '65%', top: '30%'}} />}
                 {!isRequest && orders && orders.length > 0 &&
                     orders.map((order, index) => (
-                        <FeedItem data={order} key={index} />
+                        <FeedItem order={order} key={index} />
                     ))
                 }
             </div>

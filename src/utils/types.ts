@@ -38,7 +38,7 @@ export type TUser = {
 
 export type TOrder = {
   _id: string;
-  ingredients: TIngredientItem[];
+  ingredients: TIngredientItem[] | string[];
   owner: TOrderOwner;
   status: 'done' | 'pending' | 'created';
   name: string;
