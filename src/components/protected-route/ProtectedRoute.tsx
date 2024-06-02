@@ -10,7 +10,6 @@ interface IProtectedProps {
 
 const ProtectedRoute: FC<{ onlyUnAuth?: boolean } & IProtectedProps> = ({ onlyUnAuth = false, element }) => {
 
-  // @ts-ignore
   const { user, isAuthChecked } = useAppSelector(store => store.user);
   const location = useLocation()
 

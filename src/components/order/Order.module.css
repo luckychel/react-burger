@@ -4,3 +4,81 @@
     align-items: center;
     justify-content: center;
 }
+
+.container {
+    width: 640px;
+}
+
+.order_number {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+
+.order_caption_active {
+    color: #0cc;
+  }
+
+.ingredients_list {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left: 0;
+    gap: 16px;
+    max-height: 328px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+
+.ingredients_list::-webkit-scrollbar {
+	width: 10px;
+}
+
+.ingredients_list::-webkit-scrollbar-track {
+	background: #2F2F37;
+}
+
+.ingredients_list::-webkit-scrollbar-corner {
+    background: #2F2F37;
+}
+
+.ingredients_list::-webkit-scrollbar-thumb {
+    background: #8585AD;;
+    -webkit-border-radius: 1ex;
+    -webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.75);
+}
+
+.ingredients_item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.ingredient_icon {
+    height: 64px;
+    width: 64px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: double 2px transparent;
+    background-image: linear-gradient(black, black),
+    linear-gradient(to right, #801AB2, #4C4CFF);
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+}
+
+.ingredients_item_total {
+    display: flex;
+    margin-left: auto;
+}
+
+.time_total {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 36px;
+}
+
+.total_cost {
+    display: flex;
+    margin-left: auto;
+    align-items: center;
+}

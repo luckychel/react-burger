@@ -6,7 +6,7 @@ import ErrorBoundary from '../error-boundary/ErrorBoundary';
 import { getIngredients, checkUserAuth } from '../../services/actions';
 import { useAppDispatch } from '../../services/hooks';
 
-import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import { Routes, Route, useLocation, useNavigate, useMatch } from 'react-router-dom';
 import Main from '../../pages/main'
 import NotFound404 from '../../pages/not-found'
 
@@ -41,6 +41,9 @@ const App: FC = () => {
     // Возвращаемся к предыдущему пути при закрытии модалки
     navigate(-1);
   };
+  
+  const matchFeed = useMatch('/feed/:number');
+  const matchOrder = useMatch('/profile/orders/:number');
 
   return (
     <ErrorBoundary>
@@ -49,14 +52,16 @@ const App: FC = () => {
             <Route path="/" element={<Main />} />
             <Route path="*" element={<NotFound404/>}/>
 
-            <Route path="/orderfeed" element={<OrderFeed/>}/>
+            <Route path="/feed" element={<OrderFeed/>}/>
+            <Route path="/feed/:number" element={<Order />} />
 
             <Route path="/profile" element={<OnlyAuth element={<ProfileMenu />} />}>
               <Route index element={<Profile />} />
               <Route path="" element={<Profile />} />
               <Route path="orders" element={<OrdersHistory />} />
-              <Route path="orders/:number" element={<Order />} />
             </Route>
+
+            <Route path="/profile/orders/:number" element={<OnlyAuth element={<Order/>} />} />
 
             <Route path="/login" element={<OnlyUnAuth element={<Login />} />} />
             <Route path="/register" element={<OnlyUnAuth element={<Register />} />} />
@@ -76,6 +81,20 @@ const App: FC = () => {
                     </Modal>
                   }
                 />
+
+                <Route path='/feed/:number' element={
+                   <Modal onClose={handleModalClose} header={'# ' + matchFeed?.params.number}>
+                      <Order />
+                   </Modal>
+                }
+                />
+
+                <Route path='/profile/orders/:number' element={
+                  <Modal onClose={handleModalClose} header={'# ' + matchOrder?.params.number}>
+                    <Order />
+                  </Modal>
+               }
+              />
             </Routes>
           )}
     </ErrorBoundary>

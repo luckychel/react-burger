@@ -14,7 +14,7 @@ const AppHeader: FC = () => {
       {({ isActive }) => (
         <>
           { to ==='/' && <BurgerIcon type={`${isActive ? 'primary' : 'secondary'}`} /> }
-          { to ==='/orderfeed' && <ListIcon type={`${isActive ? 'primary' : 'secondary'}`} /> }
+          { to ==='/feed' && <ListIcon type={`${isActive ? 'primary' : 'secondary'}`} /> }
           { to ==='/profile' && <ProfileIcon type={`${isActive ? 'primary' : 'secondary'}`} /> }
           <span className={`text text_type_main-small ${isActive ? styles.text_active : styles.text_inactive}`}>{to ==='/profile' ? user ? user.name : title : title}</span>
         </>
@@ -26,7 +26,7 @@ const AppHeader: FC = () => {
   return (
         <header className={`${styles.main_content}`}>
             {smartLink('/', 'Конструктор')}
-            {smartLink('/orderfeed', 'Лента заказов')}
+            {smartLink('/feed', 'Лента заказов')}
 
             <Link to='/' className={styles.logo}>
               <Logo />  

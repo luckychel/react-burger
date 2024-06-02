@@ -1,8 +1,8 @@
-import { useEffect, FC } from 'react'
+import { useEffect, useRef, FC } from 'react'
 import styles from './OrderDetails.module.css';
 import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 
-import { getOrderNumber } from '../../services/actions';
+import { createOrder } from '../../services/actions';
 import { PreLoader } from '../pre-loader/PreLoader';
 
 import { useAppSelector, useAppDispatch } from '../../services/hooks';
@@ -13,8 +13,13 @@ const OrderDetails: FC<{ ids: string[] }> = ({ ids}) => {
 
     const dispatch = useAppDispatch();
 
+    const only1time = useRef(true);
+
     useEffect(() => {
-      dispatch(getOrderNumber(ids));
+        if (only1time.current) {
+            only1time.current = false;
+            dispatch(createOrder(ids));
+        }
     }, [ids, dispatch]);
 
     return (

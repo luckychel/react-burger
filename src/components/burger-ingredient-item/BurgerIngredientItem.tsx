@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect, FC } from 'react'
 import styles from './BurgerIngredientItem.module.css';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components'
 
-import { dragging } from '../../services/actions';
+import { IsDraggingAction } from '../../services/actions';
 import { useDrag  } from 'react-dnd'
 
 import { Link, useLocation } from 'react-router-dom';
@@ -27,7 +27,7 @@ const BurgerIngredientItem: FC<TIngredientItem> = ({...props}) => {
     const dispatch = useAppDispatch();
 
     useEffect(()=>{
-        dispatch(dragging(isDraggingBun, isDraggingIng));
+        dispatch(IsDraggingAction(isDraggingBun, isDraggingIng));
     }, [isDraggingBun, isDraggingIng, dispatch])
 
     const beginDrugging = useCallback((type: string, val: boolean) => {

@@ -2,7 +2,7 @@ import { useState, useRef, FC } from 'react'
 import styles from './BurgerConstructorItem.module.css';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 
-import { deleteItem } from '../../services/actions';
+import { RemoveItemAction } from '../../services/actions';
 import { DropTargetMonitor, useDrag, useDrop } from 'react-dnd'
 
 import { TIngredientItem, TMoveCard, IDragObject } from '../../utils/types';
@@ -79,7 +79,7 @@ const BurgerConstructorItem: FC<{ id?: string, ingredient: TIngredientItem; inde
               thumbnail={ingredient.image}
               isLocked={false} 
               extraClass={draggingItem && draggingItem.id === ingredient.uniqkey ? styles.isHoverIngredient : ''} 
-              handleClose={() => dispatch(deleteItem(ingredient))}/>
+              handleClose={() => dispatch(RemoveItemAction(ingredient))}/>
       </div>
     )
 }
