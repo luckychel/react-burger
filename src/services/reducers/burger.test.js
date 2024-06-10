@@ -23,6 +23,7 @@ const bun = {
   "image_mobile":"https://code.s3.yandex.net/react/code/bun-02-mobile.png",
   "image_large":"https://code.s3.yandex.net/react/code/bun-02-large.png",
   "__v":0,
+  "uniqkey": "bunitem1"
 };
 
 const main = {
@@ -37,10 +38,12 @@ const main = {
   "image":"https://code.s3.yandex.net/react/code/meat-04.png",
   "image_mobile":"https://code.s3.yandex.net/react/code/meat-04-mobile.png",
   "image_large":"https://code.s3.yandex.net/react/code/meat-04-large.png",
-  "__v":0
+  "__v":0,
+  "uniqkey": "mainitem1"
 };
 
 describe('burger reducer', () => {
+  
   test('should return the initial state', () => {
     expect(burgerReducer(undefined, {})).toEqual(initialState)
   })
@@ -72,5 +75,20 @@ describe('burger reducer', () => {
         ...initialState,
         burgerIngredients: [main]
       })
+  })
+
+  test('should handle REMOVE_INGREDIENT_FROM_BURGER', () => {
+    expect(
+       burgerReducer({...initialState, burgerIngredients: [bun, main] }, {
+        type: types.REMOVE_INGREDIENT_FROM_BURGER,
+        payload: { 
+          item: main
+        }
+      })
+    ).toEqual({
+      ...initialState,
+      burgerIngredients: [bun]
+    })
+
   })
 })
