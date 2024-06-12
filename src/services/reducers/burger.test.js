@@ -1,7 +1,6 @@
 import { initialState, burgerReducer } from './burger'
 import * as types from '../constants';
 
-
 describe('burger reducer', () => {
   
   test('should return the initial state', () => {

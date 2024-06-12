@@ -2,7 +2,7 @@ import { ORDER_NUMBER_REQUEST, ORDER_NUMBER_SUCCESS, ORDER_NUMBER_FAILED } from 
 import { TGetOrderState} from '../../utils/types';
 import { TGetOrderAction } from '../actions';
 
-const initialState: TGetOrderState = {
+export const initialState: TGetOrderState = {
     orderRequest: false,
     orderFailed: false,
     order: null
