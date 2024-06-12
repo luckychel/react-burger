@@ -3,7 +3,7 @@ import { ADD_INGREDIENT_TO_BURGER, REMOVE_INGREDIENT_FROM_BURGER, INGREDIENTS_RE
 import { TBurgerAction } from '../actions';
 import { TBurgerState } from '../../utils/types';
 
-const initialState: TBurgerState = {
+export const initialState: TBurgerState = {
   itemsRequest: false,
   itemsFailed: false,
   bun: null,  //для булки

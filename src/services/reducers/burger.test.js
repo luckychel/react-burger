@@ -1,46 +1,6 @@
-import { burgerReducer } from './burger'
+import { initialState, burgerReducer } from './burger'
 import * as types from '../constants';
 
-
-const initialState = {
-    itemsRequest: false,
-    itemsFailed: false,
-    bun: null,
-    burgerIngredients: [],
-    orderNumber: 0
-  };
-
-const bun = {
-  "_id":"60666c42cc7b410027a1a9b1",
-  "name":"Краторная булка N-200i",
-  "type":"bun",
-  "proteins":80,
-  "fat":24,
-  "carbohydrates":53,
-  "calories":420,
-  "price":1255,
-  "image":"https://code.s3.yandex.net/react/code/bun-02.png",
-  "image_mobile":"https://code.s3.yandex.net/react/code/bun-02-mobile.png",
-  "image_large":"https://code.s3.yandex.net/react/code/bun-02-large.png",
-  "__v":0,
-  "uniqkey": "bunitem1"
-};
-
-const main = {
-  "_id":"60666c42cc7b410027a1a9b5",
-  "name":"Говяжий метеорит (отбивная)",
-  "type":"main",
-  "proteins":800,
-  "fat":800,
-  "carbohydrates":300,
-  "calories":2674,
-  "price":3000,
-  "image":"https://code.s3.yandex.net/react/code/meat-04.png",
-  "image_mobile":"https://code.s3.yandex.net/react/code/meat-04-mobile.png",
-  "image_large":"https://code.s3.yandex.net/react/code/meat-04-large.png",
-  "__v":0,
-  "uniqkey": "mainitem1"
-};
 
 describe('burger reducer', () => {
   
@@ -53,13 +13,13 @@ describe('burger reducer', () => {
        burgerReducer(initialState, {
         type: types.ADD_INGREDIENT_TO_BURGER,
         payload: { 
-            item: bun,
+            item: types.bun,
             ingredientType: "bun"
         }
       })
     ).toEqual({
         ...initialState,
-        bun: bun
+        bun: types.bun
       }
     )
 
@@ -67,33 +27,33 @@ describe('burger reducer', () => {
         burgerReducer(initialState, {
          type: types.ADD_INGREDIENT_TO_BURGER,
          payload: { 
-             item: main,
+             item: types.main,
              ingredientType: "main"
          }
        })
      ).toEqual({
         ...initialState,
-        burgerIngredients: [main]
+        burgerIngredients: [types.main]
       })
   })
 
   test('should handle REMOVE_INGREDIENT_FROM_BURGER', () => {
     expect(
-       burgerReducer({...initialState, burgerIngredients: [bun, main] }, {
+       burgerReducer({...initialState, burgerIngredients: [types.bun, types.main] }, {
         type: types.REMOVE_INGREDIENT_FROM_BURGER,
         payload: { 
-          item: main
+          item: types.main
         }
       })
     ).toEqual({
       ...initialState,
-      burgerIngredients: [bun]
+      burgerIngredients: [types.bun]
     })
   })
 
   test('should handle INGREDIENTS_REPLACE', () => {
     expect(
-       burgerReducer({...initialState, burgerIngredients: [bun, main] }, {
+       burgerReducer({...initialState, burgerIngredients: [types.bun, types.main] }, {
         type: types.INGREDIENTS_REPLACE,
         payload: { 
           dragIndex: 1,
@@ -102,13 +62,13 @@ describe('burger reducer', () => {
       })
     ).toEqual({
       ...initialState,
-      burgerIngredients: [main, bun]
+      burgerIngredients: [types.main, types.bun]
     })
   })
 
   test('should handle CLEAR_BURGER', () => {
     expect(
-      burgerReducer({...initialState, bun: bun, burgerIngredients: [main] }, {
+      burgerReducer({...initialState, bun: types.bun, burgerIngredients: [types.main] }, {
         type: types.CLEAR_BURGER
       })
     ).toEqual({
