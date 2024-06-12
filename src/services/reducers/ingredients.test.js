@@ -1,5 +1,13 @@
 import { initialState, ingredientsReducer } from './ingredients'
 import * as types from '../constants';
+import * as actions from '../actions';
+import * as datatypes from '../../utils/types'
+
+import configureMockStore from 'redux-mock-store'
+import { thunk } from 'redux-thunk'
+import fetchMock from 'fetch-mock'
+
+const mockStore = configureMockStore([thunk])
 
 describe('ingredients reducer', () => {
   
@@ -83,3 +91,55 @@ describe('ingredients reducer', () => {
         })
     })
 })
+
+
+describe('async actions', () => {
+
+  afterEach(() => {
+    fetchMock.restore()
+  })
+    /*
+    beforeEach(() => {
+      jest.spyOn(global, 'fetch').mockResolvedValue({
+        json: jest.fn().mockReturnValue({result: 'OK'}),
+        ok: true
+      })
+    })
+
+    afterEach(() => {
+      jest.resetAllMocks();
+    })
+ 
+
+    test('should be successful', async () => {
+      const regResult = await actions.register()
+    })
+ */
+    it('creates INGREDIENTS_SUCCESS when fetching ingredients has been done', async () => {
+
+      fetchMock.getOnce(types.protocolHttps + types.baseUrl + "api/ingredients", {
+          headers: { 'content-type': 'application/json' }
+        })
+          
+        const expectedSuccessActions = [
+            { type: types.INGREDIENTS_REQUEST },
+            { type: types.INGREDIENTS_SUCCESS, data: Array[datatypes.TIngredientItem] }
+        ]
+        const expectedErrorActions = [
+          { type: types.INGREDIENTS_FAILED }
+      ]
+
+        const store = mockStore({ data: Array[datatypes.TIngredientItem]  })
+
+        return await store.dispatch(actions.getIngredients())
+          .then(() => {
+            expect([actions.IngredientsRequestAction(), 
+                actions.IngredientsSuccessAction()]).toEqual(expectedSuccessActions)
+          })
+          .catch(() => {
+            expect([actions.IngredientsFailedAction()]).toEqual(expectedErrorActions)
+          })
+    })
+    
+
+  }) 
