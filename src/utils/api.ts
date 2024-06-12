@@ -60,11 +60,9 @@ export const headers = (type?: THeadersType): HeadersInit => {
 
   const headers: HeadersInit = new Headers();
   headers.set('Content-Type', 'application/json;charset=utf-8');
-  //debugger
   if (type === "auth") {
    headers.set("Authorization", localStorage.getItem('accessToken') || '');
   }
-//debugger
   return headers;
 }
 

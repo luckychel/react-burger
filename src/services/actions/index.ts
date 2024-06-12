@@ -278,7 +278,7 @@ export function getIngredients(): AppThunkAction {
     })
     .catch((err: Error) => {
       dispatch(IngredientsFailedAction());
-      //console.error('Error: ' + err.message);
+      return Promise.reject(err);
     });
   }
 }
@@ -301,7 +301,7 @@ export function createOrder(ids: string[]): AppThunkAction {
     })
     .catch((err: Error) => {
       dispatch(CreateOrderFailedAction())
-      //console.error('Error: ' + err.message);
+      return Promise.reject(err);
     });
   }
 }
@@ -312,8 +312,11 @@ export function refreshTokens(): AppThunkAction {
 
     const refreshtoken = localStorage.getItem('refreshToken') || null;
 
-    if (refreshtoken) {
-
+    if (!refreshtoken) {
+      return Promise.reject('Пустой refreshToken');
+    }
+    else {
+      dispatch(IsRequestingAction());
       return request('auth/token', { 
         method: 'POST', 
         headers: headers(),
@@ -321,20 +324,18 @@ export function refreshTokens(): AppThunkAction {
       })
       .then(checkResponse<TRefreshResponse>)
       .then(result => {
+        dispatch(IsSuccessAction());
         if (result.success) {
           localStorage.setItem('accessToken', result.accessToken);
           localStorage.setItem('refreshToken', result.refreshToken);
         } else {
-          throw new Error("Ошибка refreshTokens");
+          Promise.reject('Ошибка refreshTokens');
         }
       })
       .catch((err: Error) => {
         dispatch(IsFailedAction());
+        return Promise.reject(err);
       })
-    }
-    else
-    {
-      dispatch(IsFailedAction());
     }
   }
 }
@@ -345,7 +346,10 @@ export function checkUserAuth(): AppThunkAction {
     
     const accesstoken = localStorage.getItem('accessToken') || null;
 
-    if (accesstoken) {
+    if (!accesstoken) {
+      return Promise.reject('Пустой accesstoken');
+    }
+    else {
 
       dispatch(IsRequestingAction());
 
@@ -354,24 +358,21 @@ export function checkUserAuth(): AppThunkAction {
         headers: headers("auth")
       })
       .then(result => { 
+        dispatch(IsSuccessAction());
         if (result && result.success) {
           dispatch(SetUserAction(result.user))
         }
         else {
-          throw new Error("Ошибка метода checkUserAuth");
+          Promise.reject('Ошибка метода checkUserAuth');
         }
       })
       .catch((err: Error) => {
         dispatch(IsFailedAction());
-        //console.error('Error: ' + err.message);
+        return Promise.reject(err);
       })
       .finally(() => {
-        
         dispatch(UserSetAuthAction(true));
       });
-    }
-    else {
-      dispatch(UserSetAuthAction(true));
     }
   }
 }
@@ -397,7 +398,8 @@ export function register(formData: TUser) {
 
         dispatch(SetUserAction(result.user));
 
-      } else {
+      } 
+      else {
         throw new Error("Ошибка метода register");
       }
     })

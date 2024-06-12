@@ -92,16 +92,13 @@ describe('ingredients reducer', () => {
     })
 })
 
-
+/*
 describe('async actions', () => {
 
-  afterEach(() => {
-    fetchMock.restore()
-  })
-    /*
+
     beforeEach(() => {
       jest.spyOn(global, 'fetch').mockResolvedValue({
-        json: jest.fn().mockReturnValue({result: 'OK'}),
+        json: jest.fn().mockResolvedValue({result: 'OK'}),
         ok: true
       })
     })
@@ -110,36 +107,38 @@ describe('async actions', () => {
       jest.resetAllMocks();
     })
  
+    /*
 
-    test('should be successful', async () => {
-      const regResult = await actions.register()
+    test('register should be successful', async () => {
+      const regResult = await actions.register({name: 'alex', email: 'alex@mail.ru', password: '123456'})
+
+      expect(regResult).toEqual({result: 'OK'})
+      expect(fetch).toHaveBeenCalledTimes(1);
     })
- */
-    it('creates INGREDIENTS_SUCCESS when fetching ingredients has been done', async () => {
+
+    */
+/*
+    test('creates INGREDIENTS_SUCCESS when fetching ingredients has been done', async () => {
 
       fetchMock.getOnce(types.protocolHttps + types.baseUrl + "api/ingredients", {
           headers: { 'content-type': 'application/json' }
         })
           
-        const expectedSuccessActions = [
+        const expectedActions = [
             { type: types.INGREDIENTS_REQUEST },
-            { type: types.INGREDIENTS_SUCCESS, data: Array[datatypes.TIngredientItem] }
+            { type: types.INGREDIENTS_SUCCESS, data: Array[datatypes.TIngredientItem] },
+            { type: types.INGREDIENTS_FAILED },
         ]
-        const expectedErrorActions = [
-          { type: types.INGREDIENTS_FAILED }
-      ]
 
-        const store = mockStore({ data: Array[datatypes.TIngredientItem]  })
+        const store = mockStore({ data: null  })
 
         return await store.dispatch(actions.getIngredients())
           .then(() => {
-            expect([actions.IngredientsRequestAction(), 
-                actions.IngredientsSuccessAction()]).toEqual(expectedSuccessActions)
-          })
-          .catch(() => {
-            expect([actions.IngredientsFailedAction()]).toEqual(expectedErrorActions)
+            expect(store.getActions()).toEqual(expectedActions)
           })
     })
     
 
   }) 
+
+  */

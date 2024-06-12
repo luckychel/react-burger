@@ -2,7 +2,7 @@ import { SET_AUTH_CHECKED, SET_USER, IS_REQUESTING, IS_SUCCESS, IS_FAILED } from
 import { TUserAction } from '../actions';
 import { TUserState } from '../../utils/types';
 
-const initialState: TUserState = {
+export const initialState: TUserState = {
   user: null,
   isAuthChecked: false,
   isRequest: false,
