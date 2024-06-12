@@ -89,6 +89,75 @@ describe('burger reducer', () => {
       ...initialState,
       burgerIngredients: [bun]
     })
-
   })
+
+  test('should handle INGREDIENTS_REPLACE', () => {
+    expect(
+       burgerReducer({...initialState, burgerIngredients: [bun, main] }, {
+        type: types.INGREDIENTS_REPLACE,
+        payload: { 
+          dragIndex: 1,
+          hoverIndex: 0
+        }
+      })
+    ).toEqual({
+      ...initialState,
+      burgerIngredients: [main, bun]
+    })
+  })
+
+  test('should handle CLEAR_BURGER', () => {
+    expect(
+      burgerReducer({...initialState, bun: bun, burgerIngredients: [main] }, {
+        type: types.CLEAR_BURGER
+      })
+    ).toEqual({
+      ...initialState,
+      bun: null,
+      burgerIngredients: []
+    })
+  })
+
+  test('should handle CREATE_ORDER_REQUEST', () => {
+    expect(
+      burgerReducer({...initialState, itemsRequest: false, itemsFailed: true, orderNumber: 777 }, {
+        type: types.CREATE_ORDER_REQUEST
+      })
+    ).toEqual({
+      ...initialState,
+      itemsRequest: true,
+      itemsFailed: false,
+      orderNumber: 0
+    })
+  })
+
+  test('should handle CREATE_ORDER_SUCCESS', () => {
+    expect(
+      burgerReducer({...initialState, itemsRequest: true, itemsFailed: false }, {
+        type: types.CREATE_ORDER_SUCCESS,
+        payload: { 
+          orderNumber: 777
+        }
+      })
+    ).toEqual({
+      ...initialState,
+      itemsRequest: false,
+      itemsFailed: false,
+      orderNumber: 777
+    })
+  })
+
+  test('should handle CREATE_ORDER_FAILED', () => {
+    expect(
+      burgerReducer({...initialState, itemsRequest: true, itemsFailed: false, orderNumber: 777 }, {
+        type: types.CREATE_ORDER_FAILED
+      })
+    ).toEqual({
+      ...initialState,
+      itemsRequest: false,
+      itemsFailed: true,
+      orderNumber: 0
+    })
+  })
+
 })

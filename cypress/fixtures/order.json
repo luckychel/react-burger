@@ -1,0 +1,5 @@
+{ 
+    "success": true, 
+    "name": "Супер пупер бургер", 
+    "order": { "number": 777 } 
+}
