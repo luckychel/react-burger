@@ -70,8 +70,8 @@ export const FeedItem: FC<{ order: TOrder}> = ({ order }) => {
               order.status === 'done'
                 ? 'Выполнен'
                 : order.status === 'pending'
-                ? 'Отменен'
-                : 'Готовится'
+                ? 'Готовится'
+                : 'Отменен'
             }
             </p>
           )}
