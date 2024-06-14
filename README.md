@@ -47,4 +47,4 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 
 ## Application Path
 
-[https://luckychel.github.io/react-burger/](http://stackoverflow.com){:target="_blank"}.
+<a href="https://luckychel.github.io/react-burger/" target="_blank">https://luckychel.github.io/react-burger/</a>
