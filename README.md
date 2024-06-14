@@ -47,4 +47,4 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 
 ## Application Path
 
-https://luckychel.github.io/react-burger/
+[https://luckychel.github.io/react-burger/](http://stackoverflow.com){:target="_blank"}.
