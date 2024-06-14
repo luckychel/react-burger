@@ -312,10 +312,8 @@ export function refreshTokens(): AppThunkAction {
 
     const refreshtoken = localStorage.getItem('refreshToken') || null;
 
-    if (!refreshtoken) {
-      return Promise.reject('Пустой refreshToken');
-    }
-    else {
+    if (refreshtoken) {
+
       dispatch(IsRequestingAction());
       return request('auth/token', { 
         method: 'POST', 
@@ -345,11 +343,7 @@ export function checkUserAuth(): AppThunkAction {
   return function(dispatch: AppDispatch) {
     
     const accesstoken = localStorage.getItem('accessToken') || null;
-
-    if (!accesstoken) {
-      return Promise.reject('Пустой accesstoken');
-    }
-    else {
+    if (accesstoken) {
 
       dispatch(IsRequestingAction());
 
@@ -358,7 +352,7 @@ export function checkUserAuth(): AppThunkAction {
         headers: headers("auth")
       })
       .then(result => { 
-        dispatch(IsSuccessAction());
+        
         if (result && result.success) {
           dispatch(SetUserAction(result.user))
         }
@@ -374,6 +368,11 @@ export function checkUserAuth(): AppThunkAction {
         dispatch(UserSetAuthAction(true));
       });
     }
+    else
+    {
+      dispatch(UserSetAuthAction(true));
+    }
+
   }
 }
 

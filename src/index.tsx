@@ -4,7 +4,7 @@ import './index.css';
 import App from './components/app/App';
 import reportWebVitals from './reportWebVitals';
 
-import { BrowserRouter as Router }from 'react-router-dom';
+import { HashRouter as Router }from 'react-router-dom';
 
 import { compose, createStore, applyMiddleware } from 'redux';
 import { thunk }  from 'redux-thunk';
