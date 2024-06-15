@@ -438,7 +438,7 @@ export function login(formData: TUser) {
       }
     })
     .catch((err: Error) => {
-      dispatch(IsFailedAction);
+      dispatch(IsFailedAction());
       throw err;
     });
 
