@@ -36,7 +36,7 @@ function Modal({ onClose, header, children }: PropsWithChildren<IModalProps>) {
                 <div className={styles.modal_title}>
                     <p className="text text_type_main-large">{header}</p>
                 </div>
-                <div className={styles.modal_close_btn}>
+                <div className={styles.modal_close_btn} data-test="modal_close_btn">
                     <CloseIcon type="primary" onClick={onClose} />
                 </div>
                 </div>

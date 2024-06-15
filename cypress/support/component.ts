@@ -28,7 +28,10 @@ import { mount } from 'cypress/react18'
 declare global {
   namespace Cypress {
     interface Chainable {
-      mount: typeof mount
+      mount: typeof mount,
+      getBySel(dataTestAttribute: string, args?): Chainable<JQuery<HTMLElement>>,
+      dnd(element, target): Chainable<void>,
+      prepareStore(): Chainable<void>,
     }
   }
 }

@@ -28,7 +28,7 @@ function ModalOverlay({ onClose }: IModalOverlayProps) {
     }, [onClose])
 
     return (
-        <div className={styles.modal_overlay_main_content} ref={modalRef}></div>
+        <div data-test="modal_overlay" className={styles.modal_overlay_main_content} ref={modalRef}></div>
     )
 }
 

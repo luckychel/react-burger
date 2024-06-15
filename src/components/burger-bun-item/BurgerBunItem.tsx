@@ -29,15 +29,20 @@ const BurgerBunItem: FC<{pos: 'top' | 'bottom'; bun: TIngredientItem | null;}> =
         {
             bun ?
             (
-                <ConstructorElement type={pos} text={`${bun.name} ${pos === 'top' ? ' (верх)' : ' (низ)'}`} 
-                    price={bun.price} 
-                    thumbnail={bun.image} 
-                    isLocked={true} 
-                    extraClass={isBunHover || isDraggingBun ? styles.isHover : ''} />
+                <div data-test="bun_element">
+                    <ConstructorElement type={pos} text={`${bun.name} ${pos === 'top' ? ' (верх)' : ' (низ)'}`} 
+                        price={bun.price} 
+                        thumbnail={bun.image} 
+                        isLocked={true} 
+                        extraClass={isBunHover || isDraggingBun ? styles.isHover : ''} />
+                </div>
             ) : (
-                <div className={`constructor-element constructor-element_pos_${pos} ${styles.custom_aligment} ${isBunHover || isDraggingBun ? styles.isHover : ''}`}>
+                <div data-test="bun_container" 
+                    className={`constructor-element constructor-element_pos_${pos} 
+                        ${styles.custom_aligment} 
+                        ${isBunHover || isDraggingBun ? styles.isHover : ''}`}>
                     <span className={`constructor-element__row`}>
-                    <span className={`constructor-element__text`}>Выберите булки</span>
+                        <span className={`constructor-element__text`}>Выберите булки</span>
                     </span>
                 </div>
             )

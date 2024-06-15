@@ -49,7 +49,8 @@ const BurgerIngredientItem: FC<TIngredientItem> = ({...props}) => {
 
     return (
         <Link key={props._id} to={`/ingredients/${props._id}`} state={{ background: location }} className={styles.link}>
-            <div className={styles.ingredient_item_main_content} ref={drag}>
+            <div data-test={'ingredient_' + (props.type === "bun" ? "bun" : "item")} 
+                className={styles.ingredient_item_main_content} ref={drag}>
                 {
                     count > 0 && (<Counter count={count} size="default" extraClass="m-1" />)
                 }
