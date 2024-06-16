@@ -81,8 +81,8 @@ const Order: FC = () => {
                         order.status === 'done'
                             ? 'Выполнен'
                             : order.status === 'pending'
-                            ? 'Отменен'
-                            : 'Готовится'
+                            ? 'Готовится'
+                            : 'Отменен'
                     }
                     </p>
 

@@ -27,7 +27,7 @@ const OrderDetails: FC<{ ids: string[] }> = ({ ids}) => {
 
             { orderNumber > 0 && 
                 <>
-                    <p className="text text_type_digits-large">{orderNumber}</p>
+                    <p data-test="order_number" className="text text_type_digits-large">{orderNumber}</p>
                     <p className='text text_type_main-medium pt-4 pb-10'>идентификатор заказа</p>
                     <div className={`${styles.done} mb-10`}>
                         <div className={styles.done_img}>

@@ -58,7 +58,7 @@ const Login: FC = () => {
       <h1 className={`${styles.title} text_type_main-medium mb-6`}>Вход</h1>
       <form className={`${styles.form} mb-20`} onSubmit={onSubmit}>
         <EmailInput placeholder={'E-mail'} value={formData.email} name={'email'} onChange={onChangeFormData} />
-        <PasswordInput placeholder={'Пароль'} value={formData.password || ''} name={'password'} onChange={onChangeFormData} />
+        <PasswordInput placeholder={'Пароль'} value={formData.password || ''} name={'password'} onChange={onChangeFormData}  autoComplete='off' />
         <Button htmlType="submit" type="primary" size="medium">Войти</Button>
       </form>
 

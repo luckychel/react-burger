@@ -2,7 +2,7 @@ import { INGREDIENTS_REQUEST, INGREDIENTS_SUCCESS, INGREDIENTS_FAILED, OPEN_INGR
 import { TIngredientsAction } from '../actions';
 import { TIngredientsState } from '../../utils/types';
 
-const initialState: TIngredientsState = {
+export const initialState: TIngredientsState = {
   itemsRequest: false,
   itemsFailed: false,
   listIngredients: [],

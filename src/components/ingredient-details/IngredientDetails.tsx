@@ -25,7 +25,7 @@ const IngredientDetails: FC<IIngredientDetails> = ({...props}) => {
                 <div className={styles.ingredient_details_main_content}>
                     <img src={ingredient.image_large} alt={ingredient.name}></img>
                     <div className={styles.ingredient_name}>
-                        <p className="text text_type_main-medium">{ingredient.name}</p>
+                        <p data-test="ingredient_name" className="text text_type_main-medium">{ingredient.name}</p>
                     </div>
                     <div className={styles.nutrition_values}>
                         <div className={styles.value}>

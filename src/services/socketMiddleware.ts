@@ -5,7 +5,6 @@ import { WS_CONNECTION_START, WS_CONNECTION_SUCCESS, WS_CONNECTION_CLOSED, WS_CO
 } from './constants';
 
 import { refreshToken } from '../utils/api'
-import { TRefreshResponse } from '../utils/types';
 
 
 export type TWSStoreActions = {
@@ -18,14 +17,6 @@ export type TWSStoreActions = {
 };
 
 export const socketMiddleware = (wsActions: TWSStoreActions): Middleware => {
-
-    const refershTokenWS = async () => {
-        const data: TRefreshResponse = await refreshToken();
-        if (data.success) {
-            localStorage.setItem("refreshToken", data.refreshToken || "");
-            localStorage.setItem("accessToken", data.accessToken|| "");
-        }
-    }
 
     return ((store: MiddlewareAPI<AppDispatch, RootState>) => {
       let socket: WebSocket | null = null;
@@ -40,6 +31,7 @@ export const socketMiddleware = (wsActions: TWSStoreActions): Middleware => {
           if (action.type === WS_CONNECTION_START)
             url = getState().wsAll.url;
           else {
+            //console.log(`wsInit accessToken ${localStorage.getItem("accessToken")?.replace("Bearer ", "") || ''}`);
             url = getState().wsUser.url + localStorage.getItem("accessToken")?.replace("Bearer ", "") || '';
           }
           //console.log('ws init');
@@ -59,22 +51,31 @@ export const socketMiddleware = (wsActions: TWSStoreActions): Middleware => {
           };
   
           socket.onmessage = async event => {
-            //console.log('ws onmessage');
             const { data } = event;
-
             const parsedData = JSON.parse(data);
+            try {
+              if (!parsedData.success) {
+                if (parsedData?.message === "Invalid or missing token") {
+                  
+                  //console.log(`Invalid or missing token ${localStorage.getItem("accessToken")?.replace("Bearer ", "") || ''}`);
 
-            if (!parsedData.success && parsedData?.message === "Invalid or missing token") {
-                //console.log('ws refershToken');
-                await refershTokenWS();  //обновляем токен
-            }
-            else
-            {
-                if (parsedData.success)
-                {
-                    dispatch({ type: onMessage, payload: { ...parsedData } });  
+                  const tokens = await refreshToken();  //обновляем токен
+                  if (tokens.success)
+                  {
+                    localStorage.setItem("refreshToken", tokens.refreshToken || "");
+                    localStorage.setItem("accessToken", tokens.accessToken || "");
+                    //console.log(`set accessToken ${localStorage.getItem("accessToken")?.replace("Bearer ", "") || ''}`);
+                    dispatch({ type: wsInit});
+                  }
                 }
-            }
+                else {
+                  dispatch({ type: onError, payload: parsedData?.message });
+                }
+              }
+              else {
+                dispatch({ type: onMessage, payload: { ...parsedData } });  
+              }
+            } catch {}
           };
   
           socket.onclose = event => {

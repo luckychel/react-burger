@@ -9,8 +9,8 @@ export const checkResponse = <T>(res: Response): Promise<T> => {
   return res.ok ? res.json() : res.json().then(err => Promise.reject(err));
 };
 
-export const refreshToken = () => {
-    return fetch(`${protocolHttps + baseUrl}api/auth/token`, {
+export const refreshToken = async () => {
+    return await fetch(`${protocolHttps + baseUrl}api/auth/token`, {
       method: "POST",
       headers: headers(),
       body: JSON.stringify({
@@ -22,26 +22,33 @@ export const refreshToken = () => {
   
 export const fetchWithRefresh = async <T>(url: string, options?: RequestInit): Promise<T> => {
     try {
+      //console.log('fetchWithRefresh')
       const res = await request(url, options).then(checkResponse<T>)
       return res;
       //throw new Error("jwt expired");
     } catch (err) {
       if (err.message === "jwt expired") {
-        console.log('fetchWithRefresh refershToken');
+        //console.log('fetchWithRefresh jwt expired');
         const data = await refreshToken(); //обновляем токен
         if (!data.success) {
           return Promise.reject(data);
         }
         localStorage.setItem("refreshToken", data.refreshToken || "");
-        localStorage.setItem("accessToken", data.accessToken|| "");
+        localStorage.setItem("accessToken", data.accessToken || "");
 
         const headers: HeadersInit = options?.headers ? new Headers(options.headers) : new Headers();
-        if (!headers.has("Authorization")) {
+        if (headers.has("Authorization")) {
+            //console.log('fetchWithRefresh Authorization')
             headers.set("Authorization", `${data.accessToken}`);
+            options!.headers = headers;
         }
+       
+        //console.log('повторяем запрос')
         const res = await request(url, options).then(checkResponse<T>); //повторяем запрос
+        //console.log('смог повторить запрос')
         return res;
       } else {
+        console.log(err.message)
         return Promise.reject(err);
       }
     }
@@ -53,10 +60,9 @@ export const headers = (type?: THeadersType): HeadersInit => {
 
   const headers: HeadersInit = new Headers();
   headers.set('Content-Type', 'application/json;charset=utf-8');
-  if (type === "auth" && (localStorage.getItem('accessToken') || null)) {
-   headers.set("Authorization", localStorage.getItem('accessToken')!);
+  if (type === "auth") {
+   headers.set("Authorization", localStorage.getItem('accessToken') || '');
   }
-
   return headers;
 }
 

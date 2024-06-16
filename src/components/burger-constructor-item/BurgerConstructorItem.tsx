@@ -59,6 +59,9 @@ const BurgerConstructorItem: FC<{ id?: string, ingredient: TIngredientItem; inde
         isDragging: monitor.isDragging(),
       }
     },
+    options: {
+      dropEffect: 'copy',
+    },
     end: (item, monitor) => {
       //console.log('end = ' + item.id)
     }
@@ -69,7 +72,7 @@ const BurgerConstructorItem: FC<{ id?: string, ingredient: TIngredientItem; inde
   drag(drop(ref))
 
     return (
-      <div className={`${styles.ingredient}`} ref={ref} style={{opacity}} data-handler-id={handlerId} >
+      <div data-test="item_element" className={`${styles.ingredient}`} ref={ref} style={{opacity}} data-handler-id={handlerId} >
         <div className={styles.move}>
           <DragIcon type="primary"/>
         </div>

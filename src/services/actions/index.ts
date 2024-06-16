@@ -201,6 +201,7 @@ export const ReplaceItemsAction = (dragIndex: number, hoverIndex: number): IRepl
   export interface IIsFailedAction {
     readonly type: typeof IS_FAILED;
   }
+
 export type TUserAction =
   | IUserSetAuthAction
   | ISetUserAction
@@ -263,20 +264,21 @@ export type TUserAction =
     type: ORDER_NUMBER_FAILED,
   })
 
+
 //Получение данных ингредиентов
 export function getIngredients(): AppThunkAction {
   return function(dispatch: AppDispatch) {
 
     dispatch(IngredientsRequestAction())
 
-    request('ingredients', {})
+    return request('ingredients', {})
     .then(checkResponse<TIngredientsResponse>)
     .then(result => { 
       dispatch(IngredientsSuccessAction(result.data))
     })
     .catch((err: Error) => {
       dispatch(IngredientsFailedAction());
-      console.error('Error: ' + err.message);
+      return Promise.reject(err);
     });
   }
 }
@@ -299,7 +301,7 @@ export function createOrder(ids: string[]): AppThunkAction {
     })
     .catch((err: Error) => {
       dispatch(CreateOrderFailedAction())
-      console.error('Error: ' + err.message);
+      return Promise.reject(err);
     });
   }
 }
@@ -307,31 +309,31 @@ export function createOrder(ids: string[]): AppThunkAction {
 //рефреш токенов
 export function refreshTokens(): AppThunkAction {
   return function(dispatch: AppDispatch) {
+
     const refreshtoken = localStorage.getItem('refreshToken') || null;
 
     if (refreshtoken) {
 
-      request('auth/token', { 
+      dispatch(IsRequestingAction());
+      return request('auth/token', { 
         method: 'POST', 
         headers: headers(),
         body: JSON.stringify({ token: refreshtoken })
       })
       .then(checkResponse<TRefreshResponse>)
       .then(result => {
+        dispatch(IsSuccessAction());
         if (result.success) {
           localStorage.setItem('accessToken', result.accessToken);
           localStorage.setItem('refreshToken', result.refreshToken);
         } else {
-          throw new Error("Ошибка refreshTokens");
+          Promise.reject('Ошибка refreshTokens');
         }
       })
       .catch((err: Error) => {
         dispatch(IsFailedAction());
+        return Promise.reject(err);
       })
-    }
-    else
-    {
-      dispatch(IsFailedAction());
     }
   }
 }
@@ -341,35 +343,36 @@ export function checkUserAuth(): AppThunkAction {
   return function(dispatch: AppDispatch) {
     
     const accesstoken = localStorage.getItem('accessToken') || null;
-
     if (accesstoken) {
 
       dispatch(IsRequestingAction());
 
-      fetchWithRefresh<TUserResponse>('auth/user', {
+      return fetchWithRefresh<TUserResponse>('auth/user', {
         method: "GET",
         headers: headers("auth")
       })
       .then(result => { 
+        
         if (result && result.success) {
           dispatch(SetUserAction(result.user))
         }
         else {
-          throw new Error("Ошибка метода checkUserAuth");
+          Promise.reject('Ошибка метода checkUserAuth');
         }
       })
       .catch((err: Error) => {
         dispatch(IsFailedAction());
-        console.error('Error: ' + err.message);
+        return Promise.reject(err);
       })
       .finally(() => {
-        
         dispatch(UserSetAuthAction(true));
       });
     }
-    else {
+    else
+    {
       dispatch(UserSetAuthAction(true));
     }
+
   }
 }
 
@@ -394,7 +397,8 @@ export function register(formData: TUser) {
 
         dispatch(SetUserAction(result.user));
 
-      } else {
+      } 
+      else {
         throw new Error("Ошибка метода register");
       }
     })
@@ -434,7 +438,7 @@ export function login(formData: TUser) {
       }
     })
     .catch((err: Error) => {
-      dispatch(IsFailedAction);
+      dispatch(IsFailedAction());
       throw err;
     });
 
@@ -571,7 +575,7 @@ export function getOrder(orderId: string): AppThunkAction {
 
     dispatch(GetOrderRequestAction())
 
-    request(`orders/${orderId}`, {})
+    return request(`orders/${orderId}`, {})
     .then(checkResponse<TGetOrderResponse>)
     .then(result => { 
       if (result && result.orders) {
@@ -580,7 +584,7 @@ export function getOrder(orderId: string): AppThunkAction {
     })
     .catch((err: Error) => {
       dispatch(GetOrderFailedAction());
-      console.error('Error: ' + err.message);
+      //console.error('Error: ' + err.message);
     });
   }
 }

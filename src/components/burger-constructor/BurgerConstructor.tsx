@@ -96,7 +96,7 @@ const BurgerConstructor: FC = () => {
             
          <BurgerBunItem pos="top" bun={bun} />
 
-            <div className={`${styles.components} pl-5 pr-2 pt-2 pb-2 ${isDraggingIng && ingredients && ingredients.length > 0 ? styles.isHover : ''}`} ref={refItemDrop}>
+            <div data-test="item_container" className={`${styles.components} pl-5 pr-2 pt-2 pb-2 ${isDraggingIng && ingredients && ingredients.length > 0 ? styles.isHover : ''}`} ref={refItemDrop}>
             {
                ingredients && ingredients.length > 0 ?
                   ingredients.map((item, index) => 
@@ -122,7 +122,7 @@ const BurgerConstructor: FC = () => {
                {totalSum} 
                <CurrencyIcon type="primary" />
             </span>
-            <Button type="primary" size="large" htmlType='button' onClick={handleOrderDetailsClick} disabled={isCreateOrderBtnDisabled}>
+            <Button data-test="create_order_btn" type="primary" size="large" htmlType='button' onClick={handleOrderDetailsClick} disabled={isCreateOrderBtnDisabled}>
                Оформить заказ
             </Button>
          </div>

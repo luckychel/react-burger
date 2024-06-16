@@ -4,7 +4,7 @@ import { TWsState } from '../../utils/types';
 import { TWsActions } from '../actions/ws';
 import { protocolWss, baseUrl } from '../constants';
 
-const initialState: TWsState = {
+export const initialState: TWsState = {
     connected: false,
     data: null,
     isRequest: false,
